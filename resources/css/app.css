@@ -1,0 +1,48 @@
+.scan-label{
+    padding:20px;
+    background-color: #F2E9E6;
+    width:100%;
+}
+.scan-title{
+    background-color:#CE4B28;
+    color:#fff;
+    padding:40px;
+    font-size:30px;
+    margin-top:30px;
+}
+.scan-question{
+    padding:20px;
+    background-color: #F2E9E6;
+    width:100%;
+
+}
+
+.scan-ratio-label{
+    float: left;
+    padding: 0 1em;
+    text-align: center;
+}
+.scan-ratio{
+    padding:20px;
+    margin:0 auto;
+    display: block;
+    width:100%;
+}
+.scan-counter{
+    display: flex;
+    justify-content: center;
+    background-color:#CE4B28;
+    color:#ffffff;
+    width:20px;
+    height:20px;
+}
+#chart2{
+
+}
+.chart2-row{
+    padding:20px 0;
+    border-top:1px solid;
+    border-left:1px solid;
+    border-right:1px solid;
+    border-bottom:none;
+}
