@@ -25,6 +25,7 @@
     "dependencies": {
         "chart.js": "^2.9.4",
         "datatables.net": "^1.10.22",
-        "datatables.net-dt": "^1.10.22"
+        "datatables.net-dt": "^1.10.22",
+        "summernote": "^0.8.18"
     }
 }

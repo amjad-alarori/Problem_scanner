@@ -21,6 +21,11 @@ use App\Http\Controllers\ConsulentController;
 |
 */
 
+//temporary just to test mail for now
+Route::get('/admin/mail', function () {
+    return view('admin/mail/index');
+});
+
 
 Route::get('/404', function () {
     return view('errors.404');
