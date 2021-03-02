@@ -40,11 +40,21 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        $user->name= $request->name;
+        $user->email = $request->email;
+        $user->email_verified_at = now();
+        $user->password = "test";
+        $user->save();
+
+        DB::table('role_user')->insert([
+            "role_id"=>$request->role, "user_id"=>$user->id
+        ]);
+        return back();
     }
 
     /**
@@ -97,8 +107,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-       User::destroy($user->id);
-       return redirect()->back()->with('success','gebruiker verwijderd');
+        User::destroy($user->id);
+        return redirect()->back()->with('success','gebruiker verwijderd');
     }
     public function trashed(){
         $users = User::onlyTrashed()->paginate(15);
