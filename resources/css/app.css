@@ -1,3 +1,70 @@
+#loginBtn{
+    background-color: #D5632F;
+    color: white;
+    opacity: 0.8;
+    border-radius: 15px;
+}
+
+#loginBtn:hover{
+    background-color: #D5632F;
+    color: white;
+    opacity: 1;
+    border-radius: 15px;
+}
+
+#registerBtn{
+    background-color: #D5632F;
+    color: white;
+    opacity: 0.8;
+    border-radius: 15px;
+}
+
+#registerBtn:hover{
+    background-color: #D5632F;
+    color: white;
+    opacity: 1;
+    border-radius: 15px;
+}
+
+#btnResetPassword{
+    background-color: #D5632F;
+    color: white;
+    opacity: 0.8;
+    border-radius: 15px;
+}
+
+#btnResetPassword:hover{
+    background-color: #D5632F;
+    color: white;
+    opacity: 1;
+    border-radius: 15px;
+}
+
+#btnSendResetPasswordLink{
+    background-color: #D5632F;
+    color: white;
+    opacity: 0.8;
+    border-radius: 15px;
+}
+
+#btnSendResetPasswordLink:hover{
+    background-color: #D5632F;
+    color: white;
+    opacity: 1;
+    border-radius: 15px;
+}
+
+
+
+.form-group{
+    margin-bottom: 0rem !important;
+}
+
+.card-header{
+    text-align: center;
+}
+
+
 .scan-label{
     padding:20px;
     background-color: #F2E9E6;
