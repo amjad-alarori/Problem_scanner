@@ -18,6 +18,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" ></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 </head>
@@ -40,6 +42,9 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <x-lang-dropdown name=""/>
+                    </li>
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
@@ -54,7 +59,6 @@
                             </li>
                         @endif
                     @else
-
                             <li class="nav-item">
                                 <a class="nav-link" href="/scan">Scans</a>
                             </li>
