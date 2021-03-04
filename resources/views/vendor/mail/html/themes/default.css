@@ -227,15 +227,16 @@ img {
     display: inline-block;
     overflow: hidden;
     text-decoration: none;
+    font-size: 15px;
 }
 
 .button-blue,
 .button-primary {
-    background-color: #2d3748;
-    border-bottom: 8px solid #2d3748;
-    border-left: 18px solid #2d3748;
-    border-right: 18px solid #2d3748;
-    border-top: 8px solid #2d3748;
+    background-color: #e8742e;
+    border-bottom: 8px solid #e8742e;
+    border-left: 18px solid #e8742e;
+    border-right: 18px solid #e8742e;
+    border-top: 8px solid #e8742e;
 }
 
 .button-green,

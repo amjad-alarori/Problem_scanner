@@ -120,13 +120,13 @@
                                         </h2>
                                     </td>
                                 </tr>
-                                <img src="https://orange-eyes-images.s3.eu-central-1.amazonaws.com/logos/logo.png" alt="orange-eyes-logo" width="300">
+                                <img src="https://orange-eyes-images.s3.eu-central-1.amazonaws.com/logos/logo.png" alt="orange-eyes-logo" width="300" style="margin-bottom: 20px">
                                 <tr>
-                                    <td align="center" valign="top" style="padding-bottom:30px;padding-left:20px;padding-right:20px;" class="subTitle">
+                                    <td align="center" valign="top" style="padding-bottom:10px;padding-left:20px;padding-right:20px;" class="subTitle">
                                         <!-- Sub Title Text // -->
 
                                         <h4 class="text" style="color:#999999; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; font-style:normal; letter-spacing:normal; line-height:26px; text-transform:none; text-align:center; padding:0; margin:0">
-                                            Hallo %USERNAME% u heeft een verzoek gedaan om uw email te verifiëren.
+                                            {{ $header ?? '' }}
                                         </h4>
                                     </td>
                                 </tr>
@@ -139,48 +139,43 @@
                                                 <td align="center" valign="top" style="padding-bottom:20px;" class="description">
                                                     <!-- Description Text// -->
                                                     <p class="text" style="color:#666666; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:14px; font-weight:400; font-style:normal; letter-spacing:normal; line-height:22px; text-transform:none; text-align:center; padding:0; margin:0">
-                                                        Met één druk op de knop kun je jou emailadres verifiëren.
+                                                        {{ Illuminate\Mail\Markdown::parse($slot) }}
+
+                                                        {{ $subcopy ?? '' }}
                                                     </p>
                                                 </td>
                                             </tr>
                                         </table>
 
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableButton">
-                                            <tr>
-                                                <td align="center" valign="top" style="padding-top:20px;padding-bottom:20px;">
+{{--                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableButton">--}}
+{{--                                            <tr>--}}
+{{--                                                <td align="center" valign="top" style="padding-top:20px;padding-bottom:20px;">--}}
 
-                                                    <!-- Button Table // -->
-                                                    <table align="center" border="0" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                            <td align="center" class="ctaButton" style="background-color:#E9752E;padding-top:12px;padding-bottom:12px;padding-left:35px;padding-right:35px;border-radius:50px">
-                                                                <!-- Button Link // -->
-                                                                <a class="text" href="#" target="_blank" style="color:#FFFFFF; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:13px; font-weight:700; font-style:normal;letter-spacing:1px; line-height:20px; text-transform:uppercase; text-decoration:none; display:block">
-                                                                    Verifieër Email-Adres
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+{{--                                                    <!-- Button Table // -->--}}
+{{--                                                    <table align="center" border="0" cellpadding="0" cellspacing="0">--}}
+{{--                                                        <tr>--}}
+{{--                                                            <td align="center" class="ctaButton" style="background-color:#E9752E;padding-top:12px;padding-bottom:12px;padding-left:35px;padding-right:35px;border-radius:50px">--}}
+{{--                                                                <!-- Button Link // -->--}}
+{{--                                                                <a class="text" href="#" target="_blank" style="color:#FFFFFF; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:13px; font-weight:700; font-style:normal;letter-spacing:1px; line-height:20px; text-transform:uppercase; text-decoration:none; display:block">--}}
+{{--                                                                    Verifieër Email-Adres--}}
+{{--                                                                </a>--}}
+{{--                                                            </td>--}}
+{{--                                                        </tr>--}}
+{{--                                                    </table>--}}
 
-                                            <tr>
-
-
-                                                <td align="center" valign="top" style="padding-bottom:20px;" class="description">
-                                                    <!-- Description Text// -->
-                                                    <p class="text" style="color:#666666; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:14px; font-weight:400; font-style:normal; letter-spacing:normal; line-height:22px; text-transform:none; text-align:center; padding:0; margin:0">
-                                                        Nadat u uw email heeft geveriefieerd kunt u meteen beginnen met een probleem scan. Veel succes!
-                                                        <br>                                        Met vriendelijke groet,
-                                                        Orange-Eyes
+{{--                                            <tr>--}}
 
 
-
-
-
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            </td>
-                                            </tr>
-                                        </table>
+{{--                                                <td align="center" valign="top" style="padding-bottom:20px;" class="description">--}}
+{{--                                                    <!-- Description Text// -->--}}
+{{--                                                    <p class="text" style="color:#666666; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:14px; font-weight:400; font-style:normal; letter-spacing:normal; line-height:22px; text-transform:none; text-align:center; padding:0; margin:0">--}}
+{{--                                                        {{ $footer ?? '' }}--}}
+{{--                                                    </p>--}}
+{{--                                                </td>--}}
+{{--                                            </tr>--}}
+{{--                                            </td>--}}
+{{--                                            </tr>--}}
+{{--                                        </table>--}}
 
                                     </td>
                                 </tr>

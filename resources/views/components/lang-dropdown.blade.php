@@ -225,13 +225,19 @@
 </select>
 
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         $(".langClass").select2({
             templateResult: function (idioma) {
-                return $("<span><img src='/assets/images/flags/"+idioma.id+".png'/> " + idioma.text + "</span>");
+                if(idioma.id !== undefined)
+                {
+                    return $("<span><img src='/assets/images/flags/" + idioma.id.replace(/ /g, "_") + ".png'/> " + idioma.text + "</span>");
+                }
             },
             templateSelection: function (idioma) {
-                return $("<span><img src='/assets/images/flags/"+idioma.id+".png'/> " + idioma.text + "</span>");
+                if(idioma.id !== undefined)
+                {
+                    return $("<span><img src='/assets/images/flags/" + idioma.id.replace(/ /g, "_") + ".png'/> " + idioma.text + "</span>");
+                }
             }
         });
     });
