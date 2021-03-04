@@ -1,5 +1,5 @@
 require('./bootstrap');
-
+require('./components')
 // function showPassword() {
 //     var x = document.getElementById("password");
 //     if (x.type === "password") {
