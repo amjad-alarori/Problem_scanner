@@ -1,4 +1,4 @@
-<select class="langClass" name="{{$name}}">
+<select class="langClass" name="{{$name ?? ''}}">
     <option>Afghanistan</option>
     <option>Albania</option>
     <option>Algeria</option>
