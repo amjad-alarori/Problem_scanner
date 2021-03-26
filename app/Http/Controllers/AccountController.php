@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LanguageHelper;
 use App\Models\Results;
 use Auth;
 use Aws\Result;
@@ -16,9 +17,9 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $user =Auth::user();
-        $result = Results::where('user_id',$user->id)->first();
-        return view('account.index',compact('user','result'));
+        $user = Auth::user();
+        $result = Results::where('user_id', $user->id)->first();
+        return view('account.index', compact('user', 'result'));
     }
 
     /**
@@ -34,7 +35,7 @@ class AccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -45,7 +46,7 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -56,7 +57,7 @@ class AccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -64,22 +65,25 @@ class AccountController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'language' => 'required|string|max:2|min:2'
+        ]);
+        $user = Auth()->user();
+        $language = $request->post('language');
+        if (in_array($language, LanguageHelper::$allLanguageIsos)) {
+            $user->update([
+                'language' => $language
+            ]);
+        }
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

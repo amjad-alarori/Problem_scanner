@@ -18,7 +18,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="email" type="hidden" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="hidden" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -37,7 +37,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
                                     </div>
-                                <input id="password" type="password" placeholder="Wachtwoord" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="Wachtwoord" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" autofocus>
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">

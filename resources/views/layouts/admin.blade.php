@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" rel="stylesheet">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -517,284 +517,314 @@
         .chiller-theme .sidebar-footer > a:last-child {
             border-right: none;
         }
-        .custom-link-hover{
+
+        .custom-link-hover {
 
         }
 
-        .custom-link-hover:hover{
-            color:#ec6608;
-            background-color:#f2f2f2;
+        .custom-link-hover:hover {
+            color: #ec6608;
+            background-color: #f2f2f2;
         }
     </style>
 
 </head>
 <body>
-<div id="app">
-    <div class="page-wrapper chiller-theme toggled">
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <nav id="sidebar" class="sidebar-wrapper">
-            <div class="sidebar-content">
-                <div class="sidebar-brand">
-                    <img src="/img/logos/orange_eyes-removebg-preview.png" style="height:40px;margin-right:5px;">
-                    <div id="close-sidebar">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="sidebar-header">
-                    <div class="user-pic">
-                        <img class="img-responsive img-rounded"
-                             src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
-                             alt="User picture">
-                    </div>
-                    <div class="user-info">
-          <span class="user-name">
-            <strong> {{ Auth::user()->name }}</strong>
-          </span>
-                        <span class="user-role">Administrator</span>
-                        <span class="user-status">
-            <i class="fa fa-circle"></i>
-            <span>Online</span>
-
-          </span>
-                        <a class=" p-0 pb-2 dropdown-item custom-link-hover" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}   <i class="mt-1 fa fa-sign-out-alt fa-lg" ></i>
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-
-                    </div>
-                </div>
-                <!-- sidebar-header  -->
-
-                <div class="sidebar-search">
-                    <div>
-                        <div class="input-group">
-                            <form action="{{route('search')}}" method="post">@csrf
-                                <div class="input-group-append">
-                                    <input type="text" class="form-control search-menu" name="query"
-                                           placeholder="Search...">
-                                    <span class="input-group-text">
-                <button style="border:none; background-color:#CECECE; border-radius: 0;" type="submit"
-                        class="fa fa-search" aria-hidden="true"></button>
-              </span></div>
-                            </form>
+    <div id="app">
+        <div class="page-wrapper chiller-theme toggled">
+            <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+                <i class="fas fa-bars"></i>
+            </a>
+            <nav id="sidebar" class="sidebar-wrapper">
+                <div class="sidebar-content">
+                    <div class="sidebar-brand">
+                        <img src="/img/logos/orange_eyes-removebg-preview.png" style="height:40px;margin-right:5px;">
+                        <div id="close-sidebar">
+                            <i class="fas fa-times"></i>
                         </div>
                     </div>
-                </div>
-                <!-- sidebar-search  -->
-                <div class="sidebar-menu">
-                    <ul>@if(isset($_SERVER['REQUEST_URI']))
-                            @if (strpos($_SERVER['REQUEST_URI'],'admin'))
-                                <li><a href="/" style="color:#FFF;" class="btn btn-success">Terug naar website</a><br>
-                                </li>
+                    <div class="sidebar-header">
+                        <div class="user-pic">
+                            <img class="img-responsive img-rounded"
+                                 src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                                 alt="User picture">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">
+                                <strong> {{ Auth::user()->name }}</strong>
+                            </span>
+                            <span class="user-role">Administrator</span>
+                            <span class="user-status">
+                                <i class="fa fa-circle"></i>
+                                <span>Online</span>
 
-                                <script>
-                                    $('#adminNav').empty();
-                                </script>
+                            </span>
+                            <a class=" p-0 pb-2 dropdown-item custom-link-hover" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }} <i class="mt-1 fa fa-sign-out-alt fa-lg"></i>
+                            </a>
 
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- sidebar-header  -->
+
+                    <div class="sidebar-search">
+                        <div>
+                            <div class="input-group">
+                                <form action="{{route('search')}}" method="post">@csrf
+                                    <div class="input-group-append">
+                                        <input style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
+                                               type="text" class="form-control search-menu" name="query"
+                                               placeholder="Search...">
+                                        <span class="input-group-text"
+                                              style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                            <button style="border:none; background-color:#CECECE; border-radius: 0;"
+                                                    type="submit"
+                                                    class="fa fa-search" aria-hidden="true"></button>
+                                        </span></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- sidebar-search  -->
+                    <div class="sidebar-menu">
+                        <ul>@if(isset($_SERVER['REQUEST_URI']))
+                                @if (strpos($_SERVER['REQUEST_URI'],'admin'))
+                                    <li class="p-3">
+                                        <a href="/" style="color:#FFF;" class="btn btn-success w-100">Terug naar
+                                            website</a>
+                                        <br>
+                                    </li>
+
+                                    <script>
+                                        $('#adminNav').empty();
+                                    </script>
+
+                                @endif
                             @endif
-                        @endif
-                        <li class="header-menu">
-                            <span>{{Auth::user()->name}}</span>
-                        </li>
+                            <li class="header-menu">
+                                <span>Admin</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-envelope"></i>Email</a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('emailtranslation.index')}}">
+                                                <span>Translations</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('emailcomponenttranslation.index')}}">
+                                                <span>Component Translations</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
 
-                        <li class="header-menu">
-                            <span>General</span>
-                        </li>
-                        <li class="sidebar-dropdown">
-                            <a href="#"> <i class="fa fa-briefcase"></i>Categorieën<span
-                                    class="badge badge-pill badge-warning">{{count(\App\Models\Categories::withTrashed()->get())}}</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('categories.index')}}">
-                                            <span>Overzicht</span>
-                                            <span
-                                                class="badge badge-pill badge-success ">{{count(\App\Models\Categories::all())}}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('categories.trashed')}}">
-                                            <span>Prullenbak</span>
-                                            <span
-                                                class="badge badge-pill badge-danger">{{count(\App\Models\Categories::onlyTrashed()->get())}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <li class="sidebar-dropdown">
+                                <a href="{{route('appconfig.index')}}"> <i class="fa fa-cog"></i>System configuration</a>
+                            </li>
 
-
-                        </li>
-                        <li class="sidebar-dropdown">
-                            <a href="#"> <i class="fa fa-question"></i>Questions<span
-                                    class="badge badge-pill badge-warning">{{count(\App\Models\Questions::withTrashed()->get())}}</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('questions.index')}}">
-                                            <span>Overzicht</span>
-                                            <span
-                                                class="badge badge-pill badge-success ">{{count(\App\Models\Questions::all())}}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('questions.trashed')}}">
-                                            <span>Prullenbak</span>
-                                            <span
-                                                class="badge badge-pill badge-danger">{{count(\App\Models\Questions::onlyTrashed()->get())}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <li class="header-menu">
+                                <span>General</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-briefcase"></i>Categorieën<span
+                                        class="badge badge-pill badge-warning">{{count(\App\Models\Categories::withTrashed()->get())}}</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('categories.index')}}">
+                                                <span>Overzicht</span>
+                                                <span
+                                                    class="badge badge-pill badge-success ">{{count(\App\Models\Categories::all())}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('categories.trashed')}}">
+                                                <span>Prullenbak</span>
+                                                <span
+                                                    class="badge badge-pill badge-danger">{{count(\App\Models\Categories::onlyTrashed()->get())}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
 
-                        </li>
-                        <li class="sidebar-dropdown">
-                            <a href="#"> <i class="fa fa-qrcode"></i>Scans<span
-                                    class="badge badge-pill badge-warning">{{count(\App\Models\Scan::withTrashed()->get())}}</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('scan.index')}}">
-                                            <span>Overzicht</span>
-                                            <span
-                                                class="badge badge-pill badge-success ">{{count(\App\Models\Scan::all())}}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('scan.trashed')}}">
-                                            <span>Prullenbak</span>
-                                            <span
-                                                class="badge badge-pill badge-danger">{{count(\App\Models\Scan::onlyTrashed()->get())}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="sidebar-dropdown">
-                            <a href="#"> <i class="fa fa-tachometer-alt"></i>Resultaten<span
-                                    class="badge badge-pill badge-warning">{{count(\App\Models\Results::withTrashed()->get())}}</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('results.index')}}">
-                                            <span>Overzicht</span>
-                                            <span
-                                                class="badge badge-pill badge-success ">{{count(\App\Models\Results::all())}}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('results.trashed')}}">
-                                            <span>Prullenbak</span>
-                                            <span
-                                                class="badge badge-pill badge-danger">{{count(\App\Models\Results::onlyTrashed()->get())}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="header-menu">
-                            <span>CMS</span>
-                        </li>
-                        <li class="sidebar-dropdown">
-                            <a href="#"> <i class="fa fa-user"></i>Gebruikers<span
-                                    class="badge badge-pill badge-warning">{{count(\App\Models\User::withTrashed()->get())}}</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="{{route('user.index')}}">
-                                            <span>Overzicht</span>
-                                            <span
-                                                class="badge badge-pill badge-success ">{{count(\App\Models\User::all())}}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('user.trashed')}}">
-                                            <span>Prullenbak</span>
-                                            <span
-                                                class="badge badge-pill badge-danger">{{count(\App\Models\User::onlyTrashed()->get())}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="sidebar-content pr-0"><a class="pr-3" href="{{route('roles.index')}}"><i class="fa fa-tag"></i>Rollen  <b> <span class="fa fa-chevron-right fa-xs mt-2 ml-2 float-right "></span></b>    <span
-                                    class="badge badge-pill badge-warning">{{count(\jeremykenedy\LaravelRoles\Models\Role::withTrashed()->get())}}</span></a></li>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-question"></i>Questions<span
+                                        class="badge badge-pill badge-warning">{{count(\App\Models\Questions::withTrashed()->get())}}</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('questions.index')}}">
+                                                <span>Overzicht</span>
+                                                <span
+                                                    class="badge badge-pill badge-success ">{{count(\App\Models\Questions::all())}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('questions.trashed')}}">
+                                                <span>Prullenbak</span>
+                                                <span
+                                                    class="badge badge-pill badge-danger">{{count(\App\Models\Questions::onlyTrashed()->get())}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                    </ul>
+
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-qrcode"></i>Scans<span
+                                        class="badge badge-pill badge-warning">{{count(\App\Models\Scan::withTrashed()->get())}}</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('scan.index')}}">
+                                                <span>Overzicht</span>
+                                                <span
+                                                    class="badge badge-pill badge-success ">{{count(\App\Models\Scan::all())}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('scan.trashed')}}">
+                                                <span>Prullenbak</span>
+                                                <span
+                                                    class="badge badge-pill badge-danger">{{count(\App\Models\Scan::onlyTrashed()->get())}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-tachometer-alt"></i>Resultaten<span
+                                        class="badge badge-pill badge-warning">{{count(\App\Models\Results::withTrashed()->get())}}</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('results.index')}}">
+                                                <span>Overzicht</span>
+                                                <span
+                                                    class="badge badge-pill badge-success ">{{count(\App\Models\Results::all())}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('results.trashed')}}">
+                                                <span>Prullenbak</span>
+                                                <span
+                                                    class="badge badge-pill badge-danger">{{count(\App\Models\Results::onlyTrashed()->get())}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="header-menu">
+                                <span>CMS</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#"> <i class="fa fa-user"></i>Gebruikers<span
+                                        class="badge badge-pill badge-warning">{{count(\App\Models\User::withTrashed()->get())}}</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="{{route('user.index')}}">
+                                                <span>Overzicht</span>
+                                                <span
+                                                    class="badge badge-pill badge-success ">{{count(\App\Models\User::all())}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('user.trashed')}}">
+                                                <span>Prullenbak</span>
+                                                <span
+                                                    class="badge badge-pill badge-danger">{{count(\App\Models\User::onlyTrashed()->get())}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-content pr-0"><a class="pr-3" href="{{route('roles.index')}}"><i
+                                        class="fa fa-tag"></i>Rollen <b> <span
+                                            class="fa fa-chevron-right fa-xs mt-2 ml-2 float-right "></span></b> <span
+                                        class="badge badge-pill badge-warning">{{count(\jeremykenedy\LaravelRoles\Models\Role::withTrashed()->get())}}</span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- sidebar-menu  -->
                 </div>
-                <!-- sidebar-menu  -->
-            </div>
-            <!-- sidebar-content  -->
-            {{--            <div class="sidebar-footer">--}}
-            {{--                <a href="#">--}}
-            {{--                    <i class="fa fa-bell"></i>--}}
-            {{--                    <span class="badge badge-pill badge-warning notification">3</span>--}}
-            {{--                </a>--}}
-            {{--                <a href="#">--}}
-            {{--                    <i class="fa fa-envelope"></i>--}}
-            {{--                    <span class="badge badge-pill badge-success notification">7</span>--}}
-            {{--                </a>--}}
-            {{--                <a href="#">--}}
-            {{--                    <i class="fa fa-cog"></i>--}}
-            {{--                    <span class="badge-sonar"></span>--}}
-            {{--                </a>--}}
-            {{--                <a href="#">--}}
-            {{--                    <i class="fa fa-power-off"></i>--}}
-            {{--                </a>--}}
-            {{--            </div>--}}
-        </nav>
+                <!-- sidebar-content  -->
+                {{--            <div class="sidebar-footer">--}}
+                {{--                <a href="#">--}}
+                {{--                    <i class="fa fa-bell"></i>--}}
+                {{--                    <span class="badge badge-pill badge-warning notification">3</span>--}}
+                {{--                </a>--}}
+                {{--                <a href="#">--}}
+                {{--                    <i class="fa fa-envelope"></i>--}}
+                {{--                    <span class="badge badge-pill badge-success notification">7</span>--}}
+                {{--                </a>--}}
+                {{--                <a href="#">--}}
+                {{--                    <i class="fa fa-cog"></i>--}}
+                {{--                    <span class="badge-sonar"></span>--}}
+                {{--                </a>--}}
+                {{--                <a href="#">--}}
+                {{--                    <i class="fa fa-power-off"></i>--}}
+                {{--                </a>--}}
+                {{--            </div>--}}
+            </nav>
 
-        <main class="page-content py-0">
-            @yield('content')
-        </main>
+            <main class="page-content py-0">
+                @yield('content')
+            </main>
+        </div>
+
     </div>
 
-</div>
+    <script>
 
-<script>
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
 
-    $(".sidebar-dropdown > a").click(function () {
-        $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
-        } else {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
-        }
-    });
-
-    $("#close-sidebar").click(function () {
-        $(".page-wrapper").removeClass("toggled");
-    });
-    $("#show-sidebar").click(function () {
-        $(".page-wrapper").addClass("toggled");
-    });
-</script>
-@stack('scripts')
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>
-

@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\ResultsController;
-use Database\Seeders\RolesTableSeeder;
+use App\Mail\Mails\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailAlias;
 
-class User extends Authenticatable implements MustVerifyEmail,Searchable
+class User extends Authenticatable implements MustVerifyEmailContract, Searchable
 {
-    use HasFactory, Notifiable, HasRoleAndPermission, SoftDeletes;
+    use HasFactory, Notifiable, HasRoleAndPermission, SoftDeletes, MustVerifyEmailAlias;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail,Searchable
     protected $fillable = [
         'name',
         'email',
+        'language',
         'password',
     ];
 
@@ -47,12 +50,17 @@ class User extends Authenticatable implements MustVerifyEmail,Searchable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function results(){
+
+    public function results()
+    {
         return $this->hasMany(Results::class);
     }
-    public function roles(){
+
+    public function roles()
+    {
         return $this->belongstoMany(Role::class);
     }
+
     public function getSearchResult(): SearchResult
     {
         $url = route('user.show', $this->id);
@@ -62,4 +70,10 @@ class User extends Authenticatable implements MustVerifyEmail,Searchable
             $url
         );
     }
+
+    public function sendPasswordResetNotification($token)
+    {
+        Mail::to($this->email)->send(new ResetPassword($this, url('password/reset', $token) . "?email=" . $this->email));
+    }
+
 }

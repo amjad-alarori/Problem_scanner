@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
+        $this->call(EmailTranslationsSeeder::class);
         $this->call(ConnectRelationshipsSeeder::class);
+        $this->call(AppConfigSeeder::class);
+        $this->call(EmailComponentSeeder::class);
         // \App\Models\User::factory(10)->create();
     }
 }

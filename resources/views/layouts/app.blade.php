@@ -42,9 +42,6 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item p-1">
-                        <x-lang-dropdown/>
-                    </li>
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
@@ -104,7 +101,7 @@
                                 @endif
                             @endif
                         @endif<a class="dropdown-item" href="{{route('account.index')}}">
-                                    Account
+                                    Profiel
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
