@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Questions;
@@ -46,9 +47,7 @@ class QuestionsController extends Controller
         $question->question = $request->question;
         $question->categories_id = $request->category;
         if ($request->file('image') != null) {
-            $path=$request->file('image')->store('images','s3');
-            Storage::disk('s3')->setVisibility($path,'public');
-            $question->image = Storage::disk('s3')->url($path);
+            $question->image = UploadHelper::UploadImage($request->file('image'))['url'];
         }
         $question->save();
         return redirect()->back();
