@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row justify-content-center" name="f">
+                        <div class="form-group mb-0 row justify-content-center" name="f">
 
 
                             <div class="col-md-6">

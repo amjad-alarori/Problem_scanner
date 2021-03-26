@@ -1,53 +1,53 @@
-#loginBtn{
+#loginBtn {
     background-color: #D5632F;
     color: white;
     opacity: 0.8;
     border-radius: 15px;
 }
 
-#loginBtn:hover{
+#loginBtn:hover {
     background-color: #D5632F;
     color: white;
     opacity: 1;
     border-radius: 15px;
 }
 
-#registerBtn{
+#registerBtn {
     background-color: #D5632F;
     color: white;
     opacity: 0.8;
     border-radius: 15px;
 }
 
-#registerBtn:hover{
+#registerBtn:hover {
     background-color: #D5632F;
     color: white;
     opacity: 1;
     border-radius: 15px;
 }
 
-#btnResetPassword{
+#btnResetPassword {
     background-color: #D5632F;
     color: white;
     opacity: 0.8;
     border-radius: 15px;
 }
 
-#btnResetPassword:hover{
+#btnResetPassword:hover {
     background-color: #D5632F;
     color: white;
     opacity: 1;
     border-radius: 15px;
 }
 
-#btnSendResetPasswordLink{
+#btnSendResetPasswordLink {
     background-color: #D5632F;
     color: white;
     opacity: 0.8;
     border-radius: 15px;
 }
 
-#btnSendResetPasswordLink:hover{
+#btnSendResetPasswordLink:hover {
     background-color: #D5632F;
     color: white;
     opacity: 1;
@@ -55,27 +55,107 @@
 }
 
 
-
-.form-group{
-    margin-bottom: 0rem !important;
+.bg-tile {
+    background-color: #2d2e33;
 }
 
-.card-header{
+.text-tile {
+    color: #6c7b88;
+}
+
+.tiledate {
+    padding-top: 18px;
+}
+
+.tilescan {
+    padding-top: 12px;
+}
+
+.tile {
+    padding-left: 10px;
+}
+
+
+.tile {
+    height: 250px;
+    opacity: 0.8;
+    background: #FDC830;
+    background: -webkit-linear-gradient(to right, #F37335, #FDC830);
+    background: linear-gradient(to right, #F37335, #FDC830);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    overflow: hidden;
+}
+
+.tile .text {
+    padding: 30px;
+    height: calc(100% - 60px);
+}
+
+.tile .text, .tile h1 {
+    position: absolute;
+}
+
+.tile h1 {
+    top: 50%;
+    bottom: 50%;
+    left: 20%;
+    margin: -25px 0 0 -25px;
+    transition: all 0.25s ease-in-out;
+    /*text-shadow: 2px 2px 10px rgba(0,0,0,0.3);*/
+}
+
+.tile p {
+    /*margin:20px;*/
+    margin-top: 50px;
+    line-height: 25px;
+
+    transform: translateX(-200px);
+    transition-delay: 0.0s;
+}
+
+.animate-text {
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+}
+
+.tile:hover {
+    opacity: 1;
+    background: #FDC830; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F37335, #FDC830); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #F37335, #FDC830); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 0px 35px 77px -17px rgba(0, 0, 0, 0.64);
+    transform: scale(1.05);
+}
+
+.tile:hover .animate-title {
+    transform: translateY(-60px);
+}
+
+.tile:hover .animate-text {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+.card-header {
     text-align: center;
 }
 
 
-.scan-label{
-    padding:20px;
+.scan-label {
+    padding: 20px;
     background-color: #F2E9E6;
-    width:100%;
+    width: 100%;
 }
-.scan-title{
-    background-color:#CE4B28;
-    color:#fff;
-    padding:40px;
-    font-size:30px;
-    margin-top:30px;
+
+.scan-title {
+    background-color: #CE4B28;
+    color: #fff;
+    padding: 40px;
+    font-size: 30px;
+    margin-top: 30px;
 }
 
 .scan-question-wrapper {
@@ -85,36 +165,40 @@
 .scan-question{
     padding:20px;
     background-color: #F2E9E6;
-    width:100%;
+    width: 100%;
 
 }
 
-.scan-ratio-label{
+.scan-ratio-label {
     float: left;
     padding: 0 1em;
     text-align: center;
 }
-.scan-ratio{
-    padding:20px;
-    margin:0 auto;
+
+.scan-ratio {
+    padding: 20px;
+    margin: 0 auto;
     display: block;
-    width:100%;
+    width: 100%;
 }
-.scan-counter{
+
+.scan-counter {
     display: flex;
     justify-content: center;
-    background-color:#CE4B28;
-    color:#ffffff;
-    width:20px;
-    height:20px;
+    background-color: #CE4B28;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
 }
-#chart2{
+
+#chart2 {
 
 }
-.chart2-row{
-    padding:20px 0;
-    border-top:1px solid;
-    border-left:1px solid;
-    border-right:1px solid;
-    border-bottom:none;
+
+.chart2-row {
+    padding: 20px 0;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: none;
 }
