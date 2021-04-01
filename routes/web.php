@@ -30,9 +30,7 @@ Route::get('/404', function () {
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/', function () {
-        return view('home');
-    });
+    Route::get('/', [HomeController::class, 'index']);
     Route::group(['middleware' => ['level:1']], function () {
         Route::post('consulent.add', [ConsulentController::class, 'add'])->name('consulent.add');
         Route::get('/home', [HomeController::class, 'index'])->name('home');

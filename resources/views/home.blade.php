@@ -19,8 +19,7 @@
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 p-3">
                 <div class="card">
                     <div class="card-body bg-tile text-tile rounded">
-                        <h6 class="mb-0"> Scans gemaakt: <br>
-                            Scans beschikbaar: </h6>
+                        <h2 class="mb-0"> Scans gemaakt: {{$scansMade}}    </h2>
 
                     </div>
                 </div>
