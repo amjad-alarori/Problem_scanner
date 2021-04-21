@@ -52,7 +52,8 @@ class UserController extends Controller
         $user->password = bcrypt("password");
         $user->save();
 
-        $roleId = DB::table('roles')->select('id')->where('slug', '=', $request->role)->first()->id;
+
+        $roleId = \App\Models\Role::where('slug', $request->role)->first()->id;
 
 
         DB::table('role_user')->insert([
@@ -156,6 +157,8 @@ class UserController extends Controller
 //                     DB::table('users')->where('id', '=', $user->id)->update(["email_verified_at" => null]);
 //                 }
 //            }
+            return redirect()->back()->with('success','changed user');
+
         }
         return redirect()->back()->withErrors('You can not change yourself');
 
@@ -189,6 +192,10 @@ class UserController extends Controller
 
     public function link(Request $request)
     {
+        $request->validate([
+            'employeeId' => 'required',
+            'clientId' => 'required',
+        ]);
         DB::table('consulent_clients')->insert([
             "consulent_id" => $request->employeeId,
             "client_id" => $request->clientId,

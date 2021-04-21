@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Mails\NewClient;
+use App\Mail\Mails\VerifyEmail as CustomVerifyEmail;
 use App\Models\ConsulentClients;
 use App\Models\Results;
+use App\Models\Role;
 use App\Models\User;
 use Aws\Result;
 use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ConsulentController extends Controller
 {
@@ -48,7 +52,7 @@ class ConsulentController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('consulent\userCreate',compact('roles'));
+        return view('consulent.userCreate',compact('roles'));
     }
 
     /**
@@ -84,11 +88,8 @@ class ConsulentController extends Controller
             "verified" => 1
         ]);
 
-        Mail::send('emails.newClientPassword', ['name' => $user->name, 'password' => $random_password], function ($m) use ($user) {
-            $m->from('noreply@orangeeyes.com', 'Orange Eyes');
+        Mail::to($user->email)->send(new NewClient($user, $random_password));
 
-            $m->to($user->email, $user->name)->subject('Orange Eyes account created');
-        });
 
         return redirect('consulent');
     }

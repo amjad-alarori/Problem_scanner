@@ -32,7 +32,7 @@
                                     @foreach($users as $key=>$users)
                                         @if($key == 1)
                                             @foreach($users as $user)
-                                                <option value="{{$user->name}}">{{$user->name}}
+                                                <option value="{{$user->id}}">{{$user->name}}
                                                     | {{$user->email}}</option>
                                             @endforeach
                                         @endif

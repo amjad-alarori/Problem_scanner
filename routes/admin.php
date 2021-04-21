@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\admin\AppConfigController;
+use App\Http\Controllers\admin\CompanyController;
 use App\Http\Controllers\admin\EmailComponentTranslationController;
 use App\Http\Controllers\admin\EmailTranslationController;
 use App\Http\Controllers\admin\ResultsController;
+use App\Http\Controllers\ConsulentController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\admin\CategoriesController;
@@ -46,9 +48,18 @@ Route::get('scan/trashed', [ScanController::class, 'trashed'])->name('scan.trash
 Route::post('scan/trashed/update/{id}', [ScanController::class, 'updateTrashed'])->name('scan.updateTrashed');
 Route::resource('scan', ScanController::class);
 
+//company routes
+Route::get('company/trashed',[CompanyController::class,'trashed'])->name('company.trashed');
+Route::post('company/trashed/update/{id}',[CompanyController::class,'updateTrashed'])->name('company.updateTrashed');
+Route::resource('company',CompanyController::class);
+
+Route::post('user/{user}/link',[UserController::class,'link'])->name('user.link');
+Route::post('user/{user}/linkDestroy',[UserController::class,'linkDestroy'])->name('user.linkDestroy');
 Route::get('user/trashed', [UserController::class, 'trashed'])->name('user.trashed');
 Route::post('user/trashed/update/{id}', [UserController::class, 'updateTrashed'])->name('user.updateTrashed');
+Route::post('user/trashed',[UserController::class, 'hardDelete'])->name('user.hardDelete');
 Route::resource('user', UserController::class);
+Route::post('consulent.destroy',[ConsulentController::class,'destroy'])->name('consulent.destroy');
 
 Route::resource('roles', RoleController::class);
 

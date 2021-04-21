@@ -608,7 +608,7 @@
                                 @endif
                             @endif
                             <li class="header-menu">
-                                <span>Admin</span>
+                                <span>{{Auth::user()->name}}</span>
                             </li>
                             <li class="sidebar-dropdown">
                                 <a href="#"> <i class="fa fa-envelope"></i>Email</a>
@@ -734,6 +734,29 @@
                             <li class="header-menu">
                                 <span>CMS</span>
                             </li>
+                            {{--                        <li class="sidebar-dropdown">--}}
+                            {{--                            <a href="#"> <i class="fa fa-user"></i>Bedrijven<span--}}
+                            {{--                                    class="badge badge-pill badge-warning"><!--{{count(\App\Models\User::withTrashed()->get())}}--></span>--}}
+                            {{--                            </a>--}}
+                            {{--                            <div class="sidebar-submenu">--}}
+                            {{--                                <ul>--}}
+                            {{--                                    <li>--}}
+                            {{--                                        <a href="{{route('company.index')}}">--}}
+                            {{--                                            <span>Overzicht</span>--}}
+                            {{--                                            <span--}}
+                            {{--                                                class="badge badge-pill badge-success "><!--{{count(\App\Models\User::all())}}--></span>--}}
+                            {{--                                        </a>--}}
+                            {{--                                    </li>--}}
+                            {{--                                    <li>--}}
+                            {{--                                        <a href="{{route('company.trashed')}}">--}}
+                            {{--                                            <span>Prullenbak</span>--}}
+                            {{--                                            <span--}}
+                            {{--                                                class="badge badge-pill badge-danger"><!--{{count(\App\Models\User::onlyTrashed()->get())}}--></span>--}}
+                            {{--                                        </a>--}}
+                            {{--                                    </li>--}}
+                            {{--                                </ul>--}}
+                            {{--                            </div>--}}
+                            {{--                        </li>--}}
                             <li class="sidebar-dropdown">
                                 <a href="#"> <i class="fa fa-user"></i>Gebruikers<span
                                         class="badge badge-pill badge-warning">{{count(\App\Models\User::withTrashed()->get())}}</span>

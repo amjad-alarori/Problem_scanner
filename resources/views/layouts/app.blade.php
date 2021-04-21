@@ -62,7 +62,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/results">Resultaten</a>
                             </li>
-                        @if(Auth::user()->roles->first()->name == 'Consulent')
+                        @if(Auth::user()->roles->first()->level == 2 || Auth::user()->roles->first()->level == 3)
                             <li class="nav-item">
                                 <a class="nav-link" href="/consulent">Clienten</a>
                             </li>
@@ -101,7 +101,7 @@
                                 @endif
                             @endif
                         @endif<a class="dropdown-item" href="{{route('account.index')}}">
-                                    Profiel
+                                Account
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

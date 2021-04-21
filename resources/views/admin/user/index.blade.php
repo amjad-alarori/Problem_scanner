@@ -46,8 +46,8 @@
                                     <td>
                                         <label>
                                             <select id="roleSelect" name="role" class="form-control" onchange="setNameOptions();">
-                                            @foreach($roles as $role)
-                                                    <option value="{{$role->id}}">{{$role->name}}</option>
+                                                @foreach($roles as $role)
+                                                    <option value="{{$role->slug}}">{{$role->name}}</option>
                                                 @endforeach</select>
                                         </label>
                                     </td>
@@ -63,8 +63,7 @@
                                     </td>
                                     <td>
                                         <label>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                            </button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
                                         </label>
                                     </td>
                                 </form>
@@ -84,6 +83,8 @@
                                         {{$user->roles[0]->name}}
                                     </td>
                                     <td class="linkedTd" style="display: none">
+                                    </td>
+                                    <td>
                                         <div class="row">
                                             <div class="col-6">
                                                 <form action="{{route('user.show',$user->id)}}" method="get">
@@ -195,3 +196,5 @@
         }
     </script>
 @endpush
+
+

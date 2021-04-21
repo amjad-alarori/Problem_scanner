@@ -37,6 +37,14 @@ class EmailTranslationsSeeder extends Seeder
                     'language' => LanguageHelper::$DEFAULT_LANGUAGE,
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ],
+                [
+                    'type' => 'NewClient',
+                    'subject' => 'Orange Eyes account gemaakt',
+                    'body' => '<div style="text-align: left;">Beste %USER_NAME%,</div><div style="text-align: left;"><br></div><div style="text-align: left;">Er is een account voor u aangemaakt bij Orange Eyes. Uw wachtwoord is:</div><div style="text-align: left;">%PASSWORD%</div><div style="text-align: left;"><br></div><div style="text-align: left;">U kunt inloggen op https://www.orangeeyes.nl om uw wachtwoord te wijzigen.</div><div style="text-align: left;"><br></div><div style="text-align: left;"><div>Met vriendelijke groet,</div><div>Orange Eyes</div></div>',
+                    'language' => LanguageHelper::$DEFAULT_LANGUAGE,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ]
             ]);
 

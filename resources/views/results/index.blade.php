@@ -12,7 +12,7 @@
                         <li class="list-group-item">
                             <form action="{{route('export.show',$result)}}" method="get">@csrf
                                 <div class="row">
-                                    <div class="col-6"><h3 class="pr-5">{{$result->name}}</h3></div>
+                                    <div class="col-6"><h5 class="pr-5">{{$result->name }} {{\App\Models\User::find($result->user_id)->email}}</h5></div>
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary float-right">bekijk resultaten
                                         </button>
