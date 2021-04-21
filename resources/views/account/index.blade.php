@@ -7,10 +7,10 @@
                     <a class="nav-link active" id="v-pills-home-personal" data-toggle="pill" href="#v-personal"
                        role="tab">Account
                         overzicht</a>
-                    @if(Auth::user()->roles[0]->level <= 1)
-                        <a class="nav-link" id="v-pills-home-consulent" data-toggle="pill" href="#v-consulent"
-                           role="tab">Consulenten</a>
-                    @endif
+{{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
+{{--                        <a class="nav-link" id="v-pills-home-consulent" data-toggle="pill" href="#v-consulent"--}}
+{{--                           role="tab">Consulenten</a>--}}
+{{--                    @endif--}}
                 </div>
             </div>
             <div class="col-md-9">
@@ -41,6 +41,16 @@
                                                    value="{{$user->email}}">
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-sm-2 col-form-label">Wachtwoord</label>
+                                        <div class="col-sm-10">
+                                            @if (Route::has('password.request'))
+                                                <a class="btn  btn-primary" href="{{ route('password.request') }}">
+                                                    {{ __('Change your password') }}
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <hr class="mb-3 mt-2">
                                     <div class="form-group row">
                                         <label for="inputPassword" class="col-sm-2 col-form-label">Taal</label>
@@ -57,29 +67,29 @@
                             </div>
                         </form>
                     </div>
-                    @if(Auth::user()->roles[0]->level <= 1)
-                        <div class="tab-pane fade" id="v-consulent" role="tabpanel">
-                            <form id="form" action="{{route('consulent.add')}}" method="post">
-                                @csrf
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between">
-                                        Consulent toevoegen
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" type="email" name="consulent" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-primary">Voeg toe</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    @endif
+{{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
+{{--                        <div class="tab-pane fade" id="v-consulent" role="tabpanel">--}}
+{{--                            <form id="form" action="{{route('consulent.add')}}" method="post">--}}
+{{--                                @csrf--}}
+{{--                                <div class="card">--}}
+{{--                                    <div class="card-header d-flex justify-content-between">--}}
+{{--                                        Consulent toevoegen--}}
+{{--                                    </div>--}}
+{{--                                    <div class="card-body">--}}
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>--}}
+{{--                                            <div class="col-sm-10">--}}
+{{--                                                <input class="form-control" type="email" name="consulent" required>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="card-footer">--}}
+{{--                                        <button class="btn btn-primary">Voeg toe</button>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                 </div>
             </div>
         </div>

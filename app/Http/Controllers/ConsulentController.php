@@ -47,7 +47,8 @@ class ConsulentController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('consulent\userCreate',compact('roles'));
     }
 
     /**
@@ -58,7 +59,38 @@ class ConsulentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (User::where('email', '=', $request->email)->exists()) {
+            return back()->withErrors('client met deze e-mail bestaat al');
+        }
+
+        $random_password = str_random();
+
+        $user = new User();
+        $user->name= $request->name;
+        $user->email = $request->email;
+        $user->email_verified_at = now();
+        $user->password = bcrypt($random_password);
+        $user->save();
+
+        $roleId = DB::table('roles')->select('id')->where('slug', '=', "user")->first()->id;
+
+        DB::table('role_user')->insert([
+            "role_id"=>$roleId, "user_id"=>$user->id
+        ]);
+
+        DB::table('consulent_clients')->insert([
+            "consulent_id" => Auth::user()->id,
+            "client_id" => $user->id,
+            "verified" => 1
+        ]);
+
+        Mail::send('emails.newClientPassword', ['name' => $user->name, 'password' => $random_password], function ($m) use ($user) {
+            $m->from('noreply@orangeeyes.com', 'Orange Eyes');
+
+            $m->to($user->email, $user->name)->subject('Orange Eyes account created');
+        });
+
+        return redirect('consulent');
     }
 
     /**
@@ -103,10 +135,15 @@ class ConsulentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if (!$request->client) return back();
+
+        DB::table('users')->where('id', '=', $request->client)->delete();
+
+        return back();
     }
+
 
     public function accept(Request $request){
 

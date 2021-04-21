@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmailContract, Searchabl
 
     public function roles()
     {
-        return $this->belongstoMany(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
     public function getSearchResult(): SearchResult

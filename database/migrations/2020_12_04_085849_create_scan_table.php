@@ -27,6 +27,6 @@ class CreateScanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scans');
+        Schema::dropIfExists('scansda');
     }
 }

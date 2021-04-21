@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <div class="container mt-5">
-        @if(!count($clients) >0)
+        <a href="{{route('consulent.create')}}" class="btn btn-primary">Create client</a>
+
+    @if(!count($clients) >0)
             <p style="text-align:center;">U heeft nog momenteel geen clienten. <br><br>Clienten kunnen u toevoegen doormiddel van uw E-mail adress in hun accounts.</p>
         @else
             <ul class="list-group mt-5">

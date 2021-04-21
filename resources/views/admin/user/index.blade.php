@@ -22,6 +22,7 @@
                                 <th>Email</th>
                                 <th>Status</th>
                                 <th>Role</th>
+                                <th class="linkedTd" style="display: none">Linked to</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -44,15 +45,26 @@
                                     </td>
                                     <td>
                                         <label>
-                                            <select name="role" class="form-control">@foreach($roles as $role)
-
+                                            <select id="roleSelect" name="role" class="form-control" onchange="setNameOptions();">
+                                            @foreach($roles as $role)
                                                     <option value="{{$role->id}}">{{$role->name}}</option>
                                                 @endforeach</select>
                                         </label>
                                     </td>
+                                    <td class="linkedTd" style="display: none">
+                                        <label id="LinkLabel">
+                                            <select id="linkSelect" name="link" class="form-control">
+                                                <option id="roleSelectDefault" class="form-control-item" value="null" disabled>--=Select an option=--</option>
+                                                @foreach($allUsers as $user)
+                                                    <option class="LinkOptionGroup{{$user->roles[0]->level}} LinkOption form-control-item" value="{{$user->id}}">{{$user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
+                                    </td>
                                     <td>
                                         <label>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                            </button>
                                         </label>
                                     </td>
                                 </form>
@@ -69,31 +81,23 @@
                                         @endif
                                     </td>
                                     <td>
-
-                                        <form id="changeForm{{$i}}" action="{{route('user.update',$user)}}"
-                                              method="post">
-                                            @method('PUT')
-                                            @csrf
-                                            <select name="role" class="form-control">@foreach($roles as $role)
-                                                    @foreach($user->roles as $userrole)
-                                                        <option class="form-control-item" value="{{$role->id}}"
-                                                                @if($userrole->name == $role->name) selected @endif>{{$role->name}}</option>
-                                                    @endforeach
-                                                @endforeach</select>
-                                        </form>
+                                        {{$user->roles[0]->name}}
                                     </td>
-                                    <td>
+                                    <td class="linkedTd" style="display: none">
                                         <div class="row">
                                             <div class="col-6">
-                                                <button onclick="submitform({{$i}})" class="btn btn-warning">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
+                                                <form action="{{route('user.show',$user->id)}}" method="get">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-warning">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                             <div class="col-6">
                                                 <form action="{{route('user.destroy',$user)}}" method="post">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"><i
-                                                            class="fa fa-trash"></i>
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </div>
@@ -120,5 +124,74 @@
             $('#changeForm' + id).submit();
         }
 
+    </script>
+    <script>
+        function setNameOptions() {
+            var linkLabel = document.getElementById("LinkLabel")
+            var users = Array.from(document.getElementsByClassName("LinkOption"))
+            var linkedTd = Array.from(document.getElementsByClassName("linkedTd"))
+            var role = document.getElementById("roleSelect")
+            var link = document.getElementById("linkSelect")
+            console.log(role.value)
+            link.value = "null"
+            if (role.value == "user") {
+                linkLabel.style.display = "block"
+                linkedTd.forEach(function(element) {
+                    element.style.display = "block"
+                })
+                users.forEach(function(element) {
+                    if (element.className.includes("LinkOptionGroup2") || element.className.includes("LinkOptionGroup3")) {
+                        element.style.display = "block";
+                    } else {
+                        element.style.display = "none";
+                    }
+                })
+            } else {
+                linkedTd.forEach(function(element) {
+                    element.style.display = "none"
+                })
+                users.forEach(function(element) {
+                    LinkLabel.style.display = "none"
+                    element.style.display = "none"
+                })
+            }
+            // switch (document.getElementById("roleSelect").value) {
+            //     case "poweremployee":
+            //     case "employee":
+            //         LinkLabel.style.display = "block"
+            //         linkedTd.forEach(function(element) {
+            //             element.style.display = "block"
+            //         })
+            //         users.forEach(function(element) {
+            //             if (element.className.includes("LinkOptionGroup4")) {
+            //                 element.style.display = "block";
+            //             } else {
+            //                 element.style.display = "none";
+            //             }
+            //         })
+            //         break
+            //     case "user":
+            //         LinkLabel.style.display = "block"
+            //         linkedTd.forEach(function(element) {
+            //             element.style.display = "block"
+            //         })
+            //         users.forEach(function(element) {
+            //             if (element.className.includes("LinkOptionGroup2") || element.className.includes("LinkOptionGroup3")) {
+            //                 element.style.display = "block";
+            //             } else {
+            //                 element.style.display = "none";
+            //             }
+            //         })
+            //         break
+            //     default:
+            //         linkedTd.forEach(function(element) {
+            //             element.style.display = "none"
+            //         })
+            //         users.forEach(function(element) {
+            //             LinkLabel.style.display = "none"
+            //             element.style.display = "none"
+            //         })
+            // }
+        }
     </script>
 @endpush

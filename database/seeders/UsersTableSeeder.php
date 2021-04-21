@@ -15,7 +15,10 @@ class UsersTableSeeder extends Seeder
     {
         $userRole = config('roles.models.role')::where('name', '=', 'User')->first();
         $adminRole = config('roles.models.role')::where('name', '=', 'Admin')->first();
+        $companyRole = config('roles.models.role')::where('name', '=', 'Company')->first();
+        $employeeRole = config('roles.models.role')::where('name', '=', 'Employee')->first();
         $permissions = config('roles.models.permission')::all();
+        $employeePermissions = config('roles.models.role')::where('slug', '=', 'view.users')->first();
 
         /*
          * Add Users
@@ -26,6 +29,7 @@ class UsersTableSeeder extends Seeder
                 'name'     => 'Admin',
                 'email'    => 'admin@admin.com',
                 'password' => bcrypt('password'),
+                'email_verified_at' => now()
             ]);
 
             $newUser->attachRole($adminRole);
@@ -34,11 +38,39 @@ class UsersTableSeeder extends Seeder
             }
         }
 
+        if (config('roles.models.defaultUser')::where('email', '=', 'company@company.com')->first() === null) {
+            $newUser = config('roles.models.defaultUser')::create([
+                'name'     => 'Company',
+                'email'    => 'company@company.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now()
+            ]);
+
+            $newUser->attachRole($companyRole);
+            foreach ($permissions as $permission) {
+                $newUser->attachPermission($permission);
+            }
+        }
+
+        if (config('roles.models.defaultUser')::where('email', '=', 'employee@employee.com')->first() === null) {
+            $newUser = config('roles.models.defaultUser')::create([
+                'name'     => 'Employee',
+                'email'    => 'employee@employee.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now()
+            ]);
+
+            $newUser;
+            $newUser->attachRole($employeeRole);
+            $newUser->attachPermission($employeePermissions);
+        }
+
         if (config('roles.models.defaultUser')::where('email', '=', 'user@user.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
                 'name'     => 'User',
                 'email'    => 'user@user.com',
                 'password' => bcrypt('password'),
+                'email_verified_at' => now()
             ]);
 
             $newUser;

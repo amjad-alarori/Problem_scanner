@@ -23,7 +23,8 @@ class UserController extends Controller
 
         $users = User::with('roles')->paginate(10);
         $roles = Role::all();
-        return view('admin.user.index',compact('users','roles'));
+        $allUsers = User::with('roles')->get();
+        return view('admin.user.index', compact('users', 'roles', 'allUsers'));
     }
 
     /**
@@ -39,40 +40,80 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $user = new User();
-        $user->name= $request->name;
+        $user->name = $request->name;
         $user->email = $request->email;
         $user->email_verified_at = now();
-        $user->password = "test";
+        $user->password = bcrypt("password");
         $user->save();
 
+        $roleId = DB::table('roles')->select('id')->where('slug', '=', $request->role)->first()->id;
+
+
         DB::table('role_user')->insert([
-            "role_id"=>$request->role, "user_id"=>$user->id
+            "role_id" => $roleId, "user_id" => $user->id
         ]);
+
+        if ($request->role == "user" && $request->link != null) {
+            DB::table('consulent_clients')->insert([
+                "consulent_id" => $request->link,
+                "client_id" => $user->id,
+                "verified" => 1
+            ]);
+        }
         return back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($id)
     {
-        $user = User::find($id)->get();
-        return view('admin.user.show',compact('user'));
+        $users = User::with('roles')->get();
+        $user = User::with('roles')->where('id', '=', $id)->first();
+        $roles = Role::all();
+        $linkedUsers = [];
+        if ($user->roles[0]->level == 2 || $user->roles[0]->level == 3) {
+            $linkedUsersIds = DB::table('consulent_clients')->where('consulent_id', '=', $id)->get();
+            foreach ($linkedUsersIds as $linkedUserId) {
+                //$linkedUser = DB::table('users')->where('id', '=', $linkedUserId->client_id)->first();
+                //array_push($linkedUsers, $linkedUser);
+                foreach ($users as $key => $x) {
+                    if ($linkedUserId->client_id == $x->id) {
+                        array_push($linkedUsers, $x);
+                        unset($users[$key]);
+                    }
+                }
+            }
+        } else {
+            $linkedUsersIds = DB::table('consulent_clients')->where('client_id', '=', $id)->get();
+            foreach ($linkedUsersIds as $linkedUserId) {
+                //$linkedUser = DB::table('users')->where('id', '=', $linkedUserId->consulent_id)->first();
+                //array_push($linkedUsers, $linkedUser);
+                foreach ($users as $key => $x) {
+                    if ($linkedUserId->consulent_id == $x->id) {
+                        array_push($linkedUsers, $x);
+                        unset($users[$key]);
+                    }
+                }
+            }
+        }
+
+        return view('admin.user.show', compact('users', 'user', 'roles', 'linkedUsers'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -89,11 +130,32 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if($user->id != Auth::id()){
-            $user->roles()->sync([$request->input('role')]);
-//            $user->roles()->attach($request->role);
-
-            return redirect()->back()->with('success','changed user');
+        if ($user->id != Auth::id()) {
+            if (($user->roles[0]->level == 2 && $request->powerEmployee == "on") || ($user->roles[0]->level == 3 && $request->powerEmployee == null)) {
+                if ($user->roles[0]->level == 2) {
+                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "poweremployee")->first()->id;
+                } else {
+                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "employee")->first()->id;
+                }
+                DB::table('role_user')->where("user_id", "=", $user->id)->update(["role_id" => $roleId]);
+            }
+            DB::table('users')->where('id', '=', $user->id)->update([
+                "name" => $request->name,
+                "email" => $request->email,
+            ]);
+            if ($request->password != "") {
+                DB::table('users')->where('id', '=', $user->id)->update([
+                    "password" => bcrypt($request->password)
+                ]);
+            }
+//            if($user->email_verified_at == $request->verifyEmail) {
+//                if($request->verifyEmail == null) {
+//                    DB::table('users')->where('id', '=', $user->id)->update(["email_verified_at" => now()]);
+//                }
+//                 else {
+//                     DB::table('users')->where('id', '=', $user->id)->update(["email_verified_at" => null]);
+//                 }
+//            }
         }
         return redirect()->back()->withErrors('You can not change yourself');
 
@@ -102,22 +164,72 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user)
     {
         User::destroy($user->id);
-        return redirect()->back()->with('success','gebruiker verwijderd');
+        return redirect()->back()->with('success', 'gebruiker verwijderd');
     }
-    public function trashed(){
+
+    public function trashed()
+    {
         $users = User::onlyTrashed()->paginate(15);
-        return view('admin.user.trashed',compact('users'));
+        return view('admin.user.trashed', compact('users'));
     }
-    public function updateTrashed($id){
-        $user=User::withTrashed()->find($id);
+
+    public function updateTrashed($id)
+    {
+        $user = User::withTrashed()->find($id);
         $user->deleted_at = null;
         $user->save();
-        return back()->with('success','gebruiker teruggezet!');
+        return back()->with('success', 'gebruiker teruggezet!');
+    }
+
+    public function link(Request $request)
+    {
+        DB::table('consulent_clients')->insert([
+            "consulent_id" => $request->employeeId,
+            "client_id" => $request->clientId,
+            "verified" => 1
+        ]);
+        return redirect()->back()->with('success', 'linked user');
+    }
+
+    public function linkDestroy(User $user, Request $request)
+    {
+        if ($user->roles[0]->level == 2 || $user->roles[0]->level == 3) {
+            DB::table('consulent_clients')->where('consulent_id', '=', $user->id)->where('client_id', '=', $request->otherUser)->delete();
+        } else {
+            DB::table('consulent_clients')->where('client_id', '=', $user->id)->where('consulent_id', '=', $request->otherUser)->delete();
+        }
+
+        return redirect()->back()->with('success', 'link verwijderd');
+    }
+
+    public function hardDelete()
+    {
+        $id = \request('id');
+
+        //v1 van de hard delete doet ook deleten als de user scans heeft
+        //DB::table('results')->where('user_id',$id )->delete();
+        //DB::table('role_user')->where('user_id' , $id)->delete();
+        //DB::table('permission_user')->where('user_id', $id)->delete();
+        //DB::table('consulent_clients')->where('consulent_id', $id)->orWhere('client_id', $id)->delete();
+        //DB::table('users')->where('id', $id)->delete();
+        //return redirect()->back()->with('success','gebruiker verwijderd');
+
+        if (!count(DB::table('results')->where('user_id', $id)->get())) {
+            DB::table('role_user')->where('user_id', $id)->delete();
+            DB::table('permission_user')->where('user_id', $id)->delete();
+            DB::table('consulent_clients')->where('consulent_id', $id)->orWhere('client_id', $id)->delete();
+            DB::table('users')->where('id', $id)->delete();
+            return redirect()->back()->with('success', 'gebruiker verwijderd');
+        } else {
+            return redirect()->back()->with('failed', 'gebruiker heeft all tests afgenomen');
+        }
+
+
     }
 }
