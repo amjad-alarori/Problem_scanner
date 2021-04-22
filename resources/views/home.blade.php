@@ -26,32 +26,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 p-3">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 p-3">
                 <div class="tile d-flex justify-content-center align-items-center text-white rounded w-100">
 
                     <div class="text">
                         <h1 class="animate-title text-center"><i class="fas fa-eye"></i>&nbsp;Start scan</h1>
-                        <a class="stretched-link" href="/scan"></a>
+                        <a class="stretched-link" href="{{route('scan.index')}}"></a>
 
                         <p class="animate-text">Kies een scan uit het beschikbare aanbod </p>
-
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 p-3">
-                <div class="tile d-flex justify-content-center align-items-center text-white rounded w-100">
 
-                    <div class="text">
-                        <h1 class="animate-title"><i class="fas fa-archive"></i>&nbsp;Scan historie</h1>
-                        <p class="animate-text">Bekijk welke scans u in het verleden gemaakt heeft </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 p-3">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 p-3">
                 <div class="tile d-flex justify-content-center align-items-center text-white rounded w-100">
                     <div class="text">
                         <h1 class="animate-title"><i class="fas fa-chart-line"></i>&nbsp;Resultaten</h1>
-                        <a class="stretched-link" href="/results"></a>
+                        <a class="stretched-link" href="{{route('results.index')}}"></a>
                         <p class="animate-text">Bekijk de resultaten van de door u gemaakte scans </p>
                     </div>
                 </div>

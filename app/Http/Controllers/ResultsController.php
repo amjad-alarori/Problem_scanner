@@ -25,6 +25,7 @@ class ResultsController extends Controller
         }else{
             $results = User::find(Auth::id())->results;
         }
+        return view('results.index', compact('results'));
     }
 
     public function show(Results $result)
