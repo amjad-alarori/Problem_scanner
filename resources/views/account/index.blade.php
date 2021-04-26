@@ -45,7 +45,7 @@
                                         <label for="staticEmail" class="col-sm-2 col-form-label">Wachtwoord</label>
                                         <div class="col-sm-10">
                                             @if (Route::has('password.request'))
-                                                <a class="btn  btn-primary" href="{{ route('password.request') }}">
+                                                <a class="btn  btn-orange" href="{{ route('password.request') }}">
                                                     {{ __('Change your password') }}
                                                 </a>
                                             @endif
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-primary">Wijzigingen opslaan</button>
+                                    <button class="btn btn-orange">Wijzigingen opslaan</button>
                                 </div>
                             </div>
                         </form>
@@ -84,7 +84,7 @@
 {{--                                        </div>--}}
 {{--                                    </div>--}}
 {{--                                    <div class="card-footer">--}}
-{{--                                        <button class="btn btn-primary">Voeg toe</button>--}}
+{{--                                        <button class="btn btn-orange">Voeg toe</button>--}}
 {{--                                    </div>--}}
 {{--                                </div>--}}
 {{--                            </form>--}}

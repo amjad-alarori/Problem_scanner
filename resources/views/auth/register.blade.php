@@ -109,7 +109,7 @@
                                 <br>
                                 <br>
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn" id="registerBtn">
+                                    <button type="submit" class="btn btn-orange">
                                         {{ __('Registreren') }}
                                     </button>
                                 </div>
