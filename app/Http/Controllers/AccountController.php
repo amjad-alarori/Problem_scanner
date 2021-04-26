@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LanguageHelper;
+use App\Models\ConsulentClients;
 use App\Models\Results;
+use App\Models\User;
 use Auth;
 use Aws\Result;
 use Illuminate\Http\Request;
@@ -90,4 +92,15 @@ class AccountController extends Controller
     {
         //
     }
+
+    public function DetachConsultant(User $user)
+    {
+        // Todo:: Improve with detach
+        ConsulentClients::where([
+            ['client_id', '=', Auth()->user()->id],
+            ['consulent_id', '=', $user->id],
+        ])->firstOrFail()->delete();
+        return back();
+    }
+
 }

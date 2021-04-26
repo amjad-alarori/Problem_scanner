@@ -7,10 +7,12 @@
                     <a class="nav-link active" id="v-pills-home-personal" data-toggle="pill" href="#v-personal"
                        role="tab">Account
                         overzicht</a>
-{{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
-{{--                        <a class="nav-link" id="v-pills-home-consulent" data-toggle="pill" href="#v-consulent"--}}
-{{--                           role="tab">Consulenten</a>--}}
-{{--                    @endif--}}
+                    <a class="nav-link" id="v-pills-home-personal" data-toggle="pill" href="#v-inzicht"
+                       role="tab">Inzicht account</a>
+                    {{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
+                    {{--                        <a class="nav-link" id="v-pills-home-consulent" data-toggle="pill" href="#v-consulent"--}}
+                    {{--                           role="tab">Consulenten</a>--}}
+                    {{--                    @endif--}}
                 </div>
             </div>
             <div class="col-md-9">
@@ -67,29 +69,54 @@
                             </div>
                         </form>
                     </div>
-{{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
-{{--                        <div class="tab-pane fade" id="v-consulent" role="tabpanel">--}}
-{{--                            <form id="form" action="{{route('consulent.add')}}" method="post">--}}
-{{--                                @csrf--}}
-{{--                                <div class="card">--}}
-{{--                                    <div class="card-header d-flex justify-content-between">--}}
-{{--                                        Consulent toevoegen--}}
-{{--                                    </div>--}}
-{{--                                    <div class="card-body">--}}
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>--}}
-{{--                                            <div class="col-sm-10">--}}
-{{--                                                <input class="form-control" type="email" name="consulent" required>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="card-footer">--}}
-{{--                                        <button class="btn btn-orange">Voeg toe</button>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </form>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
+                    <div class="tab-pane fade show" id="v-inzicht" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                Account inzicht
+                            </div>
+                            <div class="card-body">
+                                Deze personen hebbent inzicht in uw gegevens
+                                <hr>
+                                @if(count(Auth()->user()->Consultants))
+                                    @foreach(Auth()->user()->Consultants as $user)
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-between">
+                                                <span>{{$user->name}} - {{$user->email}}</span><a href="/consultant/detach/{{$user->id}}" class="btn btn-danger btn-sm">Ontkoppel</a>
+                                            </div>
+                                        </div>
+                                        @if(!$loop->last)
+                                            <hr>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <p class="mb-0">Geen personen gevonden</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    {{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
+                    {{--                        <div class="tab-pane fade" id="v-consulent" role="tabpanel">--}}
+                    {{--                            <form id="form" action="{{route('consulent.add')}}" method="post">--}}
+                    {{--                                @csrf--}}
+                    {{--                                <div class="card">--}}
+                    {{--                                    <div class="card-header d-flex justify-content-between">--}}
+                    {{--                                        Consulent toevoegen--}}
+                    {{--                                    </div>--}}
+                    {{--                                    <div class="card-body">--}}
+                    {{--                                        <div class="form-group row">--}}
+                    {{--                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>--}}
+                    {{--                                            <div class="col-sm-10">--}}
+                    {{--                                                <input class="form-control" type="email" name="consulent" required>--}}
+                    {{--                                            </div>--}}
+                    {{--                                        </div>--}}
+                    {{--                                    </div>--}}
+                    {{--                                    <div class="card-footer">--}}
+                    {{--                                        <button class="btn btn-orange">Voeg toe</button>--}}
+                    {{--                                    </div>--}}
+                    {{--                                </div>--}}
+                    {{--                            </form>--}}
+                    {{--                        </div>--}}
+                    {{--                    @endif--}}
                 </div>
             </div>
         </div>
