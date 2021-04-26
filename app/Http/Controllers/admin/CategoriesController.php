@@ -19,7 +19,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('admin.categories',['categories'=>Categories::all(),'scans'=>Scan::pluck('name','id')]);
+        return view('admin.categories', ['categories' => Categories::all(), 'scans' => Scan::pluck('name', 'id')]);
     }
 
     /**
@@ -40,12 +40,18 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'scan_id' => 'required',
+            'image' => 'required|image',
+            'color' => 'required',
+        ]);
         $category = new Categories();
         $category->name = $request->name;
         $category->scan_id = $request->scan;
         if ($request->file('image') != null) {
-            $path=$request->file('image')->store('images','s3');
-            Storage::disk('s3')->setVisibility($path,'public');
+            $path = $request->file('image')->store('images', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $category->image = Storage::disk('s3')->url($path);
         }
         $category->color = $request->color;
@@ -85,13 +91,13 @@ class CategoriesController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, $id)
     {
         $categories = Categories::find($id);
         $categories->name = $request->category;
         if ($request->file('image') != null) {
-            $path=$request->file('image')->store('images','s3');
-            Storage::disk('s3')->setVisibility($path,'public');
+            $path = $request->file('image')->store('images', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $categories->image = Storage::disk('s3')->url($path);
         }
         $categories->color = $request->color;
@@ -107,20 +113,24 @@ class CategoriesController extends Controller
      */
     public function destroy($categories)
     {
-        $questions = Questions::where('categories_id','=',$categories);
+        $questions = Questions::where('categories_id', '=', $categories);
         $questions->delete();
-        $categories =Categories::find($categories);
+        $categories = Categories::find($categories);
         $categories->delete();
         return redirect()->back();
     }
-    public function trashed(){
+
+    public function trashed()
+    {
         $categories = Categories::onlyTrashed()->paginate(15);
-        return view('admin.categories.trashed',compact('categories'));
+        return view('admin.categories.trashed', compact('categories'));
     }
-    public function updateTrashed($id){
-        $Categories=Categories::withTrashed()->find($id);
+
+    public function updateTrashed($id)
+    {
+        $Categories = Categories::withTrashed()->find($id);
         $Categories->deleted_at = null;
         $Categories->save();
-        return back()->with('success','categorie teruggezet!');
+        return back()->with('success', 'categorie teruggezet!');
     }
 }
