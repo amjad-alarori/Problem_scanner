@@ -32,6 +32,8 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::group(['middleware' => ['level:1']], function () {
+        Route::get('/consultant/detach/{user}', [AccountController::class, 'DetachConsultant']);
+
         Route::post('consulent.add', [ConsulentController::class, 'add'])->name('consulent.add');
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::resource('export', ExportController::class);

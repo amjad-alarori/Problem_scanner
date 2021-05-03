@@ -34,7 +34,6 @@
                         <a class="stretched-link" href="{{route('scan.index')}}"></a>
 
                         <p class="animate-text">Kies een scan uit het beschikbare aanbod </p>
-
                     </div>
                 </div>
             </div>

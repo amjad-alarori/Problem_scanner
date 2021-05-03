@@ -12,3 +12,18 @@
 @import 'components';
 @import '~sweetalert2/src/sweetalert2.scss';
 
+
+
+$mynewcolor: #de835c;
+
+.btn-orange {
+    @include button-variant($mynewcolor, $mynewcolor, darken($mynewcolor, 10%), lighten($mynewcolor,5%), lighten($mynewcolor, 10%), darken($mynewcolor,30%));
+}
+
+.btn-orange-primary {
+    @include button-outline-variant($mynewcolor, #222222, lighten($mynewcolor,5%), $mynewcolor);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: $mynewcolor !important;
+}

@@ -2,6 +2,11 @@
     <div class="container mt-5">
         {{ Form::open(array('route' => array('categories.store'),'method'=>'post','files'=>true)) }}
         <div class="form-group">
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">
+                    {{ $error }}
+                </div>
+            @endforeach
             Categorie naam:
             {{ Form::text('name',null,array('class'=>'form-control mb-3')) }}
             Hoort bij scan:
