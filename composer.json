@@ -25,6 +25,7 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
         "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
