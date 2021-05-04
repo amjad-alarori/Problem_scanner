@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row scan-title">
             <div class="col-9">
-                <h1>{{$scan->name}}</h1>
+                <h1>{{$scan->__name}}</h1>
             </div>
             <div class="col-3"><input type="text" class="form-control search_filter" data-target=".scan-question-wrapper"
                                       placeholder="Zoek kaart"></div>
@@ -68,7 +68,7 @@
                 @endif
                 <div class="container">
                     @foreach($categories as $category)
-                        <h1 class="pb-4 border-bottom w-100">{{$category->name}}</h1>
+                        <h1 class="pb-4 border-bottom w-100">{{$category->__name}}</h1>
                         <div class="row mb-1">
                             @if($category->questions->count() ==0)
                                 <p>Er zijn nog geen vragen aangemaakt.</p><br>
@@ -82,8 +82,8 @@
                                             <div class="col-md-6 pb-5 scan-question">
                                                 <?php $counter++?>
                                                 <div class="scan-counter mb-2"><p>{{$counter}}</p></div>
-                                                <h3>{{$question->question}}</h3>
-                                                <h5>Leefgebied: <i>{{$category->name}}</i></h5>
+                                                <h3>{{$question->__question}}</h3>
+                                                <h5>Leefgebied: <i>{{$category->__name}}</i></h5>
                                             </div>
                                             <div class="col-md-6  pb-5 pt-5 scan-question">
                                                 <img src="{{$question->image}}" style="height:200px;">

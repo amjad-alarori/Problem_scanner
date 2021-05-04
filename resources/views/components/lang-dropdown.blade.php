@@ -1,4 +1,4 @@
-<select class="langClass" name="{{$name ?? ''}}">
+<select class="langClass form-control" name="{{$name ?? ''}}">
     @foreach(\App\Helpers\LanguageHelper::$allLanguageIsos as $name => $iso)
         <option value="{{$iso}}"
         @if(isset($value))
