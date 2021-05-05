@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 class UploadHelper
 {
 
-    public static function UploadImage(UploadedFile $uploadedFile, $diskName = null)
+    public static function UploadImage(UploadedFile $uploadedFile): array
     {
-        $disk = $diskName ?? env('FILESYSTEM_DISK');
+        $disk = env('AWS_BUCKET') ? 's3' : 'local_public';
         $path = $uploadedFile->store('images', $disk);
         Storage::disk($disk)->setVisibility($path, 'public');
         $url = Storage::disk($disk)->url($path);

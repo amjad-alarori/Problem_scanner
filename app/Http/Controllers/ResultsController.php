@@ -1,27 +1,29 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\ConsulentClients;
 use App\Models\Questions;
 use App\Models\Results;
+use App\Models\Scan;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Auth;
+use Redirect;
 
 
 class ResultsController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->roles[0]->level == 2 || Auth::user()->roles[0]->level == 3) {
+        if(Auth::user()->roles[0]->level == 2 || Auth::user()->roles[0]->level == 3){
             $clients_id = [Auth::id()];
-            $clients = ConsulentClients::where('consulent_id', Auth::id())->where('verified', 1)->get();
-            foreach ($clients as $client) {
+            $clients =ConsulentClients::where('consulent_id',Auth::id())->where('verified',1)->get();
+            foreach($clients as $client){
                 array_push($clients_id, $client->client_id);
             }
-            $results = Results::whereIn('user_id', $clients_id)->get()->unique('user_id');
-        } else {
+            $results = Results::whereIn('user_id',$clients_id)->get()->unique('user_id');
+        }else{
             $results = User::find(Auth::id())->results;
         }
         return view('results.index', compact('results'));
@@ -40,20 +42,16 @@ class ResultsController extends Controller
     public function store(Request $request)
     {
         $scan = new Results();
-        $scan->user_id = Auth::id();
-        if ($request->name == null || !empty($request->name)) {
-            $scan->name = $request->name;
-        } else {
-            $scan->name = $request->selected_user;
-        }
-        if ((Auth::user()->roles[0]->level == 2 || Auth::user()->roles[0]->level == 3) && $request->selected_user != null && $request->selected_user != 0) {
+
+        if((Auth::user()->roles[0]->level == 2 || Auth::user()->roles[0]->level == 3) && $request->selected_user != null && $request->selected_user != 0) {
             $scan->user_id = $request->selected_user;
             $scan->name = User::find($request->selected_user)->name;
+        }else{
+            $scan->user_id = Auth::id();
+            $scan->name = Auth::user()->name;
         }
-        $scan->name = Auth::user()->name;
         $scan->scan_id = $request->scan_id;
         $scan->scan = $request->scan;
-        $scan->user_id = Auth::id();
         $answers = [];
         foreach (Questions::all() as $question) {
             if (!empty($request['selectedvalue' . $question->id])) {
