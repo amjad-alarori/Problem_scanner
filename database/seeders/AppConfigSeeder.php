@@ -21,14 +21,13 @@ class AppConfigSeeder extends Seeder
     public function run()
     {
 
-          foreach (AppConfig::$DEFAULT_CONFIGS as $key => $value) {
-              if (!AppConfig::where('key', $key)->first()) {
-
-                  AppConfig::create([
-                      'key' => $key,
-                      'value' => $value
-                  ]);
-              }
-          }
+        foreach (AppConfig::$DEFAULT_CONFIGS as $key => $value) {
+            if (!AppConfig::where('key', $key)->first()) {
+                AppConfig::create([
+                    'key' => $key,
+                    'value' => $value['Value']
+                ]);
+            }
+        }
     }
 }

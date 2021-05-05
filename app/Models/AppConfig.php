@@ -13,7 +13,9 @@ class AppConfig extends Model
     ];
 
     public static array $DEFAULT_CONFIGS = [
-        'FOOTER_TEXT' => "© 2021 - Orange Eyes"
+        'FOOTER_TEXT' => ["Type" => "text", "Value" => "© 2021 - Orange Eyes"],
+        'AUTH_BG_IMG' => ["Type" => "file", "Value" => ''],
+        'LOGO_IMG' => ["Type" => "file", "Value" => '']
     ];
 
 }
