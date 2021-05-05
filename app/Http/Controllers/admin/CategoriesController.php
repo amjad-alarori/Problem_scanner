@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Questions;
@@ -22,22 +23,12 @@ class CategoriesController extends Controller
         return view('admin.categories', ['categories' => Categories::all(), 'scans' => Scan::pluck('name', 'id')]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $scans = Scan::pluck('name', 'id');
+        return view('admin.categories.create', compact('scans'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -46,21 +37,18 @@ class CategoriesController extends Controller
             'image' => 'required|image',
             'color' => 'required',
         ]);
-        $category = new Categories();
-        $category->name = $request->name;
-        $category->scan_id = $request->scan;
-        if ($request->file('image') != null) {
-            $path = $request->file('image')->store('images', 's3');
-            Storage::disk('s3')->setVisibility($path, 'public');
-            $category->image = Storage::disk('s3')->url($path);
+        $category = Categories::create([
+            'name' => $request->post('name'),
+            'scan_id' => $request->post('scan_id'),
+            'color' => $request->post('color'),
+            'image' => UploadHelper::UploadImage($request->file('image'))['url'],
+        ]);
+        if ($category) {
+            $category->AddOrUpdateTranslations($request->input('language'));
+            return redirect(route('categories.index'));
         }
-        $category->color = $request->color;
-        $saved = $category->save();
-        if ($saved) {
-            return redirect()->back();
-        } else {
-            App::abort(500, 'Error');
-        }
+
+        return App::abort(500, 'Error');
     }
 
     /**
@@ -80,9 +68,10 @@ class CategoriesController extends Controller
      * @param \App\Models\Categories $categories
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categories $categories)
+    public function edit(Categories $category)
     {
-        //
+        $scans = Scan::pluck('name', 'id');
+        return view('admin.categories.edit', compact('category', 'scans'));
     }
 
     /**
@@ -102,6 +91,7 @@ class CategoriesController extends Controller
         }
         $categories->color = $request->color;
         $categories->save();
+        $categories->AddOrUpdateTranslations($request->input('language'));
         return redirect()->back();
     }
 
@@ -117,7 +107,7 @@ class CategoriesController extends Controller
         $questions->delete();
         $categories = Categories::find($categories);
         $categories->delete();
-        return redirect()->back();
+        return redirect(route('categories.index'));
     }
 
     public function trashed()

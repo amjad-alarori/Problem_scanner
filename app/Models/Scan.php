@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,8 +11,16 @@ use Spatie\Searchable\Searchable;
 
 class Scan extends Model implements Searchable
 {
-    use HasFactory; use SoftDeletes;
-    public function categories(){
+    use HasFactory, SoftDeletes, Translatable;
+
+    protected $fillable = [
+        'name'
+    ];
+
+    public array $translatedAttributes = ['name'];
+
+    public function categories()
+    {
         return $this->hasMany(Categories::class);
     }
 

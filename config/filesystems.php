@@ -48,7 +48,7 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'public' => [
+        'local_public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
@@ -86,6 +86,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+
     ],
 
 ];

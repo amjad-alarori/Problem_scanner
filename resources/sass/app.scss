@@ -27,3 +27,7 @@ $mynewcolor: #de835c;
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     background-color: $mynewcolor !important;
 }
+
+.language-form-row:first-child .col-1 {
+    display: none;
+}

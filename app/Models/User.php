@@ -77,7 +77,7 @@ class User extends Authenticatable implements MustVerifyEmailContract, Searchabl
         Mail::to($this->email)->send(new ResetPassword($this, url('password/reset', $token) . "?email=" . $this->email));
     }
 
-    public function Consultants()
+    public function Consultants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'consulent_clients', 'client_id', 'consulent_id');
     }

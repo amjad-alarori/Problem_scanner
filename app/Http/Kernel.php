@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\IsVerfified;
+use App\Http\Middleware\LanguageConfigurator;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -39,6 +40,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LastUserActivity::class,
+            LanguageConfigurator::class
         ],
 
         'api' => [
@@ -56,6 +58,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AdminAuth::class,
             \App\Http\Middleware\LastUserActivity::class,
+            LanguageConfigurator::class
         ],
     ];
 
