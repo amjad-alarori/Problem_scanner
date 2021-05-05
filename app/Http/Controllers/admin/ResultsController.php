@@ -8,6 +8,7 @@ use App\Models\Results;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\PDF;
 
 class ResultsController extends Controller
 {
@@ -156,24 +157,24 @@ class ResultsController extends Controller
         return $firstquestions;
     }
 
-    public function downloadExport(Request $request)
-    {
-        $result = Results::find($request->result_id);
-        $result = json_decode($result->results);
-        $filename = "answers.csv";
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('question', 'answer', 'category'));
-        foreach ($result as $row) {
-            $question = Questions::find($row->question_id);
-            $category = Categories::find($row->category);
-            fputcsv($handle, array($question->question, $row->answer, $category->name));
-        }
-        fclose($handle);
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-        return Response::download($filename, 'answers.csv', $headers);
-    }
+//    public function downloadExport(Request $request)
+//    {
+//        $result = Results::find($request->result_id);
+//        $result = json_decode($result->results);
+//        $filename = "answers.csv";
+//        $handle = fopen($filename, 'w+');
+//        fputcsv($handle, array('question', 'answer', 'category'));
+//        foreach ($result as $row) {
+//            $question = Questions::find($row->question_id);
+//            $category = Categories::find($row->category);
+//            fputcsv($handle, array($question->question, $row->answer, $category->name));
+//        }
+//        fclose($handle);
+//        $headers = array(
+//            'Content-Type' => 'text/csv',
+//        );
+//        return Response::download($filename, 'answers.csv', $headers);
+//    }
     public function getDates($results){
         $dates = [];
         foreach ($results as $result) {
@@ -220,5 +221,10 @@ class ResultsController extends Controller
         $results->deleted_at = null;
         $results->save();
         return back()->with('success','resultaat teruggezet!');
+    }
+
+    public function createPDF($scanId)
+    {
+            dd($scanId);
     }
 }

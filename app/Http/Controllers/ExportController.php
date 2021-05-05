@@ -10,7 +10,6 @@ use App\Models\Results;
 use App\Models\Scan;
 use App\Models\User;
 use \Barryvdh\DomPDF\Facade as PDF;
-use GrahamCampbell\ResultType\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Response;
@@ -28,7 +27,7 @@ class ExportController extends Controller
         $name = $name['user_id'];
         if ($name != Auth::id()) {
             if (Auth::user()->level() == 2) {
-                $clients = ConsulentClients::where('consulent_id', Auth::id())->where('client_id', $name)->where('verified',1)->get();
+                $clients = ConsulentClients::where('consulent_id', Auth::id())->where('client_id', $name)->where('verified', 1)->get();
                 if (!count($clients) > 0) {
                     return redirect('/404');
                 }
@@ -236,5 +235,29 @@ class ExportController extends Controller
         return response()->json(['dates' => $this->getDates($results), 'bardata' => $this->getBarData($questions)]);
     }
 
+
+    public function createPDF(Results $result)
+    {
+        $data = [];
+
+        $tempdata = json_decode($result->results);
+        foreach ($tempdata as $json) {
+            $question = Questions::find($json->question_id);
+            $data[] = [
+                'answer' => (int)$json->answer,
+                'question' => $question,
+                'category' => $question->categories,
+            ];
+        }
+
+        $pdf = PDF::loadView('export.raportages.pdf', [
+            'data' => $data,
+            'scan' => Scan::find($result->scan_id)
+        ]);
+
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->stream('pdf_file.pdf');
+    }
 
 }

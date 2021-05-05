@@ -174,6 +174,9 @@
                 <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab"
                    aria-controls="categories" aria-selected="false">Leefgebieden</a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="export-tab" data-toggle="tab" href="#export" role="tab">Export</a>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="questions" role="tabpanel" aria-labelledby="questions-tab">
@@ -186,17 +189,13 @@
                     </div>
 
                     <div class="col-6" style="padding-top:30px;">
-                        <button onclick="exportToPdf()" id="exportButton" class="btn btn-primary float-right">exporteer
-                            naar
-                            pdf
-                        </button>
 
-                        <form action="{{route('answers.export')}}" id="exportButton2" method="post">@csrf<input
-                                type="hidden"
-                                name="result_id"
-                                value="{{$result_id}}">
-                            <button type="submit" class="btn btn-secondary">Exporteer antwoorden</button>
-                        </form>
+                        {{--                        <button onclick="exportToPdf()" id="exportButton" class="btn btn-primary float-right">exporteer--}}
+                        {{--                            naar--}}
+                        {{--                            pdf--}}
+                        {{--                        </button>--}}
+
+
                     </div>
                 </div>
                 <h3>0 meting</h3>
@@ -221,17 +220,11 @@
                         </p>
                         <div class="selectionbox">
                             @for($counter=1;$counter < 6; $counter++)
-                                @if($counter == $question['value'])
-                                    <label class="scan-ratio-label">{{$counter}}<br/>
-                                        <input type="radio" name="questioninput{{$question['id']}}"
-                                               value="{{$question['value']}}" checked="checked">
-                                    </label>
-                                @else
-                                    <label class="scan-ratio-label">{{$counter}}<br/>
-                                        <input type="radio" name="questioninput{{$question['id']}}"
-                                               value="{{$question['value']}}" disabled>
-                                    </label>
-                                @endif
+                                <label class="scan-ratio-label">{{$counter}}<br/>
+                                    <input type="radio" name="questioninput{{$question['id']}}"
+                                           value="{{$question['value']}}" disabled
+                                           @if($counter == $question['value']) checked="checked" @endif>
+                                </label>
                             @endfor
                         </div>
                     </div>
@@ -396,7 +389,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">
                 <img id="pdfLogo" class="mt-5" src='/img/logos/orange_eyes.jpg'>
                 <div class="row">
@@ -407,17 +399,13 @@
                     </div>
 
                     <div class="col-6" style="padding-top:30px;">
-                        <button onclick="exportToPdf()" id="exportButton" class="btn btn-primary float-right">exporteer
-                            naar
-                            pdf
-                        </button>
 
-                        <form action="{{route('answers.export')}}" id="exportButton" method="post">@csrf<input
-                                type="hidden"
-                                name="result_id"
-                                value="{{$result_id}}">
-                            <button type="submit" class="btn btn-secondary">Exporteer antwoorden</button>
-                        </form>
+                        {{--                        <button onclick="exportToPdf()" id="exportButton" class="btn btn-primary float-right">exporteer--}}
+                        {{--                            naar--}}
+                        {{--                            pdf--}}
+                        {{--                        </button>--}}
+
+
                     </div>
                 </div>
                 <h3>0 meting</h3>
@@ -524,96 +512,103 @@
                             <div class="col" style="text-align: center;">{{$label}}</div>
                         @endforeach
                     </div>
+
+
                 </div>
+
             </div>
-
+            <div class="tab-pane fade" id="export" role="tabpanel">
+                <a class="btn btn-primary" href="{{ route('downloadPDF', ['result'=>$result_id]) }}">Export to
+                    PDF</a>
+            </div>
         </div>
+    </div>
 
 
-        @endsection
-        @push('scripts')
-            <script>
-                function exportToPdf() {
-                    window.print();
-                }
+@endsection
+@push('scripts')
+    <script>
+        function exportToPdf() {
+            window.print();
+        }
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/results/json/',
+        $.ajax({
+            type: 'POST',
+            url: '/results/json/',
+            data: {
+                _token: '{{csrf_token()}}',
+                user_id:{{$firstResult->user_id}}
+            },
+            success: function (data) {
+                console.log(data);
+                var ctx = document.getElementById("myChart").getContext('2d');
+                var ctx2 = document.getElementById("myChart2").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
                     data: {
-                        _token: '{{csrf_token()}}',
-                        user_id:{{$firstResult->user_id}}
+                        labels: data.dates,
+                        datasets: data.bardata,
                     },
-                    success: function (data) {
-                        console.log(data);
-                        var ctx = document.getElementById("myChart").getContext('2d');
-                        var ctx2 = document.getElementById("myChart2").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: data.dates,
-                                datasets: data.bardata,
+                    options: {
+                        tooltips: {
+                            displayColors: true,
+                            callbacks: {
+                                mode: 'x',
                             },
-                            options: {
-                                tooltips: {
-                                    displayColors: true,
-                                    callbacks: {
-                                        mode: 'x',
-                                    },
+                        },
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                                gridLines: {
+                                    display: false,
+                                }
+                            }],
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true,
                                 },
-                                scales: {
-                                    xAxes: [{
-                                        stacked: true,
-                                        gridLines: {
-                                            display: false,
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        stacked: true,
-                                        ticks: {
-                                            beginAtZero: true,
-                                        },
-                                        type: 'linear',
-                                    }]
-                                },
-                                responsive: true,
-                                legend: {position: 'bottom'},
-                            }
-                        });
-                        var myChart2 = new Chart(ctx2, {
-                            type: 'bar',
-                            data: {
-                                labels: data.dates,
-                                datasets: data.bardata,
-                            },
-                            options: {
-                                tooltips: {
-                                    displayColors: true,
-                                    callbacks: {
-                                        mode: 'x',
-                                    },
-                                },
-                                scales: {
-                                    xAxes: [{
-                                        stacked: true,
-                                        gridLines: {
-                                            display: false,
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        stacked: true,
-                                        ticks: {
-                                            beginAtZero: true,
-                                        },
-                                        type: 'linear',
-                                    }]
-                                },
-                                responsive: true,
-                                legend: {position: 'bottom'},
-                            }
-                        });
-
+                                type: 'linear',
+                            }]
+                        },
+                        responsive: true,
+                        legend: {position: 'bottom'},
                     }
-                })
-            </script>
-    @endpush
+                });
+                var myChart2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: data.dates,
+                        datasets: data.bardata,
+                    },
+                    options: {
+                        tooltips: {
+                            displayColors: true,
+                            callbacks: {
+                                mode: 'x',
+                            },
+                        },
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                                gridLines: {
+                                    display: false,
+                                }
+                            }],
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                },
+                                type: 'linear',
+                            }]
+                        },
+                        responsive: true,
+                        legend: {position: 'bottom'},
+                    }
+                });
+
+            }
+        })
+    </script>
+@endpush

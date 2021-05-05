@@ -11,16 +11,24 @@ use Eloquent;
 
 class Results extends Model implements Searchable
 {
-    use HasFactory; use SoftDeletes;
-    public function questions(){
+    use HasFactory;
+    use SoftDeletes;
+
+    public function questions()
+    {
         return $this->belongsToMany(Questions::class);
     }
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function scan(){
+
+    public function scan()
+    {
         return $this->hasOne(Scan::class);
     }
+
     public function getSearchResult(): SearchResult
     {
         $url = route('results.index', $this->id);

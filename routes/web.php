@@ -3,6 +3,7 @@
 use App\Helpers\EmailHelper;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ResultsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ScanController;
@@ -37,6 +38,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('consulent.add', [ConsulentController::class, 'add'])->name('consulent.add');
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::resource('export', ExportController::class);
+        Route::get('/export/{result}/pdf', [PDFController::class, 'createPDFsingleScan'])->name('downloadPDF');
         Route::post('saveExport', [ExportController::class, 'export'])->name('saveExport');
         Route::resource('results', ResultsController::class);
         Route::resource('scan', ScanController::class);
