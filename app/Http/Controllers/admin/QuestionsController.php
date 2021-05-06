@@ -11,6 +11,7 @@ use Facade\FlareClient\Truncation\AbstractTruncationStrategy;
 use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class QuestionsController extends Controller
@@ -46,6 +47,7 @@ class QuestionsController extends Controller
         ]);
         $question = Questions::create($validated);
         $question->image = UploadHelper::UploadImage($request->file('image'))['url'];
+        $question->save();
         $question->AddOrUpdateTranslations($request->input('language'));
         return redirect(route('questions.index'));
     }
