@@ -82,4 +82,9 @@ class User extends Authenticatable implements MustVerifyEmailContract, Searchabl
         return $this->belongsToMany(User::class, 'consulent_clients', 'client_id', 'consulent_id');
     }
 
+    public function Verified(): bool
+    {
+        return $this->email_verified_at != null;
+    }
+
 }

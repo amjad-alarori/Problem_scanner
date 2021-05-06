@@ -18,13 +18,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $users = User::query();
 
-        $users = User::with('roles')->paginate(10);
+        if($request->get('role') && $request->get('role') != 'all') {
+            $users->whereHas('roles', function ($query) use ($request) {
+                return $query->where('name', '=', $request->get('role'));
+            });
+        }
+        if ($request->get('verified') && $request->get('verified') != 'all') {
+            if($request->get('verified') == 'verified') {
+                $users->whereNotNull('email_verified_at');
+            } else {
+                $users->whereNull('email_verified_at');
+            }
+        }
+        if ($request->get('language') && $request->get('language') != 'all') {
+            $users->where('language', $request->get('language'));
+        }
+
+        $users = $users->paginate(10);
+
         $roles = Role::all();
-        $allUsers = User::with('roles')->get();
-        return view('admin.user.index', compact('users', 'roles', 'allUsers'));
+        return view('admin.user.index', compact('users', 'roles'));
     }
 
     /**
@@ -157,7 +174,7 @@ class UserController extends Controller
 //                     DB::table('users')->where('id', '=', $user->id)->update(["email_verified_at" => null]);
 //                 }
 //            }
-            return redirect()->back()->with('success','changed user');
+            return redirect()->back()->with('success', 'changed user');
 
         }
         return redirect()->back()->withErrors('You can not change yourself');

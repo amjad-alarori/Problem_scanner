@@ -156,3 +156,7 @@
     border-right: 1px solid;
     border-bottom: none;
 }
+
+.pagination {
+    margin-bottom: 0 !important;
+}
