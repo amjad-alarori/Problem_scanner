@@ -7,16 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
-use Eloquent;
 
 class Results extends Model implements Searchable
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    public function questions()
+    public function Questions()
     {
-        return $this->belongsToMany(Questions::class);
+        $data = collect();
+        foreach ($this->results as $item) {
+            $question = Questions::find($item->question_id);
+            if ($question) {
+                $data->add($question);
+            }
+        }
+        return $data;
     }
 
     public function user()
