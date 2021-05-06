@@ -615,5 +615,6 @@
 
                     }
                 })
+
             </script>
     @endpush
