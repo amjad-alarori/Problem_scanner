@@ -2,44 +2,55 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Categories;
 use App\Models\ConsulentClients;
 use App\Models\Questions;
 use App\Models\Results;
+use App\Models\Scan;
+use App\Models\User;
+use \Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Response;
 
+
 class ExportController extends Controller
 {
+    private $id;
 
     public function show($result)
     {
-        $result = Results::findOrFail($result);
-        $questions = collect();
-        foreach (json_decode($result->results) as $item) {
-            $question = Questions::find($item->question_id);
-            if ($question) {
-                $question->value = $item->answer;
-                $questions->add($question);
+
+        $result_id = $result;
+        $name = Results::find($result)->only('user_id');
+        $name = $name['user_id'];
+        if ($name != Auth::id()) {
+            if (Auth::user()->level() == 2) {
+                $clients = ConsulentClients::where('consulent_id', Auth::id())->where('client_id', $name)->where('verified', 1)->get();
+                if (!count($clients) > 0) {
+                    return redirect('/404');
+                }
             } else {
-                $questions->add(Questions::make([
-                    'question' => 'Question has been removed',
-                    'categories_id' => 0,
-                ]));
+                return redirect('/404');
             }
         }
-        $chart1Labels = [];
-        $results = Results::where([
-            ['user_id', '=', $result->user_id],
-            ['scan_id', '=', $result->scan_id],
-        ])->orderBy('created_at', 'ASC')->get();
+        $allquestions = $this->getAllQuestions($name, false);
+        $firstResult = Results::where('user_id', $name)->oldest()->first();
 
-        foreach ($results as $result) {
-            $chart1Labels[] = date('d-m-Y', strtotime($result->created_at));
+        $firstquestions = $this->getFirstQuestions($firstResult);
+        $categories = $this->getCategories($firstResult);
+        $questionsForCategories = $this->getAllQuestions($name, true);
+        $categoryResults = $this->getBarData($questionsForCategories);
+        foreach ($categoryResults as $index => $category) {
+            $categoryImage = Categories::where('name', $category['label'])->get();
+            $categoryResults[$index] = ['label' => $category['label'], 'image' => $categoryImage[0]['image'], 'data' => $category['data']];
         }
-
-        return view("export.index", compact('result', 'questions', 'chart1Labels'));
+        $results = Results::where('user_id', $name)->orderBy('created_at', 'ASC')->get();
+        $questions = $this->getQuestionsResults($results);
+        $categoryLabels = $this->getDates($results);
+        $AuthUser = Auth::user();
+        return view('export.index', compact('firstResult', 'questions', 'firstquestions', 'categoryLabels', 'result_id', 'categories', 'categoryResults', 'allquestions', 'AuthUser'));
     }
 
     public function getQuestionsResults($results)
@@ -176,16 +187,16 @@ class ExportController extends Controller
         $result = json_decode($result->results);
         $filename = "answers.csv";
         $handle = fopen($filename, 'w+');
-        fputcsv($handle, ['question', 'answer', 'category']);
+        fputcsv($handle, array('question', 'answer', 'category'));
         foreach ($result as $row) {
             $question = Questions::find($row->question_id);
             $category = Categories::find($row->category);
-            fputcsv($handle, [$question->question, $row->answer, $category->name]);
+            fputcsv($handle, array($question->question, $row->answer, $category->name));
         }
         fclose($handle);
-        $headers = [
+        $headers = array(
             'Content-Type' => 'text/csv',
-        ];
+        );
         return Response::download($filename, 'answers.csv', $headers);
     }
 
@@ -222,6 +233,31 @@ class ExportController extends Controller
         $results = Results::where('user_id', $request->user_id)->orderBy('created_at', 'ASC')->get();
         $questions = $this->getAllQuestionsJSON($request->user_id, true);
         return response()->json(['dates' => $this->getDates($results), 'bardata' => $this->getBarData($questions)]);
+    }
+
+
+    public function createPDF(Results $result)
+    {
+        $data = [];
+
+        $tempdata = json_decode($result->results);
+        foreach ($tempdata as $json) {
+            $question = Questions::find($json->question_id);
+            $data[] = [
+                'answer' => (int)$json->answer,
+                'question' => $question,
+                'category' => $question->categories,
+            ];
+        }
+
+        $pdf = PDF::loadView('export.raportages.pdf', [
+            'data' => $data,
+            'scan' => Scan::find($result->scan_id)
+        ]);
+
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->stream('pdf_file.pdf');
     }
 
 }
