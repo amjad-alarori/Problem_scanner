@@ -48,7 +48,7 @@
                                         <div class="col-sm-10">
                                             @if (Route::has('password.request'))
                                                 <a class="btn  btn-orange" href="{{ route('password.request') }}">
-                                                    {{ __('Change your password') }}
+                                                    Verander je wachtwoord
                                                 </a>
                                             @endif
                                         </div>
