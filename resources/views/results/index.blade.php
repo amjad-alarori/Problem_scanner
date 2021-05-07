@@ -10,33 +10,34 @@
                 @if(Auth::user()->roles[0]->level == 2)
                     @foreach($results as $result)
                         <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6"><h5
-                                        class="pr-5">{{$result->name}} {{$result->user->email}}</h5>
+                            <form action="{{route('export.show',$result)}}" method="get">@csrf
+                                <div class="row">
+                                    <div class="col-6"><h5 class="pr-5">{{$result->name }} {{\App\Models\User::find($result->user_id)->email}}</h5></div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary float-right">bekijk resultaten
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <a href="{{route('export.show',$result)}}" class="btn btn-primary float-right">bekijk
-                                        resultaten
-                                    </a>
-                                </div>
-                            </div>
+                            </form>
                         </li>
                     @endforeach
-                @else
-                    @foreach($results as $result)
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6"><h3 class="pr-5">{{$result->scan}}</h3></div>
-                                <div class="col-6">
-                                    <a href="{{route('export.show',$result)}}" class="btn btn-primary float-right">bekijk
-                                        resultaten
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                @endif
-            @endif
+                        @else
+                            @foreach($results as $result)
+                                <li class="list-group-item">
+                                    <form action="{{route('export.show',$result)}}" method="get">@csrf
+                                        <div class="row">
+                                            <div class="col-6"><h3 class="pr-5">{{$result->scan}}</h3></div>
+                                            <div class="col-6">
+                                                <button type="submit" class="btn btn-primary float-right">bekijk
+                                                    resultaten
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+                            @endforeach
+                        @endif
+                        @endif
         </ul>
 
     </div>
