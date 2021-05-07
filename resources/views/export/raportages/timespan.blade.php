@@ -18,7 +18,7 @@
 
         }
 
-        img{
+        img {
             height: 200px;
             width: 200px;
         }
@@ -92,46 +92,36 @@
     <img class="logo" src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/logos/orange_eyes.jpg">
 
     <table style="width: 100%">
-        @foreach($dataArray as $data)  (chunk)
-        <tr>
-            @foreach ($data as $question_id => $item)
-
-            <td class="td-left">
-                <img
-                    src="{{\App\Models\Questions::find($question_id)->image}}"
-
-                    class="block-img">
-
-                <table class="block-table">
-
-                    <tbody>
-                    @for($counter=1;$counter < 6; $counter++)
-                    for loop (counter van 5 mogelijkheden)
-                    <tr>
-                        @foreach($item as $answer):
-                        foreach loop (anwers)
-
-                        <td @if($counter == $answer)
-                            class="answer-{{$answer}}"
-                           @endif ></td>
-
-
-
-                        @endforeach
-                    </tr>
-                    @endfor
-
-
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-
-            </td>
-
+        @foreach($dataArray as $data)
+            <tr>
+                @php
+                    $left =true;
+                @endphp
+                @foreach ($data as $question_id => $item)
+                    <td @if($left) class="td-left" @else class="td-right" @endif>
+                        @if($left)
+                            {{$left = false}}
+                        @endif
+                        <img
+                            src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
+                            class="block-img">
+                        <table class="block-table">
+                            <tbody>
+                            @for($counter=1;$counter < 6; $counter++)
+                                <tr>
+                                    @foreach($item as $answer)
+                                    <td @if($counter == $answer)
+                                        class="answer-{{$answer}}"
+                                        @endif></td>
+                                    @endforeach
+                                </tr>
+                            @endfor
+                            </tbody>
+                        </table>
+                        <div class="block-text">Mening van anderen</div>
+                    </td>
                 @endforeach
-
-
-        </tr>
+            </tr>
         @endforeach
     </table>
 </body>
