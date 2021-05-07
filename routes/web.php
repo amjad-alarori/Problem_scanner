@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-
 Route::get('/404', function () {
     return view('errors.404');
 });

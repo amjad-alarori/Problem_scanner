@@ -60,9 +60,9 @@
                     <p>Exporteer een individuele scan naar PDF</p>
                     <a class="btn btn-primary" href="{{route('downloadPDF', ['result' => $result])}}">Export to PDF</a>
                     <p>Exporteer het tijdsverloop per vraag naar PDF</p>
-                    <a class="btn btn-primary" href="{{route('downloadPDFbyQuestion')}}">Export to PDF</a>
+                    <a class="btn btn-primary" href="{{route('downloadPDFbyQuestion',['result' => $result])}}">Export to PDF</a>
                     <p>Exporteer het tijdsverloop per categorie naar PDF</p>
-                    <a class="btn btn-primary" href="{{route('downloadPDFbyCategory')}}">Export to PDF</a>
+                    <a class="btn btn-primary" href="{{route('downloadPDFbyCategory',['result' => $result])}}">Export to PDF</a>
                 </div>
             </div>
         </div>
@@ -135,6 +135,5 @@
         //         legend: {position: 'bottom'},
         //     }
         // });
-        
     </script>
 @stop

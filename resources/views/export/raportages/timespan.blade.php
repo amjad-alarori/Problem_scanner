@@ -97,11 +97,8 @@
             @foreach ($data as $question_id => $item)
 
             <td class="td-left">
-                @php
-                $question = \App\Models\Questions::find($question_id);
-                @endphp
                 <img
-                    src="{{$question ? $question->image : ''}}"
+                    src="{{\App\Models\Questions::find($question_id)->image}}"
 
                     class="block-img">
 
