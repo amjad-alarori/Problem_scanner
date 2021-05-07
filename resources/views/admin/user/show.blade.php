@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container mt-5">
             <div class="card">
                 <div class="card-header">User</div>
                 <div class="container">
@@ -130,6 +129,7 @@
                 </div>
             @endif
         </div>
+    </div>
     </div>
 @endsection
 @push('scripts')
