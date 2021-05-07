@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container mt-5">
-        <a href="{{route('consulent.create')}}" class="btn btn-primary">Create client</a>
+        <a href="{{route('consulent.create')}}" class="btn btn-orange">Create client</a>
 
     @if(!count($clients) >0)
             <p style="text-align:center;">U heeft nog momenteel geen clienten. <br><br>Clienten kunnen u toevoegen doormiddel van uw E-mail adress in hun accounts.</p>
@@ -20,7 +20,7 @@
                                             <div class="row">
                                                 <div class="col-9"><p class="pr-5">{{$client->name}} | {{$client->email}}</p></div>
                                                 <div class="col-3">
-                                                    <button type="submit" class="btn btn-primary float-right">bekijk
+                                                    <button type="submit" class="btn btn-orange float-right">bekijk
                                                         client
                                                     </button>
                                                 </div>
@@ -49,7 +49,7 @@
                                             <div class="row">
                                                 <div class="col-9"><p class="pr-5">{{$client->name}} | {{$client->email}}</p></div>
                                                 <div class="col-3">
-{{--                                                    <button type="submit" class="btn btn-primary float-right">bekijk--}}
+{{--                                                    <button type="submit" class="btn btn-orange float-right">bekijk--}}
 {{--                                                        client--}}
 {{--                                                    </button>--}}
                                                 </div>
@@ -83,7 +83,7 @@
                                             <div class="row">
                                                 <div class="col-9"><p class="pr-5">{{$client->name}} | {{$client->email}}</p></div>
                                                 <div class="col-3">
-{{--                                                    <button type="submit" class="btn btn-primary float-right">bekijk--}}
+{{--                                                    <button type="submit" class="btn btn-orange float-right">bekijk--}}
 {{--                                                        client--}}
 {{--                                                    </button>--}}
                                                 </div>

@@ -14,7 +14,7 @@
                                 <div class="row">
                                     <div class="col-6"><h5 class="pr-5">{{$result->name }} {{\App\Models\User::find($result->user_id)->email}}</h5></div>
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary float-right">bekijk resultaten
+                                        <button type="submit" class="btn btn-orange float-right">bekijk resultaten
                                         </button>
                                     </div>
                                 </div>
@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col-6"><h3 class="pr-5">{{$result->scan}}</h3></div>
                                             <div class="col-6">
-                                                <button type="submit" class="btn btn-primary float-right">bekijk
+                                                <button type="submit" class="btn btn-orange float-right">bekijk
                                                     resultaten
                                                 </button>
                                             </div>
