@@ -135,5 +135,6 @@
         //         legend: {position: 'bottom'},
         //     }
         // });
+        
     </script>
 @stop
