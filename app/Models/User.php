@@ -12,14 +12,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailAlias;
+use Laravel\Scout\Searchable;
 
-class User extends Authenticatable implements MustVerifyEmailContract, Searchable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasFactory, Notifiable, HasRoleAndPermission, SoftDeletes, MustVerifyEmailAlias;
+    use Searchable, HasFactory, Notifiable, HasRoleAndPermission, SoftDeletes, MustVerifyEmailAlias;
 
     /**
      * The attributes that are mass assignable.
@@ -62,14 +61,13 @@ class User extends Authenticatable implements MustVerifyEmailContract, Searchabl
         return $this->belongsToMany(Role::class);
     }
 
-    public function getSearchResult(): SearchResult
+    public function toSearchableArray(): array
     {
-        $url = route('user.show', $this->id);
-        return new SearchResult(
-            $this,
-            $this->name,
-            $url
-        );
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
     }
 
     public function sendPasswordResetNotification($token)

@@ -22,13 +22,13 @@ class UserController extends Controller
     {
         $users = User::query();
 
-        if($request->get('role') && $request->get('role') != 'all') {
+        if ($request->get('role') && $request->get('role') != 'all') {
             $users->whereHas('roles', function ($query) use ($request) {
                 return $query->where('name', '=', $request->get('role'));
             });
         }
         if ($request->get('verified') && $request->get('verified') != 'all') {
-            if($request->get('verified') == 'verified') {
+            if ($request->get('verified') == 'verified') {
                 $users->whereNotNull('email_verified_at');
             } else {
                 $users->whereNull('email_verified_at');
@@ -41,7 +41,8 @@ class UserController extends Controller
         $users = $users->paginate(10);
 
         $roles = Role::all();
-        return view('admin.user.index', compact('users', 'roles'));
+        $allUsers = User::with('roles')->get();
+        return view('admin.user.index', compact('users', 'roles', 'allUsers'));
     }
 
     /**
