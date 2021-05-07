@@ -11,16 +11,14 @@
     <style>
         .logo {
             width: 250px;
+            margin-bottom: 30px;
+            margin-top: -20px;
         }
 
         .block-img {
-            width: 200px;
-
-        }
-
-        img {
-            height: 200px;
-            width: 200px;
+            width: 120px;
+            height: 120px;
+            float: left;
         }
 
         table {
@@ -41,7 +39,7 @@
 
         .block-table td {
             background-color: #eae8e6;
-            height: 28.5px;
+            height: 34px;
         }
 
         .answer-1 {
@@ -78,6 +76,7 @@
             border-left: 1px solid #2c2e35;
             border-top: 1px solid #2c2e35;
             border-bottom: 1px solid #2c2e35;
+            width: 50%;
         }
 
         .td-right {
@@ -90,39 +89,44 @@
     </style>
 
     <img class="logo" src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/logos/orange_eyes.jpg">
-
-    <table style="width: 100%">
-        @foreach($dataArray as $data)
-            <tr>
-                @php
-                    $left =true;
-                @endphp
-                @foreach ($data as $question_id => $item)
-                    <td @if($left) class="td-left" @else class="td-right" @endif>
-                        @if($left)
-                            {{$left = false}}
-                        @endif
-                        <img
-                            src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
-                            class="block-img">
-                        <table class="block-table">
-                            <tbody>
-                            @for($counter=1;$counter < 6; $counter++)
-                                <tr>
-                                    @foreach($item as $answer)
-                                    <td @if($counter == $answer)
-                                        class="answer-{{$answer}}"
-                                        @endif></td>
-                                    @endforeach
-                                </tr>
-                            @endfor
-                            </tbody>
-                        </table>
-                        <div class="block-text">Mening van anderen</div>
-                    </td>
-                @endforeach
-            </tr>
-        @endforeach
-    </table>
+    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}</h3>
+    @foreach($dataArray as $dt)
+        <table style="width: 100%;">
+            @foreach($dt as $data)
+                <tr>
+                    @php
+                        $left =true;
+                    @endphp
+                    @foreach ($data as $question_id => $item)
+                        <td @if($left) class="td-left" @else class="td-right" @endif>
+                            @if($left)
+                                {{$left = false}}
+                            @endif
+                            <img
+                                src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
+                                class="block-img">
+                            <table class="block-table">
+                                <tbody>
+                                @for($counter=1;$counter < 6; $counter++)
+                                    <tr>
+                                        @foreach($item[0] as $answer)
+                                            <td @if($counter == $answer)
+                                                class="answer-{{$answer}}"
+                                                @endif></td>
+                                        @endforeach
+                                    </tr>
+                                @endfor
+                                </tbody>
+                            </table>
+                            <div class="block-text">Mening van anderen</div>
+                        </td>
+                    @endforeach
+                </tr>
+            @endforeach
+        </table>
+        @if(!$loop->last)
+            <div style="page-break-after: always;"></div>
+        @endif
+    @endforeach
 </body>
 </html>

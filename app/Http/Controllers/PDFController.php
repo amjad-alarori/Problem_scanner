@@ -57,16 +57,12 @@ class PDFController extends Controller
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
         ])->get();
-//        $scanWithUser = $result->user;
-//        $scans = $scanWithUser->results()->where("scan_id","=",$result->scan_id)->get();
 
         foreach ($results as $result) {
             $result = json_decode($result->results);
-
             foreach ($result as $json) {
-
                 $data[$json->question_id][] = $json->answer;
-             }
+            }
         }
 
         $chunkSize = 2;
@@ -83,22 +79,31 @@ class PDFController extends Controller
             }
         }
 
+        $dataAArray = [];
+        $indexx = 0;
+        $curindexx = 0;
+        $chunkSizee = 3;
+        foreach ($dataArray as $item) {
+            $dataAArray[$indexx][] = $item;
+            $curindexx++;
+            if ($curindexx == $chunkSizee) {
+                $indexx++;
+                $curindexx = 0;
+            }
+        }
 
 
-
-
-
-
-        $pdf = PDF::loadView('export.raportages.timespan',[
-            'dataArray' => $dataArray
-
+        $pdf = PDF::loadView('export.raportages.timespan', [
+            'dataArray' => $dataAArray,
+            'scan' => $scan
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 //        ?a=true
         if ($request->get('a')) {
-            return view('export.raportages.timespan',[
-                'dataArray' => $dataArray
+            return view('export.raportages.timespan', [
+                'dataArray' => $dataAArray,
+                'scan' => $scan
             ]);
         }
         return $pdf->stream('pdf_file_timespan_question.pdf');
