@@ -6,11 +6,12 @@ use App\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Categories extends Model
+class Categories extends Model implements Searchable
 {
-    use Searchable, HasFactory, SoftDeletes, Translatable;
+    use HasFactory, SoftDeletes, Translatable;
 
     public array $translatedAttributes = ['name'];
 
@@ -26,11 +27,13 @@ class Categories extends Model
         return $this->hasMany(Questions::class);
     }
 
-    public function toSearchableArray(): array
+    public function getSearchResult(): SearchResult
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-        ];
+        $url = route('categories.index', $this->id);
+        return new SearchResult(
+            $this,
+            $this->name,
+            $url
+        );
     }
 }

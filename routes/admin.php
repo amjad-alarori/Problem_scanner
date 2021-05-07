@@ -30,8 +30,7 @@ Route::get('/404', function () {
     return view('errors.404');
 });
 
-Route::get('/search/auto', [\App\Http\Controllers\admin\SearchController::class, 'autoComplete']);
-Route::get('/search/full', [\App\Http\Controllers\admin\SearchController::class, 'searchFull']);
+Route::post('search', [DashboardController::class, 'search'])->name('search');
 
 Route::get('', [DashboardController::class, 'index'])->name('admin');
 
