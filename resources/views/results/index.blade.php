@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col-6"><h3 class="pr-5">{{$result->scan}}</h3></div>
                                             <div class="col-6">
-                                                <button type="submit" class="btn btn-primary float-right">bekijk
+                                                <button type="submit" class="btn btn-orange float-right">bekijk
                                                     resultaten
                                                 </button>
                                             </div>
