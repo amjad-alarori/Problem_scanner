@@ -57,7 +57,12 @@
             </div>
             <div class="tab-pane fade show" id="export" role="tabpanel">
                 <div class="p-5">
+                    <p>Exporteer een individuele scan naar PDF</p>
                     <a class="btn btn-primary" href="{{route('downloadPDF', ['result' => $result])}}">Export to PDF</a>
+                    <p>Exporteer het tijdsverloop per vraag naar PDF</p>
+                    <a class="btn btn-primary" href="{{route('downloadPDFbyQuestion',['result' => $result])}}">Export to PDF</a>
+                    <p>Exporteer het tijdsverloop per categorie naar PDF</p>
+                    <a class="btn btn-primary" href="{{route('downloadPDFbyCategory',['result' => $result])}}">Export to PDF</a>
                 </div>
             </div>
         </div>

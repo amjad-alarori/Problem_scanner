@@ -31,7 +31,7 @@ class Results extends Model implements Searchable
 
     public function scan()
     {
-        return $this->hasOne(Scan::class);
+        return $this->hasOne(Scan::class, 'id', 'scan_id');
     }
 
     public function getSearchResult(): SearchResult

@@ -97,10 +97,10 @@ class QuestionsController extends Controller
      * @param \App\Models\Questions $questions
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Questions $question)
     {
-        Questions::find($id)->delete();
-        return redirect()->back();
+        $question->delete();
+        return redirect(route('questions.index'));
     }
 
     public function trashed()

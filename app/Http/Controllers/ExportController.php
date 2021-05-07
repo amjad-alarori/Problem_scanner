@@ -140,6 +140,9 @@ class ExportController extends Controller
     public function getFirstQuestions($firstResult)
     {
         $questions = Questions::all();
+
+
+
         $firstquestions = [];
         $firstresults = json_decode($firstResult->results);
         foreach ($firstresults as $item) {
@@ -147,7 +150,10 @@ class ExportController extends Controller
             $question = $questions->filter(function ($item) {
                 return $item->id == $this->id;
             })->first();
-            $firstquestions[$question->id] = ['id' => (int)$item->question_id, 'question' => $question->question, 'image' => $question->image, 'value' => (int)$item->answer];
+
+            if ($question){
+                $firstquestions[$question->id] = ['id' => (int)$item->question_id, 'question' => $question->question, 'image' => $question->image, 'value' => (int)$item->answer];
+            }
         }
         return $firstquestions;
     }

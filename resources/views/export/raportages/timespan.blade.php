@@ -14,8 +14,13 @@
         }
 
         .block-img {
-            width: 100px;
-            float: left;
+            width: 200px;
+
+        }
+
+        img{
+            height: 200px;
+            width: 200px;
         }
 
         table {
@@ -83,284 +88,54 @@
             padding: 10px 2px 10px 10px;
         }
     </style>
+
     <img class="logo" src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/logos/orange_eyes.jpg">
+
     <table style="width: 100%">
+        @foreach($dataArray as $data)  (chunk)
         <tr>
+            @foreach ($data as $question_id => $item)
+
             <td class="td-left">
+                @php
+                $question = \App\Models\Questions::find($question_id);
+                @endphp
                 <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
+                    src="{{$question ? $question->image : ''}}"
+
                     class="block-img">
+
                 <table class="block-table">
+
                     <tbody>
+                    @for($counter=1;$counter < 6; $counter++)
+                    for loop (counter van 5 mogelijkheden)
                     <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        @foreach($item as $answer):
+                        foreach loop (anwers)
+
+                        <td @if($counter == $answer)
+                            class="answer-{{$answer}}"
+                           @endif ></td>
+
+
+
+                        @endforeach
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
+                    @endfor
+
+
                     </tbody>
                 </table>
                 <div class="block-text">Mening van anderen</div>
+
             </td>
-            <td class="td-right">
-                <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
-                    class="block-img">
-                <table class="block-table">
-                    <tbody>
-                    <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-            </td>
+
+                @endforeach
+
+
         </tr>
-        <tr>
-            <td class="td-left">
-                <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
-                    class="block-img">
-                <table class="block-table">
-                    <tbody>
-                    <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-            </td>
-            <td class="td-right">
-                <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
-                    class="block-img">
-                <table class="block-table">
-                    <tbody>
-                    <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-            </td>
-        </tr>
-        <tr>
-            <td class="td-left">
-                <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
-                    class="block-img">
-                <table class="block-table">
-                    <tbody>
-                    <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-            </td>
-            <td class="td-right">
-                <img
-                    src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/categorieën/16meninganderen.png"
-                    class="block-img">
-                <table class="block-table">
-                    <tbody>
-                    <tr>
-                        <td class="answer-5"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="answer-4"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-3"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-2"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="answer-1"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="block-text">Mening van anderen</div>
-            </td>
-        </tr>
+        @endforeach
     </table>
 </body>
 </html>
