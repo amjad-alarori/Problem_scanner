@@ -18,7 +18,7 @@
                         <x-language-form name="name"/>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-orange">
+                <button type="submit" class="btn btn-primary">
                     {{__('buttons.primary')}}
                 </button>
             </form>
@@ -42,7 +42,7 @@
                         <div class="card">
                             <div class="card-body d-flex justify-content-between">
                                 {{$scan->__name ?? "Scan"}}
-                                <a href="{{route('scan.show',$scan)}}" class="btn btn-orange">View scan</a>
+                                <a href="{{route('scan.show',$scan)}}" class="btn btn-primary">View scan</a>
                             </div>
                         </div>
                     </div>

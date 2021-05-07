@@ -5,29 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
-use Eloquent;
+use Laravel\Scout\Searchable;
 
-class Results extends Model implements Searchable
+class Results extends Model
 {
-    use HasFactory; use SoftDeletes;
-    public function questions(){
+    use HasFactory, Searchable, SoftDeletes;
+
+    public function questions()
+    {
         return $this->belongsToMany(Questions::class);
     }
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function scan(){
+
+    public function scan()
+    {
         return $this->hasOne(Scan::class);
     }
-    public function getSearchResult(): SearchResult
+
+    public function toSearchableArray(): array
     {
-        $url = route('results.index', $this->id);
-        return new SearchResult(
-            $this,
-            $this->name,
-            $url
-        );
+        return [
+            'id' => $this->id,
+            'scan' => $this->scan,
+            'name' => $this->name,
+        ];
     }
 }

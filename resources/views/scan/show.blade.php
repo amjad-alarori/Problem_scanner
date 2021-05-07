@@ -119,7 +119,7 @@
                     @endforeach
 
                     <button type="submit"
-                            class="btn btn-orange">{{__('buttons.create_scan')}}</button>
+                            class="btn btn-primary">{{__('buttons.create_scan')}}</button>
                 @endif
             </form>
     </div>

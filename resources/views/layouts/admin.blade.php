@@ -18,6 +18,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
 </head>
 <body class="overlay-scrollbar">
     <script>
@@ -27,43 +28,7 @@
         }
     </script>
     <!-- navbar -->
-    <div class="navbar">
-        <!-- nav left -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link mx-3">
-                    <i class="fas fa-bars" style="transform: translateY(5px);" onclick="collapseSidebar()"></i>
-                </a>
-            </li>
-        </ul>
-        <div class="navbar-nav">
-            <li class="nav-item">
-                <img src="https://orange-eyes-images.s3.eu-central-1.amazonaws.com/logos/logo.png"
-                     class="logo logo-light">
-            </li>
-        </div>
-        <!-- end nav left -->
-        <!-- form -->
-        <form class="navbar-search">
-            <input type="text" name="Search" class="navbar-search-input" placeholder="Search...">
-            <i class="fas fa-search"></i>
-        </form>
-        <!-- end form -->
-        <!-- nav right -->
-        <li class="nav-item dropdown mr-2">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                {{ Auth::user()->name }}
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item text-danger"
-                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </div>
-        </li>
-        <!-- end nav right -->
-    </div>
+    @include('_partials.admin.navbar')
     <!-- end navbar -->
     <!-- sidebar -->
     @include('_partials.admin.sidebar', ['items' => [
@@ -71,6 +36,11 @@
             'name' => 'Terug naar website',
             'icon' => 'fa fa-hand-point-left',
             'href' => '/'
+        ],
+        [
+            'name' => 'Dasboard',
+            'icon' => 'fa fa-home',
+            'href' => '/admin'
         ],
         [
             'name' => 'Systeem'
@@ -196,6 +166,41 @@
             body.classList.toggle('sidebar-expand')
             localStorage.setItem('sidebar', $(body).hasClass('sidebar-expand'));
         }
+
+        const autoCompleteJS = new autoComplete({
+            selector: "#autoComplete",
+            placeHolder: "Search...",
+            data: {
+                src: async () => {
+                    const source = await fetch("/admin/search/auto?q=" + $('#autoComplete').val());
+                    return await source.json();
+                },
+                key: ["text"],
+                cache: false
+            },
+            onSelection: (feedback) => {
+                window.location.href = feedback.selection.value.url;
+            },
+            resultsList: {
+                noResults: (list, query) => {
+                    const message = document.createElement("li");
+                    message.setAttribute("class", "no_result autoComplete_result");
+                    message.innerHTML = `<span>Press enter to search for "${query}"</span>`;
+                    list.appendChild(message);
+                },
+            },
+            resultItem: {
+                highlight: {
+                    render: true
+                }
+            }
+        });
+
+        $(document).on('keydown', '#autoComplete', function(e) {
+            if(e.keyCode === 13) {
+                window.location.href = '/admin/search/full?q=' + $(this).val()
+            }
+        })
     </script>
     @stack('scripts')
 </body>

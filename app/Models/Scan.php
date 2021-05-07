@@ -6,12 +6,11 @@ use App\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Searchable\SearchResult;
-use Spatie\Searchable\Searchable;
+use Laravel\Scout\Searchable;
 
-class Scan extends Model implements Searchable
+class Scan extends Model
 {
-    use HasFactory, SoftDeletes, Translatable;
+    use Searchable, HasFactory, SoftDeletes, Translatable;
 
     protected $fillable = [
         'name'
@@ -24,13 +23,11 @@ class Scan extends Model implements Searchable
         return $this->hasMany(Categories::class);
     }
 
-    public function getSearchResult(): SearchResult
+    public function toSearchableArray(): array
     {
-        $url = route('scan.index', $this->id);
-        return new SearchResult(
-            $this,
-            $this->name,
-            $url
-        );
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+        ];
     }
 }
