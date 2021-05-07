@@ -4,32 +4,38 @@
         @if (Session::has('success'))
             <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
-        <ul class="list-group">
-            @foreach($results as $result)
-                <li class="list-group-item">
-                    <a href="{{route('results.show',$result)}}">
-                        {{$result->name}}
-
-                    </a>
-                    <div class="float-right w-50">
-                        <form action="{{route('results.destroy',$result)}}" class=" float-right" method="post">
-                            @method('DELETE')
-                            @csrf
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group">
+                    @foreach($results as $result)
+                        <li class="list-group-item">
                             <div class="row">
-                                <div class="col-9">                          <div class="pt-2">{{$result->created_at}}</div>
+                                <div class="col-4">
+                                    <a href="{{route('export.show',$result)}}">
+                                        {{$result->name}}
+                                    </a>
                                 </div>
-                                <div class="col-3">                            <button type="submit" class="btn btn-danger float-right"><i class="fa fa-trash"></i></button>
+                                <div class="col-4">
+                                    <div class="pt-2">{{$result->created_at}}</div>
+                                </div>
+                                <div class="col-4">
+                                    <form action="/admin/results/{{$result->id}}" class=" float-right" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-danger float-right"><i
+                                                class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
-                        </div>
-                </li>
-            @endforeach
-        </ul>
-
-    </div>
-    <div style="margin:0 auto; display: block; width:50px; padding:0;">
-        {{ $results->links("pagination::bootstrap-4") }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="card-footer">
+                {{ $results->links("pagination::bootstrap-4") }}
+            </div>
+        </div>
     </div>
 @endsection
 

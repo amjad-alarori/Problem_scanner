@@ -124,7 +124,7 @@
                 [
                     'name' => 'Overzicht',
                     'icon' => 'fa fa-list',
-                    'href' => route('results.index')
+                    'href' => '/admin/results'
                 ],
                 [
                     'name' => 'Prullenbak',
