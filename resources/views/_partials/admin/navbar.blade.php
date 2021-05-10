@@ -8,7 +8,7 @@
     </ul>
     <div class="navbar-nav">
         <li class="nav-item">
-            <img src="https://orange-eyes-images.s3.eu-central-1.amazonaws.com/logos/logo.png"
+            <img src="{{\App\Helpers\AppConfigHelper::GetConfig('LOGO_IMG')}}"
                  class="logo logo-light">
         </li>
     </div>
