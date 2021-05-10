@@ -107,7 +107,7 @@
                                 class="block-img">
                             <table class="block-table">
                                 <tbody>
-                                @for($counter=5;$counter > 0; $counter--)
+                                @for($counter=1;$counter < 6; $counter++)
                                     <tr>
                                         @foreach($item[0] as $answer)
                                             <td @if($counter == $answer)
