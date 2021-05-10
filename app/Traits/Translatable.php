@@ -11,34 +11,36 @@ trait Translatable
 
     public function AddOrUpdateTranslations($unstructuredArray)
     {
-        $structuredArray = [];
+        if ($unstructuredArray != null) {
+            $structuredArray = [];
 
-        foreach ($unstructuredArray as $name => $data) {
-            $index = 0;
-            foreach ($data['lang'] as $iso) {
-                $structuredArray[$name][$iso] = $data['value'][$index];
-                $index++;
+            foreach ($unstructuredArray as $name => $data) {
+                $index = 0;
+                foreach ($data['lang'] as $iso) {
+                    $structuredArray[$name][$iso] = $data['value'][$index];
+                    $index++;
+                }
             }
-        }
 
-        ModelTranslation::where([
-            ['model', '=', get_class($this)],
-            ['model_id', '=', $this->id],
-        ])->delete();
+            ModelTranslation::where([
+                ['model', '=', get_class($this)],
+                ['model_id', '=', $this->id],
+            ])->delete();
 
-        foreach ($structuredArray as $name => $translation) {
-            if (!isset($this->translatedAttributes) || !in_array($name, $this->translatedAttributes)) {
-                throw new \Exception('Attribute ' . $name . ' not translatable');
-            }
-            foreach ($translation as $iso => $t) {
-                if ($name && $t) {
-                    ModelTranslation::create([
-                        'translation' => $t,
-                        'model' => get_class($this),
-                        'model_id' => $this->id,
-                        'attribute' => $name,
-                        'language' => $iso
-                    ]);
+            foreach ($structuredArray as $name => $translation) {
+                if (!isset($this->translatedAttributes) || !in_array($name, $this->translatedAttributes)) {
+                    throw new \Exception('Attribute ' . $name . ' not translatable');
+                }
+                foreach ($translation as $iso => $t) {
+                    if ($name && $t) {
+                        ModelTranslation::create([
+                            'translation' => $t,
+                            'model' => get_class($this),
+                            'model_id' => $this->id,
+                            'attribute' => $name,
+                            'language' => $iso
+                        ]);
+                    }
                 }
             }
         }

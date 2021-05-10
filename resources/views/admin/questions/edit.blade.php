@@ -39,7 +39,7 @@
                 </p>
                 <div class="collapse mb-4" id="collapseExample">
                     <div class="card card-body">
-                        <x-language-form name="question" values="{{$question->getTranslationDataForEdit('question')}}"/>
+                        <x-language-form name="language" values="{{$question->getTranslationDataForEdit('question')}}"/>
                     </div>
                 </div>
             </div>
