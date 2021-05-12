@@ -76,5 +76,27 @@ class UsersTableSeeder extends Seeder
             $newUser;
             $newUser->attachRole($userRole);
         }
+
+        //        $faker = Factory::create();
+//
+//        $scan = Scan::create([
+//            'name' => 'Scan'
+//        ]);
+//
+//        for ($int = 0; $int < 10; $int++) {
+//            $cat = Categories::create([
+//                'name' => $faker->jobTitle,
+//                'scan_id' => $scan->id,
+//                'color' => '#000000',
+//                'image' => ''
+//            ]);
+//            for ($intt = 0; $intt < 10; $intt++) {
+//                Questions::create([
+//                    'question' => $faker->company,
+//                    'categories_id' => $cat->id,
+//                    'image' => ''
+//                ]);
+//            }
+//        }
     }
 }
