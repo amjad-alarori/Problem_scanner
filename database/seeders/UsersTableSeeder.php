@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Categories;
+use App\Models\Questions;
+use App\Models\Scan;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -80,6 +83,27 @@ class UsersTableSeeder extends Seeder
         }
 
 //        $faker = Factory::create();
+//
+//        $scan = Scan::create([
+//            'name' => 'Scan'
+//        ]);
+//
+//        for ($int = 0; $int < 10; $int++) {
+//            $cat = Categories::create([
+//                'name' => $faker->jobTitle,
+//                'scan_id' => $scan->id,
+//                'color' => '#000000',
+//                'image' => ''
+//            ]);
+//            for ($intt = 0; $intt < 10; $intt++) {
+//                Questions::create([
+//                    'question' => $faker->company,
+//                    'categories_id' => $cat->id,
+//                    'image' => ''
+//                ]);
+//            }
+//        }
+
 //        $pass = bcrypt('password');
 //
 //        for ($int = 0; $int < 50_000; $int++) {

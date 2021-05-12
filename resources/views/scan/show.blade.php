@@ -5,7 +5,8 @@
             <div class="col-9">
                 <h1>{{$scan->__name}}</h1>
             </div>
-            <div class="col-3"><input type="text" class="form-control search_filter" data-target=".scan-question-wrapper"
+            <div class="col-3"><input type="text" class="form-control search_filter"
+                                      data-target=".scan-question-wrapper"
                                       placeholder="Zoek kaart"></div>
         </div>
         @if($categories->count() == 0)
@@ -17,7 +18,6 @@
             <form id="form" action="{{route('results.store')}}" method="post" class="form-group">
                 @csrf
                 <input type="hidden" name="scan_id" value="{{$scan->id}}">
-                <input type="hidden" name="scan" value="{{$scan->name}}">
                 @if(Auth::user()->roles[0]->level == 2)
                     <label class="scan-label mb-5">
                         <div class="scan-counter mb-2"><p>{{$counter}}</p></div>
@@ -88,25 +88,16 @@
                                             <div class="col-md-6  pb-5 pt-5 scan-question">
                                                 <img src="{{$question->image}}" style="height:200px;">
                                             </div>
-                                            <input type="hidden" value="{{$question->categories_id}}"
-                                                   name="category{{$question->id}}">
                                             <div class="row scan-ratio mb-5">
                                                 <label class="pt-4">Geen probleem</label>
-                                                <label class="scan-ratio-label">1<br/>
-                                                    <input type="radio" name="selectedvalue{{$question->id}}" value="1">
-                                                </label>
-                                                <label class="scan-ratio-label">2<br/>
-                                                    <input type="radio" name="selectedvalue{{$question->id}}" value="2">
-                                                </label>
-                                                <label class="scan-ratio-label">3 <br/>
-                                                    <input type="radio" name="selectedvalue{{$question->id}}" value="3">
-                                                </label>
-                                                <label class="scan-ratio-label">4 <br/>
-                                                    <input type="radio" name="selectedvalue{{$question->id}}" value="4">
-                                                </label>
-                                                <label class="scan-ratio-label">5 <br/>
-                                                    <input type="radio" name="selectedvalue{{$question->id}}" value="5">
-                                                </label>
+                                                @for($i = 1; $i <=5; $i++)
+                                                    <label class="scan-ratio-label">{{$i}}<br/>
+                                                        <input type="radio" name="answers[{{$question->id}}]"
+                                                               value="{{$i}}">
+                                                    </label>
+                                                @endfor
+                                                <input type="radio" class="d-none" name="answers[{{$question->id}}]"
+                                                       value="0" checked/>
                                                 <label class="pt-4">
                                                     Ernstig probleem
                                                 </label>
