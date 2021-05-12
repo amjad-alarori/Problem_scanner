@@ -162,7 +162,7 @@
 </head>
 <body>
 <div class="container">
-  <img src="\img\logos\orange_eyes-removebg-preview.png" style="height:5vh; margin: 0 auto; display: block;">
+  <img src="{{\App\Helpers\AppConfigHelper::GetConfig('LOGO_IMG')}}" style="height:5vh; margin: 0 auto; display: block;">
     <section class="error-container">
         <span class="four"><span class="screen-reader-text">4</span></span>
         <span class="zero"><span class="screen-reader-text">0</span></span>

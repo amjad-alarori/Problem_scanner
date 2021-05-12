@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <ul class="list-group">
-                    @foreach($results as $result)
+                    @forelse($results as $result)
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-4">
@@ -29,12 +29,16 @@
                                 </div>
                             </div>
                         </li>
-                    @endforeach
+                    @empty
+                        <p class="mb-0">No results found</p>
+                    @endforelse
                 </ul>
             </div>
-            <div class="card-footer">
-                {{ $results->links("pagination::bootstrap-4") }}
-            </div>
+            @if ($results->hasPages())
+                <div class="card-footer">
+                    {{ $results->links("pagination::bootstrap-4") }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

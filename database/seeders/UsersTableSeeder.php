@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -76,5 +78,21 @@ class UsersTableSeeder extends Seeder
             $newUser;
             $newUser->attachRole($userRole);
         }
+
+//        $faker = Factory::create();
+//        $pass = bcrypt('password');
+//
+//        for ($int = 0; $int < 50_000; $int++) {
+//            try {
+//                $user = User::create([
+//                    'name' => $faker->name,
+//                    'email' => $faker->safeEmail,
+//                    'password' => $pass,
+//                ]);
+//                $user->attachRole($userRole);
+//            } catch (\Exception $e) {
+//                // ignored
+//            }
+//        }
     }
 }
