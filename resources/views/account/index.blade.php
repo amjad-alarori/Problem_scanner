@@ -81,7 +81,8 @@
                                     @foreach(Auth()->user()->Consultants as $user)
                                         <div class="row">
                                             <div class="col d-flex justify-content-between">
-                                                <span>{{$user->name}} - {{$user->email}}</span><a href="/consultant/detach/{{$user->id}}" class="btn btn-danger btn-sm">Ontkoppel</a>
+                                                <span>{{$user->name}} - {{$user->email}}</span>
+{{--                                                <a href="/consultant/detach/{{$user->id}}" class="btn btn-danger btn-sm">Ontkoppel</a>--}}
                                             </div>
                                         </div>
                                         @if(!$loop->last)
