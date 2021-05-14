@@ -33,10 +33,12 @@ class PDFController extends Controller
                 $curindex = 0;
             }
         }
+        $date = date(" j-m-Y");
 
         $pdf = PDF::loadView('export.raportages.pdf', [
             'data' => $data,
-            'scan' => Scan::find($result->scan_id)
+            'scan' => Scan::find($result->scan_id),
+            'date' => $date
         ]);
 
         $pdf->setPaper('a4', 'landscape');
@@ -44,7 +46,8 @@ class PDFController extends Controller
         if ($request->get('a')) {
             return view('export.raportages.pdf', [
                 'data' => $data,
-                'scan' => Scan::find($result->scan_id)
+                'scan' => Scan::find($result->scan_id),
+                'date' => $date
             ]);
         }
         return $pdf->stream('pdf_file.pdf');
@@ -93,10 +96,12 @@ class PDFController extends Controller
             }
         }
 
+        $date = date(" j-m-Y");
 
         $pdf = PDF::loadView('export.raportages.timespan', [
             'dataArray' => $dataAArray,
-            'scan' => $scan
+            'scan' => $scan,
+            'date' => $date
         ]);
 
         $pdf->setPaper('a4', 'landscape');
@@ -104,7 +109,8 @@ class PDFController extends Controller
         if ($request->get('a')) {
             return view('export.raportages.timespan', [
                 'dataArray' => $dataAArray,
-                'scan' => $scan
+                'scan' => $scan,
+                'date' => $date
             ]);
         }
         return $pdf->stream('pdf_file_timespan_question.pdf');
@@ -123,7 +129,7 @@ class PDFController extends Controller
             ['user_id', '=', $result->user->id]
         ])->get();
 
-        $test = [];
+        $dataByCategory = [];
         foreach ($results as $resultRow) {
             $result = json_decode($resultRow->results);
             $tempData = [];
@@ -131,59 +137,31 @@ class PDFController extends Controller
                 $tempData[$json->category][] = $json->answer;
             }
             foreach ($tempData as $category => $answers) {
-                $test[$category][$resultRow->id] = (int) round(array_sum($answers) / count($answers));
+                $dataByCategory[$category][$resultRow->id] = (int)round(array_sum($answers) / count($answers));
             }
         }
-        dd($test);
 
+        $chunkedArrayByCategory = array_chunk(
+            array_chunk($dataByCategory, 2, true),
+            2,
+            true
+        );
 
-//        foreach ($data as $dataItem){
-//
-//            $dataSummed = array_sum($dataItem);
-//
-//        }
-
-        dd($dataSummed);
-
-//        $chunkSize = 2;
-//        $index = 0;
-//        $curindex = 0;
-//        $dataArray = [];
-//        foreach ($data as $question_id => $dataItem) {
-//            $dataArray[$index][$question_id][] = $dataItem;
-//            $curindex++;
-//
-//            if ($curindex === $chunkSize) {
-//                $index++;
-//                $curindex = 0;
-//            }
-//        }
-//
-//        $dataAArray = [];
-//        $indexx = 0;
-//        $curindexx = 0;
-//        $chunkSizee = 3;
-//        foreach ($dataArray as $item) {
-//            $dataAArray[$indexx][] = $item;
-//            $curindexx++;
-//            if ($curindexx == $chunkSizee) {
-//                $indexx++;
-//                $curindexx = 0;
-//            }
-//        }
-
+        $date = date(" j-m-Y");
 
         $pdf = PDF::loadView('export.raportages.timespanByCategory', [
-            'dataArray' => $dataAArray,
-            'scan' => $scan
+            'chunkedArrayByCategory' => $chunkedArrayByCategory,
+            'scan' => $scan,
+            'date'=> $date
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 //        ?a=true
         if ($request->get('a')) {
             return view('export.raportages.timespanByCategory', [
-                'dataArray' => $dataAArray,
-                'scan' => $scan
+                'chunkedArrayByCategory' => $chunkedArrayByCategory,
+                'scan' => $scan,
+                'date'=> $date
             ]);
         }
         return $pdf->stream('pdf_file_timespan_bycategory.pdf');

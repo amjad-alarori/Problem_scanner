@@ -181,7 +181,8 @@
 {{--    </tr>--}}
 
 {{--</table>--}}
-<img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg"><h1>{{$scan->name}}</h1>
+<img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
+<h3 style="float: right; margin-top: -20px;">{{$scan->name}}<br>{{$date}}</h3>
 <table style="width: 100%;">
 
     @foreach($data as $chunk)
@@ -200,21 +201,24 @@
                   @if($counter == $item['answer']) checked="checked" @endif>
             </label>
 
-                                        @endfor
-{{--            <table>--}}
-{{--                <tr>--}}
-{{--                    <td>1</td>--}}
-{{--                    <td>2</td>--}}
-{{--                    <td>3</td>--}}
-{{--                    <td>4</td>--}}
-{{--                    <td>5</td>--}}
-{{--                </tr>--}}
-{{--            </table>--}}
-        </td>
+            @endfor
+       </td>
         @endforeach
 
     </tr>
     @endforeach
+
 </table>
+<script type="text/php">
+if ( isset($pdf) ) {
+$pdf->page_script('
+if ($PAGE_COUNT > 1) {
+$font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+$pageText = "Page " . $PAGE_NUM . " of " . $PAGE_COUNT;
+$pdf->text(750, 560, $pageText, $font, 12);
+}
+');
+}
+</script>
 </body>
 </html>

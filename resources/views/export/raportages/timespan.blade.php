@@ -10,7 +10,8 @@
 <body>
     <style>
         .logo {
-            width: 250px;
+
+            height: 50px;
             margin-bottom: 30px;
             margin-top: -20px;
         }
@@ -61,6 +62,9 @@
         .answer-5 {
             background-color: #ff2f1c !important;
         }
+        .answer-0{
+            background-color: #1c606a;
+        }
 
         .block-text {
             background-color: #ffc841;
@@ -88,8 +92,8 @@
         }
     </style>
 
-    <img class="logo" src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/logos/orange_eyes.jpg">
-    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}</h3>
+    <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
+    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}<br>{{$date}}</h3>
     @foreach($dataArray as $dt)
         <table style="width: 100%;">
             @foreach($dt as $data)
@@ -112,9 +116,17 @@
                                         @foreach($item[0] as $answer)
                                             <td @if($counter == $answer)
                                                 class="answer-{{$answer}}"
-                                                @endif></td>
+                                                @endif
+                                                ></td>
+
+
+
                                         @endforeach
                                     </tr>
+
+
+
+
                                 @endfor
                                 </tbody>
                             </table>
@@ -128,5 +140,16 @@
             <div style="page-break-after: always;"></div>
         @endif
     @endforeach
+    <script type="text/php">
+if ( isset($pdf) ) {
+$pdf->page_script('
+if ($PAGE_COUNT > 1) {
+$font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+$pageText = "Page " . $PAGE_NUM . " of " . $PAGE_COUNT;
+$pdf->text(750, 560, $pageText, $font, 12);
+}
+');
+}
+</script>
 </body>
 </html>

@@ -88,32 +88,39 @@
         }
     </style>
 
-    <img class="logo" src="/Users/samir/School/Code/2020_ADSD_Semester2_TeamB2/public/img/logos/orange_eyes.jpg">
-    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}</h3>
-    @foreach($dataArray as $dt)
+    <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
+    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}<br>{{$date}}</h3>
+    @foreach($chunkedArrayByCategory as $dt)
+
         <table style="width: 100%;">
             @foreach($dt as $data)
+
                 <tr>
                     @php
                         $left =true;
                     @endphp
-                    @foreach ($data as $question_id => $item)
+
+                    @foreach ($data as $category => $item)
+
                         <td @if($left) class="td-left" @else class="td-right" @endif>
                             @if($left)
                                 {{$left = false}}
                             @endif
+
                             <img
                                 src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
                                 class="block-img">
                             <table class="block-table">
                                 <tbody>
+
                                 @for($counter=1;$counter < 6; $counter++)
                                     <tr>
-                                        @foreach($item[0] as $answer)
-                                            <td @if($counter == $answer)
-                                                class="answer-{{$answer}}"
+                                        @foreach($item as $resultRowId => $average)
+                                            <td @if($counter == $average)
+                                                class="answer-{{$average}}"
                                                 @endif></td>
                                         @endforeach
+
                                     </tr>
                                 @endfor
                                 </tbody>
@@ -128,5 +135,16 @@
             <div style="page-break-after: always;"></div>
         @endif
     @endforeach
+    <script type="text/php">
+if ( isset($pdf) ) {
+$pdf->page_script('
+if ($PAGE_COUNT > 1) {
+$font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+$pageText = "Page " . $PAGE_NUM . " of " . $PAGE_COUNT;
+$pdf->text(750, 560, $pageText, $font, 12);
+}
+');
+}
+</script>
 </body>
 </html>
