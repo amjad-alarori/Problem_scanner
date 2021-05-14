@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Results;
 use App\Models\Scan;
 use Barryvdh\DomPDF\Facade as PDF;
-use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class PDFController extends Controller
@@ -15,16 +14,26 @@ class PDFController extends Controller
         $data = json_decode($result->results, true);
 
         $pdf = PDF::loadView('export.raportages.singleScan', [
-            'data' => array_chunk($data, 4, true),
-            'scan' => Scan::find($result->scan_id)
+            'data' => array_chunk(array_chunk($data, 4, true), 2, true),
+            'scan' => Scan::find($result->scan_id),
+            'metadata' => [
+                'created_at' => $result->created_at,
+                'result_made_by' => $result->name,
+                'result_made_for' => $result->user->name,
+            ]
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
         if ($request->get('a')) {
             return view('export.raportages.singleScan', [
-                'data' => $data,
-                'scan' => Scan::find($result->scan_id)
+                'data' => array_chunk(array_chunk($data, 4, true), 2, true),
+                'scan' => Scan::find($result->scan_id),
+                'metadata' => [
+                    'created_at' => $result->created_at,
+                    'result_made_by' => $result->name,
+                    'result_made_for' => $result->user->name,
+                ]
             ]);
         }
 
