@@ -35,11 +35,15 @@ class ExportController extends Controller
             ['scan_id', '=', $result->scan_id],
         ])->orderBy('created_at', 'ASC')->get();
 
+        $oldestDate = date('Y-m-d');
         foreach ($results as $result) {
             $chart1Labels[] = date('d-m-Y', strtotime($result->created_at));
+            if(strtotime($oldestDate) > strtotime($result->created_at->format('Y-m-d'))) {
+                $oldestDate = $result->created_at->format('Y-m-d');
+            }
         }
 
-        return view("export.index", compact('result', 'questions', 'chart1Labels'));
+        return view("export.index", compact('result', 'questions', 'chart1Labels', 'oldestDate'));
     }
 
     public function getQuestionsResults($results)
@@ -174,25 +178,6 @@ class ExportController extends Controller
             $firstquestions[$question['id']] = ['id' => (int)$question['id'], 'value' => (int)$question['value'], 'questionCount' => Questions::where('categories_id', $question['id'])->count(), 'category' => Categories::find($question['id'])];
         }
         return $firstquestions;
-    }
-
-    public function downloadExport(Request $request)
-    {
-        $result = Results::find($request->result_id);
-        $result = json_decode($result->results);
-        $filename = "answers.csv";
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, ['question', 'answer', 'category']);
-        foreach ($result as $row) {
-            $question = Questions::find($row->question_id);
-            $category = Categories::find($row->category);
-            fputcsv($handle, [$question->question, $row->answer, $category->name]);
-        }
-        fclose($handle);
-        $headers = [
-            'Content-Type' => 'text/csv',
-        ];
-        return Response::download($filename, 'answers.csv', $headers);
     }
 
     public function getDates($results)
