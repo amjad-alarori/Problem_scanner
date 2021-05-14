@@ -86,6 +86,18 @@
         .td-left, .td-right {
             padding: 10px 2px 10px 10px;
         }
+
+        #tdDate{
+            transform: rotate(90deg);
+            background-color: #de835c;
+            color: #FFFFFF ;
+        }
+
+        #tdDate2{
+            transform: rotate(90deg);
+            background-color: #de835c;
+            color: #FFFFFF ;
+        }
     </style>
 
     <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
@@ -113,7 +125,7 @@
                             <table class="block-table">
                                 <tbody>
 
-                                @for($counter=1;$counter < 6; $counter++)
+                                @for($counter=5;$counter > 0; $counter--)
                                     <tr>
                                         @foreach($item as $resultRowId => $average)
                                             <td @if($counter == $average)
@@ -128,8 +140,52 @@
                             <div class="block-text">Mening van anderen</div>
                         </td>
                     @endforeach
+
                 </tr>
             @endforeach
+            <tr style="width: 100%">
+                @php
+                    $left =true;
+                @endphp
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                @if($left)
+                    {{$left = false}}
+                    @endif
+
+                    <table class="block-table">
+                        <tbody>
+                            <tr>
+                                @foreach($dataByCategoryDates as $dataItem)
+                                    <td id="tdDate">
+                                     {{date_format($dataItem,"d/m/Y")}}
+
+                                    </td>
+                                @endforeach
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+
+
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                    @if($left)
+                        {{$left = false}}
+                    @endif
+
+                    <table class="block-table">
+                        <tbody>
+                        <tr>
+                            @foreach($dataByCategoryDates as $dataItem)
+                                <td id="tdDate2">
+                                    {{date_format($dataItem,"d/m/Y")}}
+
+                                </td>
+                            @endforeach
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
         </table>
         @if(!$loop->last)
             <div style="page-break-after: always;"></div>

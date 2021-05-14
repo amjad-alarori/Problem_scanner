@@ -42,12 +42,16 @@ class PDFController extends Controller
             ['user_id', '=', $result->user->id]
         ])->get();
 
+        $dataByQuestionsDates = [];
         foreach ($results as $result) {
-            $result = json_decode($result->results);
-            foreach ($result as $json) {
+            $jsonResult = json_decode($result->results);
+            $dataByQuestionsDates[] = $result->created_at;
+             foreach ($jsonResult as $json) {
                 $data[$json->question_id][] = $json->answer;
             }
         }
+
+
 
         $chunkSize = 2;
         $index = 0;
@@ -66,7 +70,7 @@ class PDFController extends Controller
         $dataAArray = [];
         $indexx = 0;
         $curindexx = 0;
-        $chunkSizee = 3;
+        $chunkSizee = 2;
         foreach ($dataArray as $item) {
             $dataAArray[$indexx][] = $item;
             $curindexx++;
@@ -80,7 +84,8 @@ class PDFController extends Controller
         $pdf = PDF::loadView('export.raportages.timespan', [
             'dataArray' => $dataAArray,
             'scan' => $scan,
-            'date' => $date
+            'date' => $date,
+            'dataByQuestionsDates' =>$dataByQuestionsDates
         ]);
 
         $pdf->setPaper('a4', 'landscape');
@@ -89,7 +94,8 @@ class PDFController extends Controller
             return view('export.raportages.timespan', [
                 'dataArray' => $dataAArray,
                 'scan' => $scan,
-                'date' => $date
+                'date' => $date,
+                'dataByQuestionsDates'=>$dataByQuestionsDates
             ]);
         }
         return $pdf->stream('pdf_file_timespan_question.pdf');
@@ -101,7 +107,7 @@ class PDFController extends Controller
     public function createPDFbyCategory(Request $request, Results $result)
     {
 
-        $data = [];
+
         $scan = Scan::find($result->scan_id);
         $results = Results::where([
             ['scan_id', '=', $scan->id],
@@ -109,8 +115,10 @@ class PDFController extends Controller
         ])->get();
 
         $dataByCategory = [];
+        $dataByCategoryDates=[];
         foreach ($results as $resultRow) {
             $result = json_decode($resultRow->results);
+            $dataByCategoryDates[] = $resultRow->created_at;
             $tempData = [];
             foreach ($result as $json) {
                 $tempData[$json->category][] = $json->answer;
@@ -131,7 +139,8 @@ class PDFController extends Controller
         $pdf = PDF::loadView('export.raportages.timespanByCategory', [
             'chunkedArrayByCategory' => $chunkedArrayByCategory,
             'scan' => $scan,
-            'date'=> $date
+            'date'=> $date,
+            'dataByCategoryDates'=>$dataByCategoryDates
         ]);
 
         $pdf->setPaper('a4', 'landscape');
@@ -140,7 +149,8 @@ class PDFController extends Controller
             return view('export.raportages.timespanByCategory', [
                 'chunkedArrayByCategory' => $chunkedArrayByCategory,
                 'scan' => $scan,
-                'date'=> $date
+                'date'=> $date,
+                'dataByCategoryDates'=>$dataByCategoryDates
             ]);
         }
         return $pdf->stream('pdf_file_timespan_bycategory.pdf');

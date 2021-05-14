@@ -90,6 +90,18 @@
         .td-left, .td-right {
             padding: 10px 2px 10px 10px;
         }
+
+        #tdDateTimespan{
+            transform: rotate(90deg);
+            background-color: #de835c;
+            color: #FFFFFF ;
+        }
+
+        #tdDateTimespan2{
+            transform: rotate(90deg);
+            background-color: #de835c;
+            color: #FFFFFF ;
+        }
     </style>
 
     <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
@@ -118,15 +130,8 @@
                                                 class="answer-{{$answer}}"
                                                 @endif
                                                 ></td>
-
-
-
                                         @endforeach
                                     </tr>
-
-
-
-
                                 @endfor
                                 </tbody>
                             </table>
@@ -135,6 +140,50 @@
                     @endforeach
                 </tr>
             @endforeach
+
+                <tr style="width: 100%">
+                    @php
+                        $left =true;
+                    @endphp
+                    <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                        @if($left)
+                            {{$left = false}}
+                        @endif
+
+                        <table class="block-table">
+                            <tbody>
+                            <tr>
+                                @foreach($dataByQuestionsDates as $dataItem)
+                                    <td id="tdDateTimespan">
+                                        {{date_format($dataItem,"d/m/Y")}}
+
+                                    </td>
+                                @endforeach
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+
+                    <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                        @if($left)
+                            {{$left = false}}
+                        @endif
+
+                        <table class="block-table">
+                            <tbody>
+                            <tr>
+                                @foreach($dataByQuestionsDates as $dataItem)
+                                    <td id="tdDateTimespan2">
+                                        {{date_format($dataItem,"d/m/Y")}}
+
+                                    </td>
+                                @endforeach
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
         </table>
         @if(!$loop->last)
             <div style="page-break-after: always;"></div>
