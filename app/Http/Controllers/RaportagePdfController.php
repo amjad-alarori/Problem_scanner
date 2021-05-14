@@ -55,8 +55,8 @@ class RaportagePdfController extends Controller
         $results = Results::where([
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
-        ])->where('created_at', '<=', $timespan_end)
-        ->where('created_at', '>=', $timespan_start)->get();
+        ])->where('created_at', '<=', $timespan_end . " 23:59:59")
+        ->where('created_at', '>=', $timespan_start . " 00:00:00")->get();
 
         $dataByQuestionsDates = [];
         foreach ($results as $result) {
@@ -116,8 +116,8 @@ class RaportagePdfController extends Controller
         $results = Results::where([
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
-        ])->where('created_at', '<=', $timespan_end)
-            ->where('created_at', '>=', $timespan_start)->get();
+        ])->where('created_at', '<=', $timespan_end . " 23:59:59")
+            ->where('created_at', '>=', $timespan_start . " 00:00:00")->get();
 
         $dataByCategory = [];
         $dataByCategoryDates=[];
