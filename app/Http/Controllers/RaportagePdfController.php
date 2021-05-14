@@ -55,7 +55,7 @@ class RaportagePdfController extends Controller
         $results = Results::where([
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
-        ])->get();
+        ])->whereBetween('reservation_from', [$timespan_start, $timespan_end])->get();
 
         $test = [];
         foreach ($results as $resultRow) {
@@ -86,7 +86,7 @@ class RaportagePdfController extends Controller
         $results = Results::where([
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
-        ])->get();
+        ])->whereBetween('reservation_from', [$timespan_start, $timespan_end])->get();
 
         foreach ($results as $result) {
             $result = json_decode($result->results);
