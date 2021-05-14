@@ -99,7 +99,7 @@
                             $category = $question->categories;
                         @endphp
                         <td class="td">
-                            <img class="img" src="{{public_path('img/categorieën/18gebrekaangeld.png')}}"/>
+                            <img class="img" src="{{$category->image}}"/>
                             <p style="background-color: {{$category->color}};" class="block-text">
                                 <b>{{$question->question}}</b></p>
                             <table style="width: 100%">

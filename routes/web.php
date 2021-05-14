@@ -37,10 +37,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('consulent.add', [ConsulentController::class, 'add'])->name('consulent.add');
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::resource('export', ExportController::class);
-        Route::get('/export/{result}/pdf', [\App\Http\Controllers\PDFController::class, 'createPDFsingleScan'])->name('downloadPDF');
-        Route::get('/export/{result}/pdf/byquestion', [\App\Http\Controllers\PDFController::class, 'createPDFbyQuestion'])->name('downloadPDFbyQuestion');
-        Route::get('/export/{result}/pdf/bycategory', [\App\Http\Controllers\PDFController::class, 'createPDFbyCategory'])->name('downloadPDFbyCategory');
-//        Route::get('/export/{result}/sc', [RaportagePdfController::class, 'createPDFsingleScan'])->name('downloadPDF');
+        Route::post('/export/{result}', [RaportagePdfController::class, 'export'])->name('exportpdf');
         Route::post('saveExport', [ExportController::class, 'export'])->name('saveExport');
         Route::resource('results', ResultsController::class);
         Route::resource('scan', ScanController::class);

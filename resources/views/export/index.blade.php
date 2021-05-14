@@ -56,13 +56,42 @@
 
             </div>
             <div class="tab-pane fade show" id="export" role="tabpanel">
-                <div class="p-5">
-                    <p>Exporteer een individuele scan naar PDF</p>
-                    <a class="btn btn-primary" href="{{route('downloadPDF', ['result' => $result])}}">Export to PDF</a>
-                    <p>Exporteer het tijdsverloop per vraag naar PDF</p>
-                    <a class="btn btn-primary" href="{{route('downloadPDFbyQuestion',['result' => $result])}}">Export to PDF</a>
-                    <p>Exporteer het tijdsverloop per categorie naar PDF</p>
-                    <a class="btn btn-primary" href="{{route('downloadPDFbyCategory',['result' => $result])}}">Export to PDF</a>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <form action="{{route('exportpdf', ['result' => $result->id])}}" method="post">
+                            @csrf
+                            <div class="btn-group w-100 btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-orange-outline active">
+                                    <input type="radio" name="exportType" value="scan" id="option1" autocomplete="off"
+                                           checked>Hele Scan
+                                </label>
+                                <label class="btn btn-orange-outline">
+                                    <input type="radio" name="exportType" value="t_questions" id="option2"
+                                           autocomplete="off">Tijdverloop Vraag
+                                </label>
+                                <label class="btn btn-orange-outline">
+                                    <input type="radio" name="exportType" value="t_Category" id="option3"
+                                           autocomplete="off">Tijdverloop Categorie
+                                </label>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Datum bereik start</label>
+                                        <input name="timespan_start" type="date" class="form-control" value="{{$oldestDate}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Datum bereik eind</label>
+                                        <input name="timespan_end" type="date" class="form-control" value="{{date('Y-m-d')}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-orange">Exporteer naar pdf</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,7 +103,7 @@
             type: 'bar',
             data: {
                 labels: {!! json_encode($chart1Labels) !!},
-                datasets: [1,1,1,1,1],
+                datasets: [1, 1, 1, 1, 1],
                 // datasets: data.bardata,
             },
             options: {
