@@ -2,54 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
-use App\Models\Questions;
 use App\Models\Results;
 use App\Models\Scan;
 use Barryvdh\DomPDF\Facade as PDF;
+use Dompdf\Options;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class PDFController extends Controller
 {
     public function createPDFsingleScan(Results $result, Request $request)
     {
-        $data = [];
-
-        $tempdata = json_decode($result->results);
-        $chunkSize = 4;
-        $index = 0;
-        $curindex = 0;
-        foreach ($tempdata as $json) {
-            $question = Questions::find($json->question_id);
-            $data[$index][] = [
-                'answer' => (int)$json->answer,
-                'question' => $question,
-                'category' => $question->categories,
-            ];
-            $curindex++;
-            if ($curindex === $chunkSize) {
-                $index++;
-                $curindex = 0;
-            }
-        }
+        $data = json_decode($result->results, true);
         $date = date(" j-m-Y");
-
-        $pdf = PDF::loadView('export.raportages.pdf', [
-            'data' => $data,
+        $pdf = PDF::loadView('export.raportages.singleScan', [
+            'data' => array_chunk($data, 4, true),
             'scan' => Scan::find($result->scan_id),
             'date' => $date
-        ]);
+            ]);
 
         $pdf->setPaper('a4', 'landscape');
-//        ?a=true
+
         if ($request->get('a')) {
-            return view('export.raportages.pdf', [
+            return view('export.raportages.singleScan', [
                 'data' => $data,
                 'scan' => Scan::find($result->scan_id),
                 'date' => $date
             ]);
         }
+
         return $pdf->stream('pdf_file.pdf');
     }
 
@@ -97,7 +77,6 @@ class PDFController extends Controller
         }
 
         $date = date(" j-m-Y");
-
         $pdf = PDF::loadView('export.raportages.timespan', [
             'dataArray' => $dataAArray,
             'scan' => $scan,
