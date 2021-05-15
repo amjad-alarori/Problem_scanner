@@ -114,12 +114,14 @@
                         $left =true;
                     @endphp
                     @foreach ($data as $question_id => $item)
+
                         <td @if($left) class="td-left" @else class="td-right" @endif>
                             @if($left)
                                 {{$left = false}}
                             @endif
                             <img
-                                src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
+                                src="{{$questionsImages[$question_id]}}"
+{{--                                src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"--}}
                                 class="block-img">
                             <table class="block-table">
                                 <tbody>

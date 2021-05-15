@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Questions;
 use App\Models\Results;
 use App\Models\Scan;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -52,21 +53,28 @@ class RaportagePdfController extends Controller
     {
         $data = [];
         $scan = Scan::find($result->scan_id);
+
         $results = Results::where([
             ['scan_id', '=', $scan->id],
             ['user_id', '=', $result->user->id]
         ])->where('created_at', '<=', $timespan_end . " 23:59:59")
-        ->where('created_at', '>=', $timespan_start . " 00:00:00")->get();
+            ->where('created_at', '>=', $timespan_start . " 00:00:00")->get();
+
 
         $dataByQuestionsDates = [];
+        $questionsImages = [];
         foreach ($results as $result) {
             $jsonResult = json_decode($result->results);
             $dataByQuestionsDates[] = $result->created_at;
+            $questions = $result->Questions();
             foreach ($jsonResult as $json) {
                 $data[$json->question_id][] = $json->answer;
+
+                if (!array_key_exists($json->question_id, $questionsImages)) {
+                    $questionsImages[$json->question_id] = $questions->where('id', '=',$json->question_id)->first()->image;
+                }
             }
         }
-
 
 
         $chunkSize = 2;
@@ -83,6 +91,7 @@ class RaportagePdfController extends Controller
             }
         }
 
+
         $dataAArray = [];
         $indexx = 0;
         $curindexx = 0;
@@ -96,17 +105,22 @@ class RaportagePdfController extends Controller
             }
         }
 
+
         $date = date(" j-m-Y");
+
+
         $pdf = PDF::loadView('export.raportages.timespan', [
             'dataArray' => $dataAArray,
             'scan' => $scan,
             'date' => $date,
-            'dataByQuestionsDates' =>$dataByQuestionsDates
+            'dataByQuestionsDates' => $dataByQuestionsDates,
+            'questionsImages' => $questionsImages
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('questions_' . date('Y-m-d_H:i:s') . '.pdf');
+//        return $pdf->download('questions_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->stream('questions_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
     private function CategoriesPdf(Results $result, $timespan_start, $timespan_end)
@@ -120,7 +134,7 @@ class RaportagePdfController extends Controller
             ->where('created_at', '>=', $timespan_start . " 00:00:00")->get();
 
         $dataByCategory = [];
-        $dataByCategoryDates=[];
+        $dataByCategoryDates = [];
         foreach ($results as $resultRow) {
             $result = json_decode($resultRow->results);
             $dataByCategoryDates[] = $resultRow->created_at;
@@ -144,13 +158,14 @@ class RaportagePdfController extends Controller
         $pdf = PDF::loadView('export.raportages.timespanByCategory', [
             'chunkedArrayByCategory' => $chunkedArrayByCategory,
             'scan' => $scan,
-            'date'=> $date,
-            'dataByCategoryDates'=>$dataByCategoryDates
+            'date' => $date,
+            'dataByCategoryDates' => $dataByCategoryDates
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('categories_' . date('Y-m-d_H:i:s') . '.pdf');
+//        return $pdf->download('categories_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->stream('categories_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
 }

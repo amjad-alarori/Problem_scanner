@@ -15,7 +15,7 @@ class Results extends Model implements Searchable
     public function Questions()
     {
         $data = collect();
-        foreach ($this->results as $item) {
+        foreach (json_decode($this->results) as $item) {
             $question = Questions::find($item->question_id);
             if ($question) {
                 $data->add($question);
