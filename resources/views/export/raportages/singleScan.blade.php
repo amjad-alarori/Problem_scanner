@@ -5,9 +5,33 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href='' rel='stylesheet'>
     <title>Export</title>
     <style>
+        #bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 1100px;
+            height: 800px;
+            z-index: -1;
+            margin-left: -30px;
+            margin-bottom: -40px;
+        }
+
+        @font-face {
+            font-family: "Corbel";
+            font-style: normal;
+            font-weight: normal;
+            src: url("fonts/Corbel.ttf") format("truetype");
+        }
+
+        td, b, p, label {
+            font-family: "Corbel" !important;
+        }
+
         .td {
+            background-color: white;
             border: 1px solid #020407;
             width: 200px !important;
             text-align: center;
@@ -64,16 +88,17 @@
         .block-text {
             width: 100%;
             height: 50px;
-            line-height: 35px;
+            line-height: 30px;
             color: white;
-            font-weight: bold;
             margin-bottom: 5px;
             margin-top: -20px;
+            font-family: "Corbel" !important;
         }
 
     </style>
 </head>
 <body>
+    <img id="bg" src="{{public_path('assets/images/export/bg.png')}}">
     <img class="logo" src="{{public_path('img/logos/orange_eyes.jpg')}}">
     <table style="float: right; margin-top: -20px;">
         <tr>
@@ -99,9 +124,8 @@
                             $category = $question->categories;
                         @endphp
                         <td class="td">
-                            <img class="img" src="{{$category->image}}"/>
-                            <p style="background-color: {{$category->color}};" class="block-text">
-                                <b>{{$question->question}}</b></p>
+                                                        <img class="img" src="{{$category->image}}"/>
+                            <p style="background-color: {{$category->color}};" class="block-text">{{$question->question}}</p>
                             <table style="width: 100%">
                                 <tr>
                                     @for($counter=1;$counter < 6; $counter++)
@@ -133,6 +157,8 @@
                 }
             ');
         }
+
+
     </script>
 </body>
 </html>

@@ -46,7 +46,8 @@ class RaportagePdfController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('scan_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->stream();
+//        return $pdf->download('scan_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
     private function QuestionsPdf(Results $result, $timespan_start, $timespan_end)
@@ -114,13 +115,18 @@ class RaportagePdfController extends Controller
             'scan' => $scan,
             'date' => $date,
             'dataByQuestionsDates' => $dataByQuestionsDates,
-            'questionsImages' => $questionsImages
+            'questionsImages' => $questionsImages,
+            'metadata' => [
+                'created_at' => $result->created_at,
+                'result_made_by' => $result->name,
+                'result_made_for' => $result->user->name,
+            ]
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
-//        return $pdf->download('questions_' . date('Y-m-d_H:i:s') . '.pdf');
-        return $pdf->stream('questions_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->stream();
+        return $pdf->download('questions_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
     private function CategoriesPdf(Results $result, $timespan_start, $timespan_end)
@@ -159,13 +165,18 @@ class RaportagePdfController extends Controller
             'chunkedArrayByCategory' => $chunkedArrayByCategory,
             'scan' => $scan,
             'date' => $date,
-            'dataByCategoryDates' => $dataByCategoryDates
+            'dataByCategoryDates' => $dataByCategoryDates,
+            'metadata' => [
+                'created_at' => $result->created_at,
+                'result_made_by' => $result->name,
+                'result_made_for' => $result->user->name,
+            ]
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
-//        return $pdf->download('categories_' . date('Y-m-d_H:i:s') . '.pdf');
-        return $pdf->stream('categories_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->stream();
+        return $pdf->download('categories_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
 }

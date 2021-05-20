@@ -6,9 +6,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Raportage</title>
-</head>
-<body>
     <style>
+        #bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 1100px;
+            height: 800px;
+            z-index: -1;
+            margin-left: -30px;
+            margin-bottom: -40px;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        @font-face {
+            font-family: "Corbel";
+            font-style: normal;
+            font-weight: normal;
+            src: url("fonts/Corbel.ttf") format("truetype");
+        }
+        td, b, p, label {
+            font-family: "Corbel" !important;
+        }
         .logo {
 
             height: 50px;
@@ -67,13 +89,12 @@
         }
 
         .block-text {
-            background-color: #ffc841;
             color: white;
             padding: 10px;
             clear: left;
             width: 100px;
             text-align: center;
-            font-weight: bold;
+            font-family: "Corbel" !important;
         }
 
         .td-left {
@@ -91,21 +112,31 @@
             padding: 10px 2px 10px 10px;
         }
 
-        #tdDateTimespan{
+        .date{
+            padding: 10px;
             transform: rotate(90deg);
-            background-color: #de835c;
-            color: #FFFFFF ;
-        }
-
-        #tdDateTimespan2{
-            transform: rotate(90deg);
-            background-color: #de835c;
-            color: #FFFFFF ;
+            color: black !important;
+            background-color: transparent !important;
         }
     </style>
-
-    <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
-    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}<br>{{$date}}</h3>
+</head>
+<body>
+    <img id="bg" src="{{public_path('assets/images/export/bg.png')}}">
+    <img class="logo" src="{{public_path('img/logos/orange_eyes.jpg')}}">
+    <table style="float: right; margin-top: -20px;">
+        <tr>
+            <td style="width: 100px;">Made for:</td>
+            <td style="text-align: right; padding-right: 10px; border-right: 1px solid #020407">{{$metadata["result_made_for"]}}</td>
+            <td style="width: 100px; padding-left: 10px;">Created on:</td>
+            <td style="text-align: right">{{$metadata['created_at']}}</td>
+        </tr>
+        <tr>
+            <td>Made by:</td>
+            <td style="text-align: right; padding-right: 10px; border-right: 1px solid #020407">{{$metadata["result_made_by"]}}</td>
+            <td style="padding-left: 10px;">Scan:</td>
+            <td style="text-align: right">{{$scan->name}}</td>
+        </tr>
+    </table>
     @foreach($dataArray as $dt)
         <table style="width: 100%;">
             @foreach($dt as $data)
@@ -119,9 +150,7 @@
                             @if($left)
                                 {{$left = false}}
                             @endif
-                            <img
-                                src="{{$questionsImages[$question_id]}}"
-{{--                                src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"--}}
+                            <img src="{{$questionsImages[$question_id]}}"
                                 class="block-img">
                             <table class="block-table">
                                 <tbody>
@@ -137,7 +166,7 @@
                                 @endfor
                                 </tbody>
                             </table>
-                            <div class="block-text">Mening van anderen</div>
+                            <div class="block-text" style="background-color: {{\App\Models\Questions::find($question_id)->categories->color}}">{{\App\Models\Questions::find($question_id)->question}}</div>
                         </td>
                     @endforeach
                 </tr>
@@ -156,7 +185,7 @@
                             <tbody>
                             <tr>
                                 @foreach($dataByQuestionsDates as $dataItem)
-                                    <td id="tdDateTimespan">
+                                    <td class="date">
                                         {{date_format($dataItem,"d/m/Y")}}
 
                                     </td>
@@ -176,7 +205,7 @@
                             <tbody>
                             <tr>
                                 @foreach($dataByQuestionsDates as $dataItem)
-                                    <td id="tdDateTimespan2">
+                                    <td class="date">
                                         {{date_format($dataItem,"d/m/Y")}}
 
                                     </td>

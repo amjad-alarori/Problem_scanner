@@ -90,14 +90,18 @@
                                             </div>
                                             <div class="row scan-ratio mb-5">
                                                 <label class="pt-4">Geen probleem</label>
+                                                @php
+                                                    $r =random_int(0, 5);
+                                                @endphp
                                                 @for($i = 1; $i <=5; $i++)
                                                     <label class="scan-ratio-label">{{$i}}<br/>
-                                                        <input type="radio" name="answers[{{$question->id}}]"
+                                                        <input type="radio" name="answers[{{$question->id}}]" @if($r == $i) checked="checked" @endif
                                                                value="{{$i}}">
                                                     </label>
                                                 @endfor
                                                 <input type="radio" class="d-none" name="answers[{{$question->id}}]"
-                                                       value="0" checked/>
+                                                       value="0" />
+{{--                                                       value="0" checked/>--}}
                                                 <label class="pt-4">
                                                     Ernstig probleem
                                                 </label>

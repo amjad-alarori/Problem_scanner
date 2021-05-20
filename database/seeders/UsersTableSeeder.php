@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Categories;
+use App\Models\Questions;
+use App\Models\Scan;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -26,8 +30,8 @@ class UsersTableSeeder extends Seeder
          */
         if (config('roles.models.defaultUser')::where('email', '=', 'admin@admin.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'Admin',
-                'email'    => 'admin@admin.com',
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now()
             ]);
@@ -40,8 +44,8 @@ class UsersTableSeeder extends Seeder
 
         if (config('roles.models.defaultUser')::where('email', '=', 'company@company.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'Company',
-                'email'    => 'company@company.com',
+                'name' => 'Company',
+                'email' => 'company@company.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now()
             ]);
@@ -54,8 +58,8 @@ class UsersTableSeeder extends Seeder
 
         if (config('roles.models.defaultUser')::where('email', '=', 'employee@employee.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'Employee',
-                'email'    => 'employee@employee.com',
+                'name' => 'Employee',
+                'email' => 'employee@employee.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now()
             ]);
@@ -67,8 +71,8 @@ class UsersTableSeeder extends Seeder
 
         if (config('roles.models.defaultUser')::where('email', '=', 'user@user.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'User',
-                'email'    => 'user@user.com',
+                'name' => 'User',
+                'email' => 'user@user.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now()
             ]);
@@ -77,26 +81,26 @@ class UsersTableSeeder extends Seeder
             $newUser->attachRole($userRole);
         }
 
-        //        $faker = Factory::create();
-//
-//        $scan = Scan::create([
-//            'name' => 'Scan'
-//        ]);
-//
-//        for ($int = 0; $int < 10; $int++) {
-//            $cat = Categories::create([
-//                'name' => $faker->jobTitle,
-//                'scan_id' => $scan->id,
-//                'color' => '#000000',
-//                'image' => ''
-//            ]);
-//            for ($intt = 0; $intt < 10; $intt++) {
-//                Questions::create([
-//                    'question' => $faker->company,
-//                    'categories_id' => $cat->id,
-//                    'image' => ''
-//                ]);
-//            }
-//        }
+        $faker = Factory::create();
+
+        $scan = Scan::create([
+            'name' => 'Scan'
+        ]);
+
+        for ($int = 0; $int < 10; $int++) {
+            $cat = Categories::create([
+                'name' => $faker->jobTitle,
+                'scan_id' => $scan->id,
+                'color' => '#000000',
+                'image' => ''
+            ]);
+            for ($intt = 0; $intt < 10; $intt++) {
+                Questions::create([
+                    'question' => $faker->company,
+                    'categories_id' => $cat->id,
+                    'image' => ''
+                ]);
+            }
+        }
     }
 }

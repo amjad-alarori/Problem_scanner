@@ -6,9 +6,24 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Raportage</title>
-</head>
-<body>
     <style>
+        #bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 1100px;
+            height: 800px;
+            z-index: -1;
+            margin-left: -30px;
+            margin-bottom: -40px;
+        }
+
+        @font-face {
+            font-family: "Corbel";
+            font-style: normal;
+            font-weight: normal;
+            src: url("fonts/Corbel.ttf") format("truetype");
+        }
         .logo {
             width: 250px;
             margin-bottom: 30px;
@@ -35,6 +50,13 @@
 
         .block-table tbody, .block-table tr {
             margin-left: 200px;
+        }
+        td, b, p, label {
+            font-family: "Corbel" !important;
+        }
+
+        td {
+            background-color: white;
         }
 
         .block-table td {
@@ -69,7 +91,7 @@
             clear: left;
             width: 100px;
             text-align: center;
-            font-weight: bold;
+            font-family: "Corbel" !important;
         }
 
         .td-left {
@@ -88,20 +110,39 @@
         }
 
         #tdDate{
+            padding: 10px;
             transform: rotate(90deg);
-            background-color: #de835c;
-            color: #FFFFFF ;
+            color: black !important;
+            background: transparent;
+
         }
 
         #tdDate2{
+            padding: 10px;
             transform: rotate(90deg);
-            background-color: #de835c;
-            color: #FFFFFF ;
+            color: black !important;
+            background: transparent;
+
         }
     </style>
-
+</head>
+<body>
+    <img id="bg" src="{{public_path('assets/images/export/bg.png')}}">
     <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
-    <h3 style="float: right; margin-top: -20px;">{{$scan->name}}<br>{{$date}}</h3>
+    <table style="float: right; margin-top: -20px;">
+        <tr>
+            <td style="width: 100px;">Made for:</td>
+            <td style="text-align: right; padding-right: 10px; border-right: 1px solid #020407">{{$metadata["result_made_for"]}}</td>
+            <td style="width: 100px; padding-left: 10px;">Created on:</td>
+            <td style="text-align: right">{{$metadata['created_at']}}</td>
+        </tr>
+        <tr>
+            <td>Made by:</td>
+            <td style="text-align: right; padding-right: 10px; border-right: 1px solid #020407">{{$metadata["result_made_by"]}}</td>
+            <td style="padding-left: 10px;">Scan:</td>
+            <td style="text-align: right">{{$scan->name}}</td>
+        </tr>
+    </table>
     @foreach($chunkedArrayByCategory as $dt)
 
         <table style="width: 100%;">
