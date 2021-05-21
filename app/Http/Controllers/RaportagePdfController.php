@@ -46,8 +46,7 @@ class RaportagePdfController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->stream();
-//        return $pdf->download('scan_' . date('Y-m-d_H:i:s') . '.pdf');
+        return $pdf->download('scan_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
     private function QuestionsPdf(Results $result, $timespan_start, $timespan_end)
@@ -107,7 +106,7 @@ class RaportagePdfController extends Controller
         }
 
 
-        $date = date(" j-m-Y");
+        $date = date("j-m-Y");
 
 
         $pdf = PDF::loadView('export.raportages.timespan', [
@@ -125,7 +124,6 @@ class RaportagePdfController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->stream();
         return $pdf->download('questions_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 
@@ -167,15 +165,14 @@ class RaportagePdfController extends Controller
             'date' => $date,
             'dataByCategoryDates' => $dataByCategoryDates,
             'metadata' => [
-                'created_at' => $result->created_at,
-                'result_made_by' => $result->name,
-                'result_made_for' => $result->user->name,
+                'created_at' => $results[0]->created_at,
+                'result_made_by' => $results[0]->name,
+                'result_made_for' => $results[0]->user->name,
             ]
         ]);
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->stream();
         return $pdf->download('categories_' . date('Y-m-d_H:i:s') . '.pdf');
     }
 

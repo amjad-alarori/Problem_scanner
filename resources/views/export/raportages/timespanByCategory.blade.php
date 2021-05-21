@@ -61,7 +61,7 @@
 
         .block-table td {
             background-color: #eae8e6;
-            height: 34px;
+            height: 36.5px;
         }
 
         .answer-1 {
@@ -85,7 +85,6 @@
         }
 
         .block-text {
-            background-color: #ffc841;
             color: white;
             padding: 10px;
             clear: left;
@@ -109,26 +108,21 @@
             padding: 10px 2px 10px 10px;
         }
 
-        #tdDate{
+        .date {
             padding: 10px;
+            text-align: center;
             transform: rotate(90deg);
             color: black !important;
-            background: transparent;
-
+            background-color: transparent !important;
         }
-
-        #tdDate2{
-            padding: 10px;
-            transform: rotate(90deg);
-            color: black !important;
-            background: transparent;
-
+        .tb {
+            margin-top: 65px;
         }
     </style>
 </head>
 <body>
     <img id="bg" src="{{public_path('assets/images/export/bg.png')}}">
-    <img class="logo" src="C:\Code\periode 3\OrangeEyes\storage\app\public\images\logos\logo orange eyes.jpg">
+    <img class="logo" src="{{public_path('img/logos/orange_eyes.jpg')}}">
     <table style="float: right; margin-top: -20px;">
         <tr>
             <td style="width: 100px;">Made for:</td>
@@ -145,7 +139,7 @@
     </table>
     @foreach($chunkedArrayByCategory as $dt)
 
-        <table style="width: 100%;">
+        <table class="tb" style="width: 100%;">
             @foreach($dt as $data)
 
                 <tr>
@@ -161,7 +155,7 @@
                             @endif
 
                             <img
-                                src="https://addons.cdn.mozilla.net/user-media/previews/full/230/230000.png?modified=1616526401"
+                                src="{{\App\Models\Categories::find($category)->image}}"
                                 class="block-img">
                             <table class="block-table">
                                 <tbody>
@@ -178,7 +172,27 @@
                                 @endfor
                                 </tbody>
                             </table>
-                            <div class="block-text">Mening van anderen</div>
+                                <div class="block-text"
+                                     style="background-color: {{\App\Models\Categories::find($category)->color}}">
+                                    @if(strlen(\App\Models\Categories::find($category)->name) > 14)
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach(str_split(\App\Models\Categories::find($category)->name, 14) as $char)
+                                            @php
+                                                $i++;
+                                            @endphp
+                                            {{$char}}
+                                            @if($i % 14 == 0)
+                                                <br/>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        {{\App\Models\Categories::find($category)->name}}
+                                        <br>
+                                        <span style="color: {{\App\Models\Categories::find($category)->color}}">&nbsp;</span>
+                                    @endif
+                                </div>
                         </td>
                     @endforeach
 
@@ -188,7 +202,7 @@
                 @php
                     $left =true;
                 @endphp
-                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none; background-color: transparent !important;">
                 @if($left)
                     {{$left = false}}
                     @endif
@@ -197,8 +211,8 @@
                         <tbody>
                             <tr>
                                 @foreach($dataByCategoryDates as $dataItem)
-                                    <td id="tdDate">
-                                     {{date_format($dataItem,"d/m/Y")}}
+                                    <td class="date">
+                                     {{date_format($dataItem,"d-m-Y")}}
 
                                     </td>
                                 @endforeach
@@ -208,7 +222,7 @@
                 </td>
 
 
-                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none; background-color: transparent !important;">
                     @if($left)
                         {{$left = false}}
                     @endif
@@ -217,8 +231,8 @@
                         <tbody>
                         <tr>
                             @foreach($dataByCategoryDates as $dataItem)
-                                <td id="tdDate2">
-                                    {{date_format($dataItem,"d/m/Y")}}
+                                <td class="date">
+                                    {{date_format($dataItem,"d-m-Y")}}
 
                                 </td>
                             @endforeach

@@ -28,9 +28,11 @@
             font-weight: normal;
             src: url("fonts/Corbel.ttf") format("truetype");
         }
+
         td, b, p, label {
             font-family: "Corbel" !important;
         }
+
         .logo {
 
             height: 50px;
@@ -62,7 +64,7 @@
 
         .block-table td {
             background-color: #eae8e6;
-            height: 34px;
+            height: 36.5px;
         }
 
         .answer-1 {
@@ -84,7 +86,8 @@
         .answer-5 {
             background-color: #ff2f1c !important;
         }
-        .answer-0{
+
+        .answer-0 {
             background-color: #1c606a;
         }
 
@@ -112,11 +115,16 @@
             padding: 10px 2px 10px 10px;
         }
 
-        .date{
+        .date {
             padding: 10px;
+            text-align: center;
             transform: rotate(90deg);
             color: black !important;
             background-color: transparent !important;
+        }
+
+        .tb {
+            margin-top: 65px;
         }
     </style>
 </head>
@@ -138,7 +146,7 @@
         </tr>
     </table>
     @foreach($dataArray as $dt)
-        <table style="width: 100%;">
+        <table class="tb" style="width: 100%;">
             @foreach($dt as $data)
                 <tr>
                     @php
@@ -151,7 +159,7 @@
                                 {{$left = false}}
                             @endif
                             <img src="{{$questionsImages[$question_id]}}"
-                                class="block-img">
+                                 class="block-img">
                             <table class="block-table">
                                 <tbody>
                                 @for($counter=5;$counter > 0; $counter--)
@@ -160,61 +168,82 @@
                                             <td @if($counter == $answer)
                                                 class="answer-{{$answer}}"
                                                 @endif
-                                                ></td>
+                                            ></td>
                                         @endforeach
                                     </tr>
                                 @endfor
                                 </tbody>
                             </table>
-                            <div class="block-text" style="background-color: {{\App\Models\Questions::find($question_id)->categories->color}}">{{\App\Models\Questions::find($question_id)->question}}</div>
+                            {{--                                14--}}
+                            <div class="block-text"
+                                 style="background-color: {{\App\Models\Questions::find($question_id)->categories->color}}">
+                                @if(strlen(\App\Models\Questions::find($question_id)->question) > 14)
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    @foreach(str_split(\App\Models\Questions::find($question_id)->question, 14) as $char)
+                                        @php
+                                            $i++;
+                                        @endphp
+                                        {{$char}}
+                                        @if($i % 14 == 0)
+                                            <br/>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    {{\App\Models\Questions::find($question_id)->question}}
+                                    <br>
+                                    <span style="color: {{\App\Models\Questions::find($question_id)->categories->color}}">&nbsp;</span>
+                                @endif
+                            </div>
                         </td>
                     @endforeach
                 </tr>
             @endforeach
 
-                <tr style="width: 100%">
-                    @php
-                        $left =true;
-                    @endphp
-                    <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
-                        @if($left)
-                            {{$left = false}}
-                        @endif
+            <tr style="width: 100%">
+                @php
+                    $left =true;
+                @endphp
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none; background-color: transparent !important;">
+                    @if($left)
+                        {{$left = false}}
+                    @endif
 
-                        <table class="block-table">
-                            <tbody>
-                            <tr>
-                                @foreach($dataByQuestionsDates as $dataItem)
-                                    <td class="date">
-                                        {{date_format($dataItem,"d/m/Y")}}
+                    <table class="block-table">
+                        <tbody>
+                        <tr>
+                            @foreach($dataByQuestionsDates as $dataItem)
+                                <td class="date">
+                                    {{date_format($dataItem,"d-m-Y")}}
 
-                                    </td>
-                                @endforeach
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
+                                </td>
+                            @endforeach
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
 
 
-                    <td @if($left) class="td-left" @else class="td-right" @endif style="border: none">
-                        @if($left)
-                            {{$left = false}}
-                        @endif
+                <td @if($left) class="td-left" @else class="td-right" @endif style="border: none; background-color: transparent !important;">
+                    @if($left)
+                        {{$left = false}}
+                    @endif
 
-                        <table class="block-table">
-                            <tbody>
-                            <tr>
-                                @foreach($dataByQuestionsDates as $dataItem)
-                                    <td class="date">
-                                        {{date_format($dataItem,"d/m/Y")}}
+                    <table class="block-table">
+                        <tbody>
+                        <tr>
+                            @foreach($dataByQuestionsDates as $dataItem)
+                                <td class="date">
+                                    {{date_format($dataItem,"d-m-Y")}}
 
-                                    </td>
-                                @endforeach
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                                </td>
+                            @endforeach
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
         </table>
         @if(!$loop->last)
             <div style="page-break-after: always;"></div>
@@ -230,6 +259,10 @@ $pdf->text(750, 560, $pageText, $font, 12);
 }
 ');
 }
-</script>
+
+
+
+
+    </script>
 </body>
 </html>

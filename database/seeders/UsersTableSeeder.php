@@ -92,13 +92,13 @@ class UsersTableSeeder extends Seeder
                 'name' => $faker->jobTitle,
                 'scan_id' => $scan->id,
                 'color' => '#000000',
-                'image' => ''
+                'image' => 'https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png'
             ]);
             for ($intt = 0; $intt < 10; $intt++) {
                 Questions::create([
                     'question' => $faker->company,
                     'categories_id' => $cat->id,
-                    'image' => ''
+                    'image' => 'https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png'
                 ]);
             }
         }
