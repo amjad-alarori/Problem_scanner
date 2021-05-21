@@ -51,7 +51,14 @@ class ExportController extends Controller
         $questions = $this->getQuestionsResults($results);
         $categoryLabels = $this->getDates($results);
         $AuthUser = Auth::user();
-        return view('export.index', compact('firstResult', 'questions', 'firstquestions', 'categoryLabels', 'result_id', 'categories', 'categoryResults', 'allquestions', 'AuthUser'));
+        $oldestDate = date('Y-m-d');
+        foreach ($results as $result) {
+            if(strtotime($oldestDate) > strtotime($result->created_at->format('Y-m-d'))) {
+                $oldestDate = $result->created_at->format('Y-m-d');
+            }
+        }
+
+        return view('export.index', compact('firstResult', 'oldestDate','questions', 'firstquestions', 'categoryLabels', 'result_id', 'categories', 'categoryResults', 'allquestions', 'AuthUser'));
     }
 
     public function getQuestionsResults($results)
@@ -68,7 +75,11 @@ class ExportController extends Controller
                 if (array_key_exists($item['question_id'], $allresults)) {
                     array_push($allresults[$item['question_id']]['answers'], $item['answer']);
                 } else {
-                    $allresults[$item['question_id']] = ['answers' => [$item['answer']], 'image' => $question['image'], 'question' => $question['question']];
+                    try {
+                        $allresults[$item['question_id']] = ['answers' => [$item['answer']], 'image' => $question['image'], 'question' => $question['question']];
+                    } catch (\Exception $e) {
+
+                    }
                 }
             }
         }
@@ -93,7 +104,7 @@ class ExportController extends Controller
             foreach ($questions as $question) {
                 $category = Categories::find($question['id']);
                 if ($simplyfied) {
-                    $questions[$question['id']] = ['id' => (int)$question['id'], 'value' => (int)round((int)$question['value'] / Questions::where('categories_id', $question['id'])->count()), 'category' => $category->name, 'color' => $category->color];
+                    $questions[$question['id']] = ['id' => (int)$question['id'], 'value' => (int)round((int)$question['value'] / (Questions::where('categories_id', $question['id'])->count() > 0 ? Questions::where('categories_id', $question['id'])->count() : 1)), 'category' => $category->name, 'color' => $category->color];
                 } else {
                     $questions[$question['id']] = ['id' => (int)$question['id'], 'value' => (int)$question['value'], 'questionCount' => Questions::where('categories_id', $question['id'])->count(), 'category' => $category->name, 'color' => $category->color];
                 }
@@ -159,7 +170,9 @@ class ExportController extends Controller
             $question = $questions->filter(function ($item) {
                 return $item->id == $this->id;
             })->first();
-            $firstquestions[$question->id] = ['id' => (int)$item->question_id, 'question' => $question->question, 'image' => $question->image, 'value' => (int)$item->answer];
+            if($question) {
+                $firstquestions[$question->id] = ['id' => (int)$item->question_id, 'question' => $question->question, 'image' => $question->image, 'value' => (int)$item->answer];
+            }
         }
         return $firstquestions;
     }

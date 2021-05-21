@@ -174,6 +174,9 @@
                 <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab"
                    aria-controls="categories" aria-selected="false">Leefgebieden</a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="export-tab" data-toggle="tab" href="#export" role="tab">Export</a>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="questions" role="tabpanel" aria-labelledby="questions-tab">
@@ -185,19 +188,6 @@
                         </p>
                     </div>
 
-                    <div class="col-6" style="padding-top:30px;">
-                        <button onclick="exportToPdf()" id="exportButton" class="btn btn-primary float-right">exporteer
-                            naar
-                            pdf
-                        </button>
-
-                        <form action="{{route('answers.export')}}" id="exportButton2" method="post">@csrf<input
-                                type="hidden"
-                                name="result_id"
-                                value="{{$result_id}}">
-                            <button type="submit" class="btn btn-secondary">Exporteer antwoorden</button>
-                        </form>
-                    </div>
                 </div>
                 <h3>0 meting</h3>
                 <div class="row pl-3 pr-3">
@@ -431,7 +421,7 @@
                             </p>
                             <div class="selectionbox">
                                 @for($counter=1;$counter < 6; $counter++)
-                                    @if($counter == round(($category['value']/$category['questionCount'])))
+                                    @if($counter == round(($category['value']/($category['questionCount'] > 0 ? $category['questionCount'] : 1))))
                                         <label class="scan-ratio-label">{{$counter}}<br/>
                                             <input type="radio" name="input{{$category['category']['name']}}"
                                                    value="{{round(($category['value']/$category['questionCount']))}}"
@@ -440,7 +430,7 @@
                                     @else
                                         <label class="scan-ratio-label">{{$counter}}<br/>
                                             <input type="radio" name="input{{$category['category']['name']}}"
-                                                   value="{{round(($category['value']/$category['questionCount']))}}"
+                                                   value="{{round(($category['value']/($category['questionCount'] > 0 ? $category['questionCount'] : 1)))}}"
                                                    disabled>
                                         </label>
                                     @endif
@@ -526,7 +516,45 @@
                     </div>
                 </div>
             </div>
-
+            <div class="tab-pane fade" id="export" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <form action="{{route('exportpdf', ['result' => $result_id])}}" method="post">
+                            @csrf
+                            <div class="btn-group w-100 btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-orange-outline active">
+                                    <input type="radio" name="exportType" value="scan" id="option1" autocomplete="off"
+                                           checked>Hele Scan
+                                </label>
+                                <label class="btn btn-orange-outline">
+                                    <input type="radio" name="exportType" value="t_questions" id="option2"
+                                           autocomplete="off">Tijdverloop Vraag
+                                </label>
+                                <label class="btn btn-orange-outline">
+                                    <input type="radio" name="exportType" value="t_Category" id="option3"
+                                           autocomplete="off">Tijdverloop Categorie
+                                </label>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Datum bereik start</label>
+                                        <input name="timespan_start" type="date" class="form-control" value="{{$oldestDate}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Datum bereik eind</label>
+                                        <input name="timespan_end" type="date" class="form-control" value="{{date('Y-m-d')}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-orange">Exporteer naar pdf</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

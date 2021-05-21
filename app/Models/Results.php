@@ -11,9 +11,16 @@ class Results extends Model
 {
     use HasFactory, Searchable, SoftDeletes;
 
-    public function questions()
+    public function Questions()
     {
-        return $this->belongsToMany(Questions::class);
+        $data = collect();
+        foreach (json_decode($this->results) as $item) {
+            $question = Questions::find($item->question_id);
+            if ($question) {
+                $data->add($question);
+            }
+        }
+        return $data;
     }
 
     public function user()
@@ -23,7 +30,7 @@ class Results extends Model
 
     public function scan()
     {
-        return $this->hasOne(Scan::class);
+        return $this->hasOne(Scan::class, 'id', 'scan_id');
     }
 
     public function toSearchableArray(): array

@@ -3,6 +3,7 @@
 use App\Helpers\EmailHelper;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\RaportagePdfController;
 use App\Http\Controllers\ResultsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ScanController;
@@ -22,7 +23,6 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-
 Route::get('/404', function () {
     return view('errors.404');
 });
@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('consulent.add', [ConsulentController::class, 'add'])->name('consulent.add');
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::resource('export', ExportController::class);
+        Route::post('/export/{result}', [RaportagePdfController::class, 'export'])->name('exportpdf');
         Route::post('saveExport', [ExportController::class, 'export'])->name('saveExport');
         Route::resource('results', ResultsController::class);
         Route::resource('scan', ScanController::class);
