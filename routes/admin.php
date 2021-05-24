@@ -6,6 +6,8 @@ use App\Http\Controllers\admin\EmailComponentTranslationController;
 use App\Http\Controllers\admin\EmailTranslationController;
 use App\Http\Controllers\admin\ResultsController;
 use App\Http\Controllers\ConsulentController;
+use App\Http\Controllers\admin\LanguagesController;
+use App\Http\Controllers\admin\TranslationsController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\admin\CategoriesController;
@@ -95,3 +97,8 @@ Route::resource('emailcomponenttranslations', EmailComponentTranslationControlle
     ]
 ])->except('create', 'destroy');
 Route::get('emailcomponenttranslations/{emailcomponenttranslation}/delete', [EmailComponentTranslationController::class, 'destroy'])->name('emailcomponenttranslation.destroy');
+
+Route::resource('languages', LanguagesController::class)->only('index', 'store', 'update', 'destroy');
+Route::prefix('languages/{languages}')->group(function () {
+    Route::resource('translations', TranslationsController::class)->only('index', 'store', 'destroy', 'update');
+});

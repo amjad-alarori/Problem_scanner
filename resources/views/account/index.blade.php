@@ -5,10 +5,9 @@
             <div class="col-md-3">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
                     <a class="nav-link active" id="v-pills-home-personal" data-toggle="pill" href="#v-personal"
-                       role="tab">Account
-                        overzicht</a>
+                       role="tab">{{__('account.overview')}}</a>
                     <a class="nav-link" id="v-pills-home-personal" data-toggle="pill" href="#v-inzicht"
-                       role="tab">Inzicht account</a>
+                       role="tab">{{__('account.insight_account')}}</a>
                     {{--                    @if(Auth::user()->roles[0]->level <= 1)--}}
                     {{--                        <a class="nav-link" id="v-pills-home-consulent" data-toggle="pill" href="#v-consulent"--}}
                     {{--                           role="tab">Consulenten</a>--}}
@@ -23,48 +22,47 @@
                             @csrf
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
-                                    Account overzicht
+                                    {{__('account.overview')}}
                                     @if($result != null)
-                                        <a href="{{route('export.show',$result)}}" class="card-link">Gemaakte scans</a>
+                                        <a href="/results" class="card-link">{{__('scans.scans_made')}}</a>
                                     @endif
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-sm-2 col-form-label">Naam</label>
+                                        <label for="staticEmail" class="col-sm-2 col-form-label">{{__('account.label_name')}}</label>
                                         <div class="col-sm-10">
                                             <input type="text" readonly class="form-control-plaintext" id="staticEmail"
                                                    value="{{$user->name}}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <label for="staticEmail" class="col-sm-2 col-form-label">{{__('account.label_email')}}</label>
                                         <div class="col-sm-10">
                                             <input type="text" readonly class="form-control-plaintext" id="staticEmail"
                                                    value="{{$user->email}}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-sm-2 col-form-label">Wachtwoord</label>
+                                        <label for="staticEmail" class="col-sm-2 col-form-label">{{__('account.label_password')}}</label>
                                         <div class="col-sm-10">
                                             @if (Route::has('password.request'))
                                                 <a class="btn  btn-orange" href="{{ route('password.request') }}">
-                                                    Verander je wachtwoord
+                                                    {{__('account.change_password_button')}}
                                                 </a>
                                             @endif
                                         </div>
                                     </div>
                                     <hr class="mb-3 mt-2">
                                     <div class="form-group row">
-                                        <label for="inputPassword" class="col-sm-2 col-form-label">Taal</label>
+                                        <label for="inputPassword" class="col-sm-2 col-form-label">{{__('account.label_language')}}</label>
                                         <div class="col-sm-10">
                                             <x-lang-dropdown name="language" value="{{$user->language}}"/>
-                                            <small class="text-muted">Taal van de website en emails die u
-                                                ontvangt indien beschikbaar</small>
+                                            <small class="text-muted">{{__('account.label_language_message')}}</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-orange">Wijzigingen opslaan</button>
+                                    <button class="btn btn-orange">{{__('buttons.update')}}</button>
                                 </div>
                             </div>
                         </form>
@@ -72,10 +70,10 @@
                     <div class="tab-pane fade show" id="v-inzicht" role="tabpanel">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
-                                Account inzicht
+                                {{__('account.insight_account')}}
                             </div>
                             <div class="card-body">
-                                Deze personen hebbent inzicht in uw gegevens
+                                {{__('account.insight_account_message')}}
                                 <hr>
                                 @if(count(Auth()->user()->Consultants))
                                     @foreach(Auth()->user()->Consultants as $user)
@@ -90,7 +88,7 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <p class="mb-0">Geen personen gevonden</p>
+                                    <p class="mb-0">{{__('account.insight_account_message_non_found')}}</p>
                                 @endif
                             </div>
                         </div>

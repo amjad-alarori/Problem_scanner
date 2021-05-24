@@ -2,42 +2,25 @@
 @section('content')
     <div class="container">
         <ul class="list-group mt-5">
-
             @if(count($results) <=0)
                 <p style="text-align:center;">Er zijn nog geen scans gemaakt</p>
                 <a href="/scan" style="text-align:center;">Maak hier een scan</a>
             @else
-                @if(Auth::user()->roles[0]->level == 2)
-                    @foreach($results as $result)
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6"><h5
-                                        class="pr-5">{{$result->name}} {{$result->user->email}}</h5>
-                                </div>
-                                <div class="col-6">
-                                    <a href="{{route('export.show',$result)}}" class="btn btn-primary float-right">bekijk
-                                        resultaten
-                                    </a>
-                                </div>
+                @foreach($results as $result)
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="pr-5 mb-0">{{$result->name}} @if(Auth::user()->roles[0]->level == 2) {{$result->user->email}} @endif</h5>
                             </div>
-                        </li>
-                    @endforeach
-                @else
-                    @foreach($results as $result)
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6"><h3 class="pr-5">{{$result->scan}}</h3></div>
-                                <div class="col-6">
-                                    <a href="{{route('export.show',$result)}}" class="btn btn-primary float-right">bekijk
-                                        resultaten
-                                    </a>
-                                </div>
+                            <div class="col-6">
+                                <a href="{{route('export.show',$result)}}"
+                                   class="btn btn-orange float-right">{{__('scans.show_results')}}
+                                </a>
                             </div>
-                        </li>
-                    @endforeach
-                @endif
+                        </div>
+                    </li>
+                @endforeach
             @endif
         </ul>
-
     </div>
 @endsection
