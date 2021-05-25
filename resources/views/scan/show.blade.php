@@ -91,7 +91,7 @@
                             @else
                                 @foreach($category->questions as $question)
                                     <div class="col-12 ">
-                                        <div class="single-card grid-triple-item">
+                                        <div class="single-card grid-triple-item scan-question-wrapper">
                                             <div class="col-md-6 scan-question bk-color-card3">
                                                 <?php $counter++?>
                                                 <div class="scan-counter mb-2"><p>{{$counter}}</p></div>
@@ -101,30 +101,18 @@
                                             </div>
                                             <div class="col-md-6  scan-question bk-color-card4">
                                                 <img class="mx-auto d-block" src="{{$question->image}}"
-                                                     style="height:200px;">
+                                                     style="max-height: 200px;width: 100%;">
                                                 <input type="hidden" value="{{$question->categories_id}}"
                                                        name="category{{$question->id}}">
                                                 <div class="scan-ratio">
-                                                    <label class="scan-ratio-label">1<br/>
-                                                        <input type="radio" name="selectedvalue{{$question->id}}"
-                                                               value="1">
-                                                    </label>
-                                                    <label class="scan-ratio-label">2<br/>
-                                                        <input type="radio" name="selectedvalue{{$question->id}}"
-                                                               value="2">
-                                                    </label>
-                                                    <label class="scan-ratio-label">3 <br/>
-                                                        <input type="radio" name="selectedvalue{{$question->id}}"
-                                                               value="3">
-                                                    </label>
-                                                    <label class="scan-ratio-label">4 <br/>
-                                                        <input type="radio" name="selectedvalue{{$question->id}}"
-                                                               value="4">
-                                                    </label>
-                                                    <label class="scan-ratio-label">5 <br/>
-                                                        <input type="radio" name="selectedvalue{{$question->id}}"
-                                                               value="5">
-                                                    </label>
+                                                    @for($i = 1; $i <=5; $i++)
+                                                        <label class="scan-ratio-label">{{$i}}<br/>
+                                                            <input type="radio" name="answers[{{$question->id}}]"
+                                                                   value="{{$i}}">
+                                                        </label>
+                                                    @endfor
+                                                    <input type="radio" class="d-none" name="answers[{{$question->id}}]"
+                                                           value="0" checked/>
                                                     <label class="pt-4 margin-label-mobil">Nauwelijks</label>
                                                     <label class="pt-4 margin-label-ernstige">
                                                         Zeer ernstige

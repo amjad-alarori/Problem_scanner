@@ -71,7 +71,7 @@ class RaportagePdfController extends Controller
                 $data[$json->question_id][] = $json->answer;
 
                 if (!array_key_exists($json->question_id, $questionsImages)) {
-                    $questionsImages[$json->question_id] = $questions->where('id', '=',$json->question_id)->first()->image;
+                    $questionsImages[$json->question_id] = $questions->where('id', '=', $json->question_id)->first()->image;
                 }
             }
         }
@@ -147,7 +147,12 @@ class RaportagePdfController extends Controller
                 $tempData[$json->category][] = $json->answer;
             }
             foreach ($tempData as $category => $answers) {
-                $dataByCategory[$category][$resultRow->id] = (int)round(array_sum($answers) / count($answers));
+                $answers = array_filter($answers, function($a) { return ($a !== 0); });
+                if(array_sum($answers) > 0) {
+                    $dataByCategory[$category][$resultRow->id] = (int)round(array_sum($answers) / count($answers ?? 1));
+                } else {
+                    $dataByCategory[$category][$resultRow->id] = 0;
+                }
             }
         }
 
