@@ -37,7 +37,9 @@ class ImportAllModels extends Command
      */
     public function handle()
     {
-        mkdir(storage_path('index'));
+        if(!file_exists(storage_path('index'))) {
+            mkdir(storage_path('index'));
+        }
         \Artisan::call("scout:import App\\\Models\\\Scan");
         \Artisan::call("scout:import App\\\Models\\\Results");
         \Artisan::call("scout:import App\\\Models\\\Categories");
