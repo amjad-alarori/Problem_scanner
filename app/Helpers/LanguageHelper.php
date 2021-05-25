@@ -7,6 +7,40 @@ class LanguageHelper
 
     public static string $DEFAULT_LANGUAGE = 'en';
 
+    public static array $DEFAULT_TRANSLATIONS = [
+        "greetings" => [
+            "welcome" => "Welkom",
+        ],
+        "scans" => [
+            "scans_made" => "Scans gemaakt",
+            "start_scan" => "Start scans",
+            "start_scan_block_message" => "Kies een scan uit het beschikbare aanbod",
+            "results" => "Resultaten",
+            "results_block_message" => "Bekijk de resultaten van de door u gemaakte scans",
+            "show_results" => "Bekijk resultaten"
+        ],
+        "buttons" => [
+            "create" => "Opslaan",
+            "update" => "Wijzigingen opslaan",
+            "delete" => "Verwijderen",
+        ],
+        "account" => [
+            "overview" => "Account overzicht",
+            "insight_account" => "Account inzicht",
+            "label_name" => "Email",
+            "label_email" => "Email",
+            "label_password" => "Wachtwoord",
+            "change_password_button" => "Verander je wachtwoord",
+            "label_language" => "Taal",
+            "label_language_message" => "Taal van de website en emails die u ontvangt indien beschikbaar",
+            "insight_account_message" => "Deze personen hebbent inzicht in uw gegevens",
+            "insight_account_message_non_found" => "Geen personen gevonden",
+        ],
+        "authentication" => [
+            "logout" => "Uitloggen"
+        ]
+    ];
+
     public static array $allLanguageIsos = [
 //        'Afar' => 'aa',
 //        'Abkhazian' => 'ab',

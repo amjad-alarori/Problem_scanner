@@ -23,10 +23,10 @@ class SearchController
             $data[] = ['text' => $item->name, 'url' => route('export.show', ['export' => $item->id])];
         });
         Categories::search($query)->take(3)->get()->each(function ($item) use (&$data) {
-            $data[] = ['text' => $item->name, 'url' => route('categories.show', ['category' => $item->id])];
+            $data[] = ['text' => $item->name, 'url' => route('categories.edit', ['category' => $item->id])];
         });
         Questions::search($query)->take(3)->get()->each(function ($item) use (&$data) {
-            $data[] = ['text' => $item->question, 'url' => route('questions.show', ['question' => $item->id])];
+            $data[] = ['text' => $item->question, 'url' => route('questions.edit', ['question' => $item->id])];
         });
         Scan::search($query)->take(3)->get()->each(function ($item) use (&$data) {
             $data[] = ['text' => $item->name, 'url' => route('scan.show', ['scan' => $item->id])];
@@ -44,10 +44,10 @@ class SearchController
             $item->route = route('export.show', ['export' => $item->id]);
         });
         $categories = Categories::search($query)->get()->each(function ($item) {
-            $item->route = route('categories.show', ['category' => $item->id]);
+            $item->route = route('categories.edit', ['category' => $item->id]);
         });
         $questions = Questions::search($query)->get()->each(function ($item) {
-            $item->route = route('questions.show', ['question' => $item->id]);
+            $item->route = route('questions.edit', ['question' => $item->id]);
         });
         $scans = Scan::search($query)->get()->each(function ($item) {
             $item->route = route('scan.show', ['scan' => $item->id]);

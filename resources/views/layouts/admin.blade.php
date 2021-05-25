@@ -67,6 +67,11 @@
             'href' => route('appconfig.index')
         ],
         [
+            'name' => 'Page Translations',
+            'icon' => 'fas fa-language',
+            'href' => route('languages.index')
+        ],
+        [
             'name' => 'General'
         ],
         [

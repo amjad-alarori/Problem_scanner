@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-orange">
-                    {{__('buttons.primary')}}
+                    {{__('buttons.create')}}
                 </button>
             </form>
             <hr>
