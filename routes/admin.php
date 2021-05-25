@@ -54,11 +54,6 @@ Route::get('scan/trashed', [ScanController::class, 'trashed'])->name('scan.trash
 Route::post('scan/trashed/update/{id}', [ScanController::class, 'updateTrashed'])->name('scan.updateTrashed');
 Route::resource('scan', ScanController::class);
 
-//company routes
-Route::get('company/trashed',[CompanyController::class,'trashed'])->name('company.trashed');
-Route::post('company/trashed/update/{id}',[CompanyController::class,'updateTrashed'])->name('company.updateTrashed');
-Route::resource('company',CompanyController::class);
-
 Route::post('user/{user}/link',[UserController::class,'link'])->name('user.link');
 Route::post('user/{user}/linkDestroy',[UserController::class,'linkDestroy'])->name('user.linkDestroy');
 Route::get('user/trashed', [UserController::class, 'trashed'])->name('user.trashed');

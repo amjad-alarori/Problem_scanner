@@ -222,9 +222,4 @@ class ResultsController extends Controller
         $results->save();
         return back()->with('success','resultaat teruggezet!');
     }
-
-    public function createPDF($scanId)
-    {
-            dd($scanId);
-    }
 }

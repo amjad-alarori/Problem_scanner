@@ -1,57 +1,79 @@
 @extends('layouts.admin')
 @section('content')
-<div class="container mt-5">
-            <div class="card">
-                <div class="card-header">User</div>
-                <div class="container">
-                    <div class="card-body" style="width:100%;">
-                        @if($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <div class="alert alert-danger">{{ $error }}</div>
-                            @endforeach
-                        @endif
-                        <form action="{{route('user.update',$user)}}" method="post">
-                            @method('PUT')
-                            @csrf
-                            <div class="col-2">
-                                <label for="name">Name</label>
-                                <input id="name" type="text" name="name" value="{{$user->name}}">
-                            </div>
-                            <br>
-                            <div class="col-2">
-                                <label for="email">Email</label><br>
-                                <input id="email" type="text" name="email" value="{{$user->email}}">
-                            </div>
-                            <br>
-                            <div class="col-2">
-                                <label for="password">Password</label><br>
-                                <input id="password" type="password" placeholder="Leave empty if you don't want to change it" name="password">
-                                <p>Important: Leave empty if you don't want to change it</p>
-                            </div>
-                            <br>
-                            @if($user->roles[0]->level == 2 || $user->roles[0]->level == 3)
+    @php
+        $level = $user->roles[0]->level;
+    @endphp
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">User</div>
+                    <div class="container">
+                        <div class="card-body" style="width:100%;">
+                            @if($errors->any())
+                                @foreach ($errors->all() as $error)
+                                    <div class="alert alert-danger">{{ $error }}</div>
+                                @endforeach
+                            @endif
+                            <form action="{{route('user.update',$user)}}" method="post">
+                                @method('PUT')
+                                @csrf
                                 <div class="col-2">
-                                    <label for="powerEmployee">PowerEmployee</label>
-                                    <input id="powerEmployee" name="powerEmployee" type="checkbox" @if($user->roles[0]->level == 3) checked @endif>
+                                    <label for="name">Name</label>
+                                    <input id="name" type="text" name="name" value="{{$user->name}}">
                                 </div>
                                 <br>
-                            @endif
-                            <div class="col-1">
-                                <button type="submit"><i class="fa fa-save"></i>Submit</button>
-                            </div>
-                        </form>
+                                <div class="col-2">
+                                    <label for="email">Email</label><br>
+                                    <input id="email" type="text" name="email" value="{{$user->email}}">
+                                </div>
+                                <br>
+                                <div class="col-2">
+                                    <label for="password">Password</label><br>
+                                    <input id="password" type="password"
+                                           placeholder="laat het leeg als je het niet wilt veranderen" name="password">
+                                    <p>Belangrijk: laat het leeg als je het niet wilt veranderen</p>
+                                </div>
+                                <br>
+                                @if($level == 2 || $level == 3)
+                                    <div class="col-2">
+                                        <label for="roleSelect">kies een rol</label>
+                                        <select id="roleSelect" name="role">
+                                            @foreach($roles as $role)
+                                                @if($role->level == 2 || $role->level == 3)
+                                                    <option value="{{$role->slug}}"
+                                                            @if($user->roles[0]->slug == $role->slug) selected="selected" @endif>{{$role->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <br>
+                                @endif
+                                @if($level == 4)
+                                    <div class="col-2">
+                                        <label for="roleSelect">kies een rol</label>
+                                        <select id="roleSelect" name="role" value="{{$user->roles[0]->slug}}">
+                                            @foreach($roles as $role)
+                                                @if($role->level == 4)
+                                                    <option value="{{$role->slug}}"
+                                                            @if($user->roles[0]->slug == $role->slug) selected="selected" @endif>{{$role->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <br>
+                                @endif
+                                <div class="col-1">
+                                    <button type="submit"><i class="fa fa-save"></i>Submit</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            @php
-                $level = $user->roles[0]->level;
-            @endphp
-            @if($level > 0 || level < 4)
-                <br>
+                @if($level > 0 && $level < 4) <br>
                 <br>
                 <div class="card">
-                    <div class="card-header">Linked @if($level == 2 || $level == 3) users @else Employees @endif</div>
+                    <div class="card-header">Linked @if($level == 2 || $level == 3) Users @else Consulents @endif</div>
                     <div class="container">
                         <div class="card-body" style="width:100%;">
                             @if($errors->any())
@@ -63,16 +85,33 @@
                                 <form action="{{route("user.link", $user)}}" method="post">
                                     @csrf
                                     @method("POST")
+                                    <p>Selecteer een gebruiker om te linken </p>
                                     @if($level == 2 || $level == 3)
                                         <select name="clientId" class="form-control">
                                             @foreach($users as $x)
                                                 @if($x->roles[0]->level == 1)
-                                                    <option class="form-control-item" value="{{$x->id}}">{{$x->name}}</option>
+                                                    <option class="form-control-item"
+                                                            value="{{$x->id}}">{{$x->name}}</option>
                                                 @endif
                                             @endforeach
                                         </select>
                                         <br>
-                                        <button type="submit" name="employeeId" value="{{$user->id}}"><i class="fa fa-user-plus"></i></button>
+                                        <button type="submit" name="employeeId" value="{{$user->id}}"><i
+                                                class="fa fa-user-plus"></i><br>Link gebruiker
+                                        </button>
+                                    @elseif($level == 4)
+                                        <select name="clientId" class="form-control">
+                                            @foreach($users as $x)
+                                                @if($x->roles[0]->level == 2 || $x->roles[0]->level == 3)
+                                                    <option class="form-control-item"
+                                                            value="{{$x->id}}">{{$x->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        <br>
+                                        <button type="submit" name="employeeId" value="{{$user->id}}"><i
+                                                class="fa fa-user-plus"></i><br>Link gebruiker
+                                        </button>
                                     @else
                                         <select name="employeeId" class="form-control">
                                             @foreach($users as $x)
@@ -82,7 +121,9 @@
                                             @endforeach
                                         </select>
                                         <br>
-                                        <button type="submit" name="clientId" value="{{$user->id}}"><i class="fa fa-user-plus"></i></button>
+                                        <button type="submit" name="clientId" value="{{$user->id}}"><i
+                                                class="fa fa-user-plus"></i><br>Link gebruiker
+                                        </button>
                                     @endif
                                 </form>
                                 <br>
@@ -114,7 +155,8 @@
                                             <td>
                                                 <form action="{{route('user.linkDestroy', $user)}}" method="post">
                                                     @csrf @method('POST')
-                                                    <button type="submit" name="otherUser" value="{{$LinkedUser->id}}" class="btn btn-danger">
+                                                    <button type="submit" name="otherUser" value="{{$LinkedUser->id}}"
+                                                            class="btn btn-danger">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
@@ -127,9 +169,9 @@
                         </div>
                     </div>
                 </div>
-            @endif
+                @endif
+            </div>
         </div>
-    </div>
     </div>
 @endsection
 @push('scripts')
@@ -137,7 +179,6 @@
         function submitform(id) {
             $('#changeForm' + id).submit();
         }
-
     </script>
     <script>
         function setNameOptions() {
@@ -150,10 +191,10 @@
             link.value = "null"
             if (role.value == "user") {
                 linkLabel.style.display = "block"
-                linkedTd.forEach(function(element) {
+                linkedTd.forEach(function (element) {
                     element.style.display = "block"
                 })
-                users.forEach(function(element) {
+                users.forEach(function (element) {
                     if (element.className.includes("LinkOptionGroupemployee") || element.className.includes("LinkOptionGrouppoweremployee")) {
                         element.style.display = "block";
                     } else {
@@ -161,10 +202,10 @@
                     }
                 })
             } else {
-                linkedTd.forEach(function(element) {
+                linkedTd.forEach(function (element) {
                     element.style.display = "none"
                 })
-                users.forEach(function(element) {
+                users.forEach(function (element) {
                     LinkLabel.style.display = "none"
                     element.style.display = "none"
                 })

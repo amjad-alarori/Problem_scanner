@@ -70,15 +70,22 @@ class UserController extends Controller
         $user->password = bcrypt("password");
         $user->save();
 
-
-        $roleId = \App\Models\Role::where('slug', $request->role)->first()->id;
-
+        $roleExplode = explode('|', $request->role);
+        $roleId = \App\Models\Role::where('slug', $roleExplode[0])->first()->id;
 
         DB::table('role_user')->insert([
             "role_id" => $roleId, "user_id" => $user->id
         ]);
 
-        if ($request->role == "user" && $request->link != null) {
+        if ($roleExplode[1] == 1 && $request->link != null) {
+            DB::table('consulent_clients')->insert([
+                "consulent_id" => $request->link,
+                "client_id" => $user->id,
+                "verified" => 1
+            ]);
+        }
+
+        if (($roleExplode[1] == 2 || $roleExplode[1] == 3) && $request->link != null) {
             DB::table('consulent_clients')->insert([
                 "consulent_id" => $request->link,
                 "client_id" => $user->id,
@@ -100,7 +107,18 @@ class UserController extends Controller
         $user = User::with('roles')->where('id', '=', $id)->first();
         $roles = Role::all();
         $linkedUsers = [];
-        if ($user->roles[0]->level == 2 || $user->roles[0]->level == 3) {
+        // if ($user->roles[0]->level == 4) {
+        //     $linkedUsersIds = DB::table('company_consulents')->where('company_id', '=', $id)->get();
+        //     foreach ($linkedUsersIds as $linkedUserId) {
+        //         foreach ($users as $key => $x) {
+        //             if ($linkedUserId->consulent_id == $x->id) {
+        //                 array_push($linkedUsers, $x);
+        //                 unset($users[$key]);
+        //             }
+        //         }
+        //     }
+        // }
+        if ($user->roles[0]->level > 1 && $user->roles[0]->level < 5) {
             $linkedUsersIds = DB::table('consulent_clients')->where('consulent_id', '=', $id)->get();
             foreach ($linkedUsersIds as $linkedUserId) {
                 //$linkedUser = DB::table('users')->where('id', '=', $linkedUserId->client_id)->first();
@@ -150,18 +168,24 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         if ($user->id != Auth::id()) {
-            if (($user->roles[0]->level == 2 && $request->powerEmployee == "on") || ($user->roles[0]->level == 3 && $request->powerEmployee == null)) {
-                if ($user->roles[0]->level == 2) {
-                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "poweremployee")->first()->id;
-                } else {
-                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "employee")->first()->id;
-                }
+//            if (($user->roles[0]->level == 2 && $request->powerEmployee == "on") || ($user->roles[0]->level == 3 && $request->powerEmployee == null)) {
+//                if ($user->roles[0]->level == 2) {
+//                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "poweremployee")->first()->id;
+//                } else {
+//                    $roleId = DB::table('roles')->select('id')->where('slug', '=', "employee")->first()->id;
+//                }
+//                DB::table('role_user')->where("user_id", "=", $user->id)->update(["role_id" => $roleId]);
+//            }
+            if ($request->role != null) {
+                $roleId = DB::table('roles')->select('id')->where('slug', '=', $request->role)->first()->id;
                 DB::table('role_user')->where("user_id", "=", $user->id)->update(["role_id" => $roleId]);
             }
+
             DB::table('users')->where('id', '=', $user->id)->update([
                 "name" => $request->name,
                 "email" => $request->email,
             ]);
+
             if ($request->password != "") {
                 DB::table('users')->where('id', '=', $user->id)->update([
                     "password" => bcrypt($request->password)
@@ -175,7 +199,7 @@ class UserController extends Controller
 //                     DB::table('users')->where('id', '=', $user->id)->update(["email_verified_at" => null]);
 //                 }
 //            }
-            return redirect()->back()->with('success', 'changed user');
+            return redirect()->back()->with('success','changed user');
 
         }
         return redirect()->back()->withErrors('You can not change yourself');
@@ -224,7 +248,7 @@ class UserController extends Controller
 
     public function linkDestroy(User $user, Request $request)
     {
-        if ($user->roles[0]->level == 2 || $user->roles[0]->level == 3) {
+        if ($user->roles[0]->level > 1 && $user->roles[0]->level < 5) {
             DB::table('consulent_clients')->where('consulent_id', '=', $user->id)->where('client_id', '=', $request->otherUser)->delete();
         } else {
             DB::table('consulent_clients')->where('client_id', '=', $user->id)->where('consulent_id', '=', $request->otherUser)->delete();

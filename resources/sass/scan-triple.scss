@@ -1,0 +1,49 @@
+.bk-color-card3{
+    background-color: #ffffff;
+    border: 10px solid #CE4B27;
+    border-bottom: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    min-width: 90%;
+
+}
+.bk-color-card4 {
+    background-color: #ffffff;
+    border: 10px solid #CE4B27;
+    border-top: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    min-width: 90%;
+    margin-bottom: 20%;
+
+
+}
+.grid-triple-card {
+    display: grid;
+    grid-template-columns: 35% 35% 35%;
+}
+.grid-triple-item {
+    display: inline-grid;
+    grid-column-gap: 20px;
+
+}
+.triple-card-name ,.triple-card-leefgebied {
+    text-align: center;
+}
+.margin-label-ernstige {
+    margin-left: 25%;
+}
+.btn-triple-vw {
+    margin: 0 auto;
+}
+.buttonbigger {
+    padding: 2% 8% 2% 8%;
+}
+@media screen and (max-width: 800px) {
+    .grid-triple-card{
+        display: inline;
+    }
+    .grid-triple-item{
+        display: inline;
+    }
+}

@@ -30,14 +30,14 @@
                                 <input type="text" name="name" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" name="email" class="form-control" required>
+                                <label>Email / Gebruikersnaam</label>
+                                <input type="text" name="email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label id="LinkLabel">Role</label>
                                 <select id="roleSelect" name="role" class="form-control" onchange="setNameOptions();">
                                     @foreach($roles as $role)
-                                        <option value="{{$role->slug}}">{{$role->name}}</option>
+                                        <option value="{{$role->slug}}|{{$role->level}}">{{$role->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -109,10 +109,9 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Email / Gebruikersnaam</th>
                         <th>Status</th>
                         <th>Role</th>
-                        <th class="linkedTd" style="display: none">Linked to</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -140,8 +139,6 @@
                             </td>
                             <td>
                                 {{$user->roles[0]->name}}
-                            </td>
-                            <td class="linkedTd" style="display: none">
                             </td>
                             <td>
                                 <div class="row">
@@ -195,23 +192,35 @@
             var link = document.getElementById("linkSelect")
             console.log(role.value)
             link.value = "null"
-            if (role.value == "user") {
+            if (role.value.split("|")[1] == "1") {
                 linkLabel.style.display = "block"
-                linkedTd.forEach(function (element) {
+                linkedTd.forEach(function(element) {
                     element.style.display = "block"
                 })
-                users.forEach(function (element) {
+                users.forEach(function(element) {
                     if (element.className.includes("LinkOptionGroup2") || element.className.includes("LinkOptionGroup3")) {
                         element.style.display = "block";
                     } else {
                         element.style.display = "none";
                     }
                 })
+            } else if (role.value.split("|")[1] == "2" || role.value.split("|")[1] == "3") {
+                linkLabel.style.display = "block"
+                linkedTd.forEach(function(element) {
+                    element.style.display = "block"
+                })
+                users.forEach(function(element) {
+                    if (element.className.includes("LinkOptionGroup4")) {
+                        element.style.display = "block";
+                    } else {
+                        element.style.display = "none";
+                    }
+                })
             } else {
-                linkedTd.forEach(function (element) {
+                linkedTd.forEach(function(element) {
                     element.style.display = "none"
                 })
-                users.forEach(function (element) {
+                users.forEach(function(element) {
                     LinkLabel.style.display = "none"
                     element.style.display = "none"
                 })

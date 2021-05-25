@@ -76,6 +76,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    {{--@if(Auth::user()->roles->first()->level == 4)--}}
+                                    {{--                                <div id="companyNav">--}}
+                                    {{--                                    <a class="dropdown-item text text-danger" href="/company">Bedrijf</a>--}}
+                                    {{--                                </div>--}}
+                                    {{--                            @endif--}}
                                     @if(Auth::user()->isAdmin())
                                         <div id="adminNav">
                                             <a class="dropdown-item text text-danger"

@@ -16,8 +16,8 @@
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control" required>
+                        <label>Email / Gebruikersnaam</label>
+                        <input type="text" name="email" class="form-control" required>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">

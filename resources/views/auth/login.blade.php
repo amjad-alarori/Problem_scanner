@@ -20,9 +20,9 @@
                                             <span class="input-group-text" id="basic-addon1"><i
                                                     class="fas fa-at"></i></span>
                                         </div>
-                                        <input id="email" type="email"
+                                        <input id="email" type="text"
                                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                               placeholder="Emailadres" value="{{ old('email') }}" required
+                                               placeholder="Emailadres / Gebruikersnaam" value="{{ old('email') }}" required
                                                autocomplete="email" autofocus>
 
                                         @error('email')

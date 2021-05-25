@@ -14,10 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ConsulentController extends Controller
 {
-    private $_client_id;
     /**
      * Display a listing of the resource.
      *
@@ -25,23 +25,29 @@ class ConsulentController extends Controller
      */
     public function index()
     {
+        $clients = ConsulentClients::join('users', 'users.id', '=', 'client_id')->where('consulent_id',Auth::id())->get();
 
-        $Consultent_clients = ConsulentClients::where('consulent_id',Auth::id())->get();
-        $users = User::all();
+        $groupedClients = [
+            "unverified" => [],
+            "verified" => [],
+            "trashed" => [],
+        ];
 
-        $clients = [];
-        foreach($Consultent_clients as $consultent=> $client){
-            $this->_client_id=$client->client_id;
-            $user = $users->first(function($item) {
-                return $item->id == $this->_client_id;
-            });
-            if(!empty($clients[$client->verified])){
-                array_push($clients[$client->verified],$user);
-            }else{
-                $clients[$client->verified]=[$user];
+        foreach($clients as $client) {
+            $status = "unverified";
+
+            if ($client->verified === 1) {
+                $status = "verified";
             }
+
+            if ($client->deleted_at) {
+                $status = "trashed";
+            }
+
+            array_push($groupedClients[$status], $client);
         }
-        return view('consulent.index',compact('clients'));
+
+        return view('consulent.index', ["clients" => $groupedClients]);
     }
 
     /**
@@ -63,17 +69,29 @@ class ConsulentController extends Controller
      */
     public function store(Request $request)
     {
-        if (User::where('email', '=', $request->email)->exists()) {
+        if ($request->email && User::where('email', '=', $request->email)->exists()) {
             return back()->withErrors('client met deze e-mail bestaat al');
         }
 
-        $random_password = str_random();
-
         $user = new User();
         $user->name= $request->name;
-        $user->email = $request->email;
-        $user->email_verified_at = now();
-        $user->password = bcrypt($random_password);
+        $user->email = $request->email ?? "";
+
+        $validator = Validator::make(['email' => $user->email],[
+            'email' => 'required|email'
+        ]);
+
+        $password = "password";
+
+        if($validator->passes()){
+            $password = str_random();
+        }
+
+        if ($request->email) {
+            $user->email_verified_at = now();
+        }
+
+        $user->password = bcrypt($password);
         $user->save();
 
         $roleId = DB::table('roles')->select('id')->where('slug', '=', "user")->first()->id;
@@ -88,8 +106,20 @@ class ConsulentController extends Controller
             "verified" => 1
         ]);
 
-        Mail::to($user->email)->send(new NewClient($user, $random_password));
+        if($validator->passes()){
+            Mail::to($user->email)->send(new NewClient($user, $password));
+        }
 
+        return redirect('consulent');
+    }
+
+
+    public function updatePassword(Request $request) {
+        $user = User::find($request->userId);
+
+        $user->password =  bcrypt($request->newPassword);
+
+        $user->save();
 
         return redirect('consulent');
     }
@@ -103,8 +133,18 @@ class ConsulentController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-      $results = Results::where('user_id',$user->id)->first();
-      return view('consulent.show',compact('user','results'));
+        $results = Results::where('user_id',$user->id)->first();
+
+        $validator = Validator::make(['email' => $user->email],[
+            'email' => 'required|email'
+        ]);
+
+        $showPasswordUpdate = false;
+        if (!$validator->passes()) {
+            $showPasswordUpdate = true;
+        }
+
+        return view('consulent.show',compact('user','results', 'showPasswordUpdate'));
     }
 
     /**
@@ -149,23 +189,37 @@ class ConsulentController extends Controller
     public function accept(Request $request){
 
 //        dd($request);
-       $client =User::find($request->client);
+        $client = User::withTrashed()->find($request->client);
+        $client->restore();
 //       dd($client);
         $client = ConsulentClients::where('client_id',$client->id)->where('consulent_id',Auth::id())->first();
 
         $client->verified =1;
         $client->save();
         return back();
-     } public function remove(Request $request){
+    } public function remove(Request $request){
 
-       $client =User::find($request->client);
-        $client = ConsulentClients::where('client_id',$client->id)->where('consulent_id',Auth::id())->first();
+    $client =User::find($request->client);
+    $client = ConsulentClients::where('client_id',$client->id)->where('consulent_id',Auth::id())->first();
 
-        $client->verified =2;
-        $client->save();
-        return back();
-     }
-     public function add(Request $request){
+    $client->verified =2;
+    $client->save();
+    return back();
+}
+    public function add(Request $request){
+        // if (account with $email doesnt exist) {
+        //     send email to invite client to make account
+        // }
+        // else {
+        //     if (account is linked to current consulent) {
+        //         return back()->withErrors('Je hoort al bij deze consulent');
+        //     }
+        //     else {
+        //         link client to consulent
+        //         return back()->with('success','je wordt toegevoegd aan je consulent zodra deze het verzoek heeft geaccepteerd');
+        //     }
+        // }
+
         try{
             $consulent = User::where('email',$request->consulent)->with('roles')->first();
             if($consulent->roles[0]->level == 2){
@@ -186,6 +240,6 @@ class ConsulentController extends Controller
             return back()->withErrors('consulent bestaat niet');
         }
 
-     }
+    }
 
 }

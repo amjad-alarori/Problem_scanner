@@ -13,13 +13,21 @@
 
                     Naam : {{$user->name}}
                     <br>
-                    Email : {{$user->email}}
+                    Email / Gebruikersnaam : {{$user->email}}
+                    <br>
+                @if ($showPasswordUpdate)
+                    <form action="{{route('consulent.updatePassword')}}" method="post"> @method('POST') @csrf
+                        <input type="hidden" name="userId" value="{{$user->id}}">
+                        Nieuw wachtwoord: <input type="password" name="newPassword">
+                    </form>
+                    @endif
 
-                </p>  @if($results != null)
-                    <a href="{{route('export.show',$results)}}" class="card-link">Gemaakte scans</a>
-                @else
-                          <p>Deze client heeft nog geen scan gemaakt.</p>
-                @endif
+
+                    </p>  @if($results != null)
+                        <a href="{{route('export.show',$results)}}" class="card-link">Gemaakte scans</a>
+                    @else
+                        <p>Deze client heeft nog geen scan gemaakt.</p>
+                    @endif
             </div>
         </div>
 

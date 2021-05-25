@@ -30,8 +30,7 @@
                 <div class="tile d-flex justify-content-center align-items-center text-white rounded w-100">
 
                     <div class="text">
-                        <h1 class="animate-title text-center"><i class="fas fa-eye"></i>&nbsp;{{__('scans.start_scan')}}
-                        </h1>
+                        <h1 class="animate-title text-center"><i class="fas fa-eye"></i>&nbsp;{{__('scans.start_scan')}}</h1>
                         <a class="stretched-link" href="{{route('scan.index')}}"></a>
 
                         <p class="animate-text">{{__('scans.start_scan_block_message')}}</p>
