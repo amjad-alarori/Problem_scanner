@@ -233,4 +233,15 @@ class LanguageHelper
         return array_search($iso, self::$allLanguageIsos);
     }
 
+    public static function GetKeys() : array
+    {
+        $keys = [];
+        foreach (self::$DEFAULT_TRANSLATIONS as $group => $array) {
+            foreach ($array as $key => $value) {
+                $keys[] = $group . "." . $key;
+            }
+        }
+        return $keys;
+    }
+
 }

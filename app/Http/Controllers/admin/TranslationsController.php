@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\LanguageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Languages;
 use App\Models\Translations;
@@ -15,7 +16,8 @@ class TranslationsController extends Controller
     public function index(Languages $languages)
     {
         $translations = $languages->translation;
-        return view('admin.translations.index', ['languages' => $languages, 'translations' => $translations]);
+        $keys = LanguageHelper::GetKeys();
+        return view('admin.translations.index', ['languages' => $languages, 'translations' => $translations, 'keys' => $keys]);
     }
 
     public function store(Request $request, Languages $languages)

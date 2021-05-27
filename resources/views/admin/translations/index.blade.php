@@ -35,15 +35,27 @@
                             <div class="modal-body">
                                 <div class="form-group mt-2">
                                     <label for="group-input" class="col-form-label">Group</label>
-                                    <input type="text" name="group" id="group-input" class="form-control"required>
+                                    <input type="text" name="group" id="group-input" class="form-control" required>
                                 </div>
                                 <div class="form-group mt-2">
                                     <label for="key-input" class="col-form-label">Key</label>
-                                    <input type="text" name="key" id="key-input" class="form-control" required>
+                                    <select name="key" class="select2 form-control">
+                                        @foreach($keys as $key)
+                                            <option value="{{$key}}">{{$key}}</option>
+                                        @endforeach
+                                    </select>
+                                    <script>
+                                        $('.select2').select2({
+                                            dropdownParent: $("#exampleModal"),
+                                            maximumSelectionSize: 1
+                                        });
+                                    </script>
+                                    {{--                                    <input type="text" name="key" id="key-input" class="select2" required>--}}
                                 </div>
                                 <div class="form-group mt-2">
                                     <label for="translation-input" class="col-form-label">Translation</label>
-                                    <input type="text" name="translation" id="translation-input" class="form-control"required>
+                                    <input type="text" name="translation" id="translation-input" class="form-control"
+                                           required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -63,66 +75,75 @@
                     <div class="col-2">Actions</div>
                 </div>
                 <hr class="mt-0">
-                    @if(count($translations))
-                        @foreach($translations as $translation)
-                            <div class="row">
-                                <div class="col-3">{{($translation->group)}}</div>
-                                <div class="col-3">{{$translation->key}}</div>
-                                <div class="col-4">{{$translation->translation}}</div>
-                                <div class="col-0.75">
-                                    <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#editModal-{{$translation->id}}"><i class="fas fa-pen-square"></i></button>
-                                    <div class="modal fade" id="editModal-{{$translation->id}}" tabindex="-1" role="dialog">
-                                        <form action="{{route('translations.update', ['languages' => $languages, 'translation' => $translation->id])}}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Edit translation</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                @if(count($translations))
+                    @foreach($translations as $translation)
+                        <div class="row">
+                            <div class="col-3">{{($translation->group)}}</div>
+                            <div class="col-3">{{$translation->key}}</div>
+                            <div class="col-4">{{$translation->translation}}</div>
+                            <div class="col-0.75">
+                                <button class="btn btn-warning" type="button" data-toggle="modal"
+                                        data-target="#editModal-{{$translation->id}}"><i class="fas fa-pen-square"></i>
+                                </button>
+                                <div class="modal fade" id="editModal-{{$translation->id}}" tabindex="-1" role="dialog">
+                                    <form
+                                        action="{{route('translations.update', ['languages' => $languages, 'translation' => $translation->id])}}"
+                                        method="post">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit translation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group mt-2">
+                                                        <label for="group-input" class="col-form-label">Group</label>
+                                                        <input type="text" name="group" id="group-input"
+                                                               class="form-control" value="{{$translation->group}}"
+                                                               required>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group mt-2">
-                                                            <label for="group-input" class="col-form-label">Group</label>
-                                                            <input type="text" name="group" id="group-input"
-                                                                   class="form-control" value="{{$translation->group}}"required>
-                                                        </div>
-                                                        <div class="form-group mt-2">
-                                                            <label for="key-input" class="col-form-label">Key</label>
-                                                            <input type="text" name="key" id="key-input"
-                                                                   class="form-control" value="{{$translation->key}}" readonly>
-                                                        </div>
-                                                        <div class="form-group mt-2">
-                                                            <label for="translation-input" class="col-form-label">Translation</label>
-                                                            <input type="text" name="translation" id="translation-input"
-                                                                   class="form-control" value="{{$translation->translation}}"required>
-                                                        </div>
+                                                    <div class="form-group mt-2">
+                                                        <label for="key-input" class="col-form-label">Key</label>
+                                                        <input type="text" name="key" id="key-input"
+                                                               class="form-control" value="{{$translation->key}}"
+                                                               readonly>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-success">Update</button>
+                                                    <div class="form-group mt-2">
+                                                        <label for="translation-input" class="col-form-label">Translation</label>
+                                                        <input type="text" name="translation" id="translation-input"
+                                                               class="form-control"
+                                                               value="{{$translation->translation}}" required>
                                                     </div>
                                                 </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success">Update</button>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <form action="{{route('translations.destroy', ['languages' => $languages, 'translation' => $translation->id])}}"
-                                          method="post">@method('DELETE') @csrf
-                                        <button type="submit" class="btn btn-danger"><i
-                                                class="fa fa-trash fa-xs"></i></button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
-                            @if(!$loop->last)
-                                <hr>
-                            @endif
-                        @endforeach
-                    @else
-                        <p class="mb-0 alert-danger">{{strtoupper('no translations created yet')}}</p>
-                    @endif
+                            <div class="col-1">
+                                <form
+                                    action="{{route('translations.destroy', ['languages' => $languages, 'translation' => $translation->id])}}"
+                                    method="post">@method('DELETE') @csrf
+                                    <button type="submit" class="btn btn-danger"><i
+                                            class="fa fa-trash fa-xs"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        @if(!$loop->last)
+                            <hr>
+                        @endif
+                    @endforeach
+                @else
+                    <p class="mb-0 alert-danger">{{strtoupper('no translations created yet')}}</p>
+                @endif
             </div>
         </div>
     </div>
