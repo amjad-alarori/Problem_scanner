@@ -79,6 +79,11 @@ class AccountController extends Controller
                 'language' => $language
             ]);
         }
+        elseif(Auth()->user()->isAdmin()) {
+            $user->update([
+                'language' => $language
+            ]);
+        }
         return back();
     }
 

@@ -11,6 +11,14 @@
         @endif
         >{{$name}}</option>
     @endforeach
+    @if(\Illuminate\Support\Facades\Auth::user()->isAdmin())
+        @php($iso = "__")
+        <option value="{{$iso}}"
+                @if(isset($value))
+                @if($value == $iso) selected @endif
+            @endif
+        >See all keys on blades</option>
+        @endif
 </select>
 
 <script>

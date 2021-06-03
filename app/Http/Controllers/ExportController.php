@@ -26,14 +26,16 @@ class ExportController extends Controller
         $result_id = $result;
         $name = Results::find($result)->only('user_id');
         $name = $name['user_id'];
-        if ($name != Auth::id()) {
-            if (Auth::user()->level() == 2) {
-                $clients = ConsulentClients::where('consulent_id', Auth::id())->where('client_id', $name)->where('verified',1)->get();
-                if (!count($clients) > 0) {
+        if(!Auth()->user()->isAdmin()) {
+            if ($name != Auth::id()) {
+                if (Auth::user()->level() == 2) {
+                    $clients = ConsulentClients::where('consulent_id', Auth::id())->where('client_id', $name)->where('verified',1)->get();
+                    if (!count($clients) > 0) {
+                        return redirect('/404');
+                    }
+                } else {
                     return redirect('/404');
                 }
-            } else {
-                return redirect('/404');
             }
         }
         $allquestions = $this->getAllQuestions($name, false);

@@ -12,6 +12,10 @@ class Translator extends \Illuminate\Translation\Translator
     {
         $locale = $locale ?: $this->locale;
 
+        if ($locale == "__") {
+            return $key;
+        }
+
         if ($d = $this->TryDb($key, $locale)) {
             return $d;
         }
