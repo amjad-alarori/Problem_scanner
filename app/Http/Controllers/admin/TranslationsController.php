@@ -17,6 +17,9 @@ class TranslationsController extends Controller
     {
         $translations = $languages->translation;
         $keys = LanguageHelper::GetKeys();
+        foreach($translations as $translation) {
+            unset($keys[$translation->key]);
+        }
         return view('admin.translations.index', ['languages' => $languages, 'translations' => $translations, 'keys' => $keys]);
     }
 

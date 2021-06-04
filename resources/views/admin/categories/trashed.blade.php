@@ -11,7 +11,7 @@
                 <ul class="list group">
                 @foreach($categories as $category)
                     <li class="list-group-item">
-                        <form action="{{route('categories.updateTrashed',['id'=>$scan])}}" method="POST" class="mb-3">
+                        <form action="{{route('categories.updateTrashed',['id'=>$category])}}" method="POST" class="mb-3">
                             @csrf                 <p style="font-size:18">Categorie:   {{$category->name}}   <button type="submit" class="btn btn-success float-right" >Zet weer actief</button></p>
 
 

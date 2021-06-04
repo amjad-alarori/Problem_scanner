@@ -9,7 +9,7 @@
                 <div>
                     <form action="{{route('questions.destroy', ['question' => $question->id])}}" method="post">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">{{__('buttons.danger')}}</button>
+                        <button type="submit" class="btn btn-sm btn-danger">{{__('buttons.delete')}}</button>
                     </form>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                {{Form::submit(__('buttons.primary'),array('class'=>'btn btn-primary'))}}
+                {{Form::submit(__('buttons.update'),array('class'=>'btn btn-primary'))}}
                 <a class="btn btn-warning" href="{{route('questions.index')}}">Cancel</a>
             </div>
             {{Form::close()}}

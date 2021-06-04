@@ -6,7 +6,7 @@
                 <h4 class="mb-0">Edit category</h4>
                 <form action="{{route('categories.destroy',['category'=>$category->id])}}"
                       method="post">@csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">{{__('buttons.danger')}}</button>
+                    <button type="submit" class="btn btn-danger btn-sm">{{__('buttons.delete')}}</button>
                 </form>
             </div>
             {{ Form::open(array('route' => array('categories.update',['category'=>$category->id]),'method'=>'put','files'=>true)) }}
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                {{Form::submit(__('buttons.warning'),array('class'=>'btn btn-orange'))}}
+                {{Form::submit(__('buttons.update'),array('class'=>'btn btn-orange'))}}
                 <a href="{{route('categories.index')}}" class="btn btn-warning">Cancel</a>
             </div>
             {{Form::close()}}

@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                {{Form::submit(__('buttons.primary'),array('class'=>'btn btn-primary'))}}
+                {{Form::submit(__('buttons.create'),array('class'=>'btn btn-primary'))}}
                 <a href="{{route('categories.index')}}" class="btn btn-warning">Cancel</a>
             </div>
         </div>
